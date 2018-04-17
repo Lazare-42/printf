@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "./libft/includes/libft.h"
 
+/*
 char	*hexadecimal_string(char c)
 {
 	static char *string = NULL;
@@ -20,21 +21,26 @@ char	*hexadecimal_string(char c)
 
 void	hexa_conversion(int argument)
 {
-	char hexa[17] = "0123456789abcdef";
+	char hexa[17] = "01234567890abcdef";
 
 	hexadecimal_string(hexa[argument % 16]);
 	if (argument / 16)
 		hexa_conversion(argument / 16);
 }
+*/
 
 int main(int ac, char **av)
 {
 	(void)ac;
-	int integer;
-	integer = ft_atoi(av[1]);
-	hexa_conversion(integer);
-	ft_putstr(hexadecimal_string(0));
+	double integer;
+	integer = ft_atof(av[1]);
+	printf("%.*g\n", integer);
+//	ft_ftoa(integer);
+//	printf("%f\n", integer);
+//	hexa_conversion(integer);
+//	ft_putstr(hexadecimal_string(0));
 }
+
 /*
 	printf("\nret : %d\n", 	   printf("PR %%d : %d", 19));
 	printf("\nret : %010d\n", 	   printf("PR %%d : %d", 19));
@@ -46,4 +52,4 @@ int main(int ac, char **av)
 	printf("\nret : %d\n", 	   printf("PR %%U : %U", 19));
 	printf("\nret : %d\n", 	   printf("PR %%x : %x", 19));
 	printf("\nret : %d\n", 	   printf("PR %%X : %X", 19));
-	*/
+*/
