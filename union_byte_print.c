@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "./libft/includes/libft.h"
 
 void print_bytes(void *ptr, int size) 
 {
@@ -66,8 +67,10 @@ else
 		double test;
 	}		uniontest;
 //	uniontest.integer = 4294967296 - 1;
-	uniontest.integer = pow(2, 31) - 1;
+	uniontest.integer = 1;
+	printf("0 if it is not a number %d, %d\n", (ft_isinf((double)(0))), (isinf((double)(0))));
 	printf("%lu size of unsigned int in bytes\n", sizeof(unsigned int));
 	printf("%lu size of double in bytes\n", sizeof(double));
-	print_bytes(&uniontest, 8);
+	printf("%lu size of double in bytes\n", sizeof(unsigned long));
+	print_bytes(&uniontest, 4);
 }
