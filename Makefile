@@ -1,26 +1,13 @@
-NAME = Fract\'ol
+NAME = printf_test
 
-SOURCES = main.c \
-		  static_variables.c \
-		  user_actions.c \
-		  frames_per_seconds.c \
-		  complexe_operations.c \
-		  thread_management.c \
-		  mouse_actions.c \
-		  color_settings.c \
-		  ./fractal_budhabrot.c \
-		  ./fractal_burning_ship.c \
-		  ./fractal_mandelbrot_julia.c \
-		  ./fractal_square.c \
-
+SOURCES = test.c \
 
 LIBDIR = libft
-MINILIBXDIR = minilibx_macos
 SDIR = srcs
 ODIR = bin
 CFLAGS = -Wall -Wextra -Werror
 INCDIR = includes
-LDFLAGS = -L$(LIBDIR) -lpthread -lft -L$(MINILIBXDIR) -lmlx -framework AppKit -framework OpenGL
+LDFLAGS = -L$(LIBDIR) -lft
 LNCURSES = -lncurses
 CC = clang
 SRCS = $(addprefix $(SDIR)/, $(SOURCES:.c=.c))
@@ -37,7 +24,7 @@ mkbin:
 
 
 $(NAME): $(OBJS)
-	@ echo "[35m Entering Fract'ol Makefile...[0m"
+	@ echo "[35m Entering Printf Makefile...[0m"
 	@$(CC) $(CFLAGS)  -o $(NAME) $(OBJS) -I$(INCDIR) $(LDFLAGS) $(LNCURSES)
 	@$(OK)
 

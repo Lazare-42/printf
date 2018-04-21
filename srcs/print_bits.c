@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "../libft/includes/libft.h"
 #include <stdlib.h>
 
 void print_bits(int ptr, int size) 
@@ -25,10 +26,20 @@ int main()
 	}		uniontest;
 	*/
 //	uniontest.integer = 4294967296 - 1;
-		int test;
+//	printf("%.2s\n", "coucou");
+//	printf("%.30d\n", 1);
 
-	test = pow(2, 31) - 1;
-	test *= -1;
-	printf("%lu size of int in bytes\n", sizeof(float));
-	print_bits(test, sizeof(test));
+//witdh : in dynamic and static form
+	printf("%*d\n", 10, 311);
+	printf("%10d\n", 311);
+
+// width : in dynamic negative form
+	printf("%*d\n", -10, 311);
+	printf("%-10d\n", 311);
+
+// precision 
+	printf("%.*d\n", 20, 20);
+	printf("%.10d\n", 311);
+
+
 }
