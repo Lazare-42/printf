@@ -24,9 +24,11 @@ typedef struct		s_printf
 	struct s_printf	*next;
 }					t_printf;
 
-char	*width_padding(char *printf_str, int int_nbr);
-int		printf(const char *restrict format, ...);
-char	char_type_add(char c);
-int		set_get_precision(int yes);
+char				*width_padding(char *printf_str, int int_nbr);
+int					printf(const char *restrict format, ...);
+char				char_type_add(char c);
+int					set_get_precision(int yes);
+int					ft_printf(const char *restrict format, ...);
+t_printf			*set_get_arg_list(int get_first)
 
 #endif

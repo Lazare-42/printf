@@ -1,6 +1,8 @@
 NAME = printf_test
 
 SOURCES = test.c \
+		  ft_printf.c \
+		  list_management.c \
 
 LIBDIR = libft
 SDIR = srcs

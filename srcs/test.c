@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../libft/includes/libft.h"
+#include "../includes/printf.h"
 #include <stdlib.h>
 
 void print_bits(int ptr, int size) 
@@ -45,4 +46,8 @@ int main()
 // if positive and string : print maximum that number of numbers
 	printf("%.*d\n", 10, 20);
 	printf("%.10d\n", 311);
+	printf("%.10ld\n", sizeof(long));
+	printf("%d%d%d%%", 1, 2, 3);
+	ft_printf("test coucou\n");
+	ft_printf("test coucou\n");
 }
