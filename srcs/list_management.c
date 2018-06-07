@@ -11,7 +11,10 @@ static t_printf	*new_list_element(void)
 		return (ft_put_error_return_null("malloc error", "new_list_element"));
 	new_list_element->arg = NULL;
 	new_list_element->before = NULL;
-	new_list_element->after = NULL;
+	new_list_element->precision = 0;
+	new_list_element->show_sign = 0;
+	new_list_element->width_type = 0;
+	new_list_element->left_align_output = 0;
 	return (new_list_element);
 }
 

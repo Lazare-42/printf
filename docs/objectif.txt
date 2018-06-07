@@ -83,7 +83,7 @@ For example, 	printf("%5c\n",65) 		produces 	"    A"
 pas de modifications obervees pour s
 
 _______________________________________________________________________________
-.PRECISION : => influe la variable => defniti contenu
+.PRECISION : => influe la variable => defnit contenu
 si variable 
 
 An optional precision, in the form of a period . followed by an optional

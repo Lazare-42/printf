@@ -1,4 +1,4 @@
-har	char_type_add(char c)
+char	char_type_add(char c)
 {
 	static char ret = 0;
 

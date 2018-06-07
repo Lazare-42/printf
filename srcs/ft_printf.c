@@ -2,11 +2,13 @@
 #include "../libft/includes/libft.h"
 #include <stdarg.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /*
  ** the fonction parse stores the string argument 
  ** in a string in a structure of a linked list.
- ** If it meets an argument it sends the structure and the va_list element
+ ** If it meets an argument it
+ ** sends the structure and the va_list element
  ** to the function treat_and_store elements
  ** return of ft_printf is defined and found in set_get_return() 
  */
@@ -24,7 +26,31 @@ int			set_get_return(int value)
 	else
 		return_val += value;
 	return (return_val);
+}
 
+const char	*store_string(const char *restrict format, char **print_str)
+{
+	while (*format && (*format != '%' || (*format == '%' && 1
+					+ *format == '%')))
+	{
+		if (*format && *format == '%' && *(1 + format) && *(1 + format) == '%')
+		{
+			if (!(*print_str = ft_joinfree_heapstr_stackstr
+						(print_str, "%%", 'a')))
+			{
+				set_get_return(-1);
+				return (NULL);
+			}
+			format += 2;
+		}
+		if (!(*print_str == ft_strjoinfree_str_char(print_str, *format)))
+		{
+			set_get_return(-1);
+			return (NULL);
+		}
+		format++;
+	}
+	return (format);
 }
 
 int			parse(const char *restrict format, va_list ap)
@@ -34,25 +60,13 @@ int			parse(const char *restrict format, va_list ap)
 	argument = NULL;
 	if (!(argument = set_get_arg_list(0)))
 		return (set_get_return((-1)));
-	format--;
-	while (*(++format))
-	{
-		if (*format == '%' && *(1 + format) && *(1 + format) != '%')
-		{
-			format = ft_treat_and_store_argument(ap, &argument, format);
-			if (*format && !(argument = set_get_arg_list(0)))
-				return (set_get_return((-1)));
-		}
-		if (*format && *format == '%' && *(1 + format) && *(1 + format) == '%')
-		{
-			if (!(argument->before = ft_joinfree_heapstr_stackstr
-						(&(argument->before), "%%", 'a')))
-				return (set_get_return(-1));
-			format += 2;
-		}
-		if (*format && !(argument->before = ft_strjoinfree_str_char(&(argument->before), *format)))
-			return (set_get_return(-1));
-	}
+	format = store_string(format, &(argument->before));
+	if (*format && *format == '%' && *(1 + format) && *(1 + format) != '%')
+		format = treat_and_store_argument(ap, &argument, (char*)format);
+	if (*format)
+		parse(format, ap);
+	// you probably want to return from the print function itself instead of from here
+	return (set_get_return(0));
 }
 
 int			ft_printf(const char *restrict format, ...)

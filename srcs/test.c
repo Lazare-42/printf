@@ -25,7 +25,6 @@ int main()
 	{
 		unsigned int integer;
 	}		uniontest;
-	*/
 //	uniontest.integer = 4294967296 - 1;
 //	printf("%.2s\n", "coucou");
 //	printf("%.30d\n", 1);
@@ -44,10 +43,7 @@ int main()
 // if negative : does not affect
 // if positive and number : add 0s to the left so that total number printed are the one in precision
 // if positive and string : print maximum that number of numbers
-	printf("%.*d\n", 10, 20);
-	printf("%.10d\n", 311);
-	printf("%.10ld\n", sizeof(long));
-	printf("%d%d%d%%", 1, 2, 3);
-	ft_printf("test coucou\n");
-	ft_printf("test coucou\n");
+	ft_printf("s\n%%", 311, 2);
+	*/
+	ft_printf("%dde sdsd10");
 }
