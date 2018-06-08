@@ -18,11 +18,8 @@ char 	*treat_and_store_argument(va_list ap, t_printf **argument, char *format)
 		while (ft_isdigit(*format))
 			format++;
 	}
-	else if (*format == '*')
-	{
+	else if (*format == '*' && format++)
 		(*argument)->width = va_arg(ap, int);
-		format++;
-	}
 	if (*format && *format == '.')
 	{
 		format++;
@@ -32,11 +29,10 @@ char 	*treat_and_store_argument(va_list ap, t_printf **argument, char *format)
 			while (ft_isdigit(*format))
 				format++;
 		}
-		else if (*format == '*')
-		{
+		else if (*format == '*' && format++)
 			(*argument)->precision = va_arg(ap, int);
-			format++;
-		}
 	}
+	(*argument)->type = *format;
+	format++;
 	return (format);
 }

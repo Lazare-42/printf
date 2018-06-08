@@ -28,22 +28,21 @@ int			set_get_return(int value)
 	return (return_val);
 }
 
-const char	*store_string(const char *restrict format, char **print_str)
+char	*store_string(char *format, char **print_str)
 {
-	while (*format && (*format != '%' || (*format == '%' && 1
-					+ *format == '%')))
+	while (*format && (*format != '%' || (*format == '%' && *(1 + format) == '%')))
 	{
 		if (*format && *format == '%' && *(1 + format) && *(1 + format) == '%')
 		{
-			if (!(*print_str = ft_joinfree_heapstr_stackstr
-						(print_str, "%%", 'a')))
+			if (!(*print_str = ft_strjoinfree_str_char
+						(print_str, '%')))
 			{
 				set_get_return(-1);
 				return (NULL);
 			}
 			format += 2;
 		}
-		if (!(*print_str == ft_strjoinfree_str_char(print_str, *format)))
+		if (!(*print_str = ft_strjoinfree_str_char(print_str, *format)))
 		{
 			set_get_return(-1);
 			return (NULL);
@@ -53,7 +52,7 @@ const char	*store_string(const char *restrict format, char **print_str)
 	return (format);
 }
 
-int			parse(const char *restrict format, va_list ap)
+int			parse(char *format, va_list ap)
 {
 	t_printf	*argument;
 
@@ -69,13 +68,61 @@ int			parse(const char *restrict format, va_list ap)
 	return (set_get_return(0));
 }
 
-int			ft_printf(const char *restrict format, ...)
-{
-	va_list	ap;
 
-	va_start(ap, format);
-	parse(format, ap);
-	va_end(ap);
-	return (set_get_return(0));
+void		print_list(void)
+{
+	t_printf	*argument;
+
+	argument = NULL;
+	if (!(argument = set_get_arg_list(1)))
+		(set_get_return((-1)));
+	while (argument)
+	{
+		if (argument->before)
+		{
+			ft_putstr(argument->before);
+			ft_putchar('\n');
+		}
+		if (argument->show_sign)
+		{
+			ft_putchar(argument->show_sign);
+			ft_putchar('\n');
+		}
+		if (argument->left_align_output)
+		{
+			ft_putnbr(argument->left_align_output);
+			ft_putchar('\n');
+		}
+		if (argument->width)
+		{
+			ft_putnbr(argument->width);
+			ft_putchar('\n');
+		}
+		if (argument->precision)
+		{
+			ft_putnbr(argument->precision);
+			ft_putchar('\n');
+		}
+		if (argument->type)
+		{
+			write(1, &(argument->type), 1);
+			ft_putchar('\n');
+		}
+		argument = argument->next;
+	}
 }
 
+int			ft_printf(const char *restrict format, ...)
+{
+	va_list		ap;
+	char		*format_cpy;
+
+	format_cpy = NULL;
+	if (!(format_cpy = ft_strdup(format)))
+		return (-1);
+	va_start(ap, format);
+	parse(format_cpy, ap);
+	va_end(ap);
+	print_list();
+	return (set_get_return(0));
+}

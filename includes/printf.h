@@ -20,10 +20,10 @@ typedef struct		s_printf
 {
 	char			*before;
 	char			*arg;
-	char 			sign;
-	char			width_type;
+	char 			type;
 	char			left_align_output;
 	char			show_sign;
+	char			sharp;
 	int				width;
 	int				precision;
 	struct s_printf	*next;
