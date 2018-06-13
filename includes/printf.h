@@ -19,8 +19,10 @@
 typedef struct		s_printf
 {
 	char			*before;
+	void			*data;
 	char			*arg;
 	char 			type;
+	char			modifier[3];
 	char			left_align_output;
 	char			show_sign;
 	char			sharp;
@@ -37,5 +39,8 @@ int					ft_printf(const char *restrict format, ...);
 t_printf			*set_get_arg_list(int get_first);
 char 				*treat_and_store_argument(va_list ap, t_printf **argument, char *format);
 char				*get_flags(t_printf **argument, char *format);
+int					set_get_return(int value);
+void				print_list(void);
+void				get_hex_ptr_adr(va_list ap, char **argument);
 
 #endif

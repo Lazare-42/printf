@@ -6,6 +6,7 @@
  ** both use same element of the structure left_align_output as they cannot  
  ** coexist. Default left_align_output is -1
  */
+
 char	*get_flags(t_printf **argument, char *format)
 {
 	while (*format == '-' || *format == '0' || *format == '+' || *format == ' '

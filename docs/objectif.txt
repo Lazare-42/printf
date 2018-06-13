@@ -166,7 +166,7 @@ _______________________________________________________________________________
 TYPE : 	sSpdDioOuUxXcC bonus  eE, fF, gG, aA, n
 
 A character that specifies the type of conversion to be applied.
-
+ 
 diouxX  The int (or appropriate variant) argument is converted to 
 		signed decimal (d and i), 
 		unsigned octal (o), 

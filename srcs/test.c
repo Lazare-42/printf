@@ -46,9 +46,10 @@ int main()
 	ft_printf("s\n%%", 311, 2);
 	*/
 //	ft_printf("%%sdckjnsdckjnsdc\n% 0*.*d", 2, 3, 5);
-	double test;
 
-	test = 132;
-	ft_printf("%%sdckjnsdckjnsdc\n%- *.*d\n%%sdckjnsdckjnsdc\n%- *.*d\n", 2, 3, 5, 2, 4, 5);
-//	printf("%%sdckjnsdckjnsdc\n%- *.*d\n", 2, 3, 5);
+	int test;
+
+	test = 23232;
+	ft_printf("%x", test);
+	printf("\n%x", test);
 }

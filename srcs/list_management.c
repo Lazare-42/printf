@@ -2,6 +2,21 @@
 #include "printf.h"
 #include "../libft/includes/libft.h"
 
+static t_printf	*initialize_elem(t_printf *new_list_element)
+{
+	new_list_element->before = NULL;
+	new_list_element->arg = NULL;
+	new_list_element->type = 0;
+	ft_memset(new_list_element->modifier, 0, 3);
+	new_list_element->width = 0;
+	new_list_element->sharp = 0;
+	new_list_element->precision = 0;
+	new_list_element->show_sign = 0;
+	new_list_element->left_align_output = -1;
+	new_list_element->next = NULL;
+	return (new_list_element);
+}
+
 static t_printf	*new_list_element(void)
 {
 	t_printf *new_list_element;
@@ -9,15 +24,7 @@ static t_printf	*new_list_element(void)
 	new_list_element = NULL;
 	if (!(new_list_element = malloc(sizeof(t_printf))))
 		return (ft_put_error_return_null("malloc error", "new_list_element"));
-	new_list_element->before = NULL;
-	new_list_element->arg = NULL;
-	new_list_element->width = 0;
-	new_list_element->sharp = 0;
-	new_list_element->precision = 0;
-	new_list_element->show_sign = 0;
-	new_list_element->left_align_output = -1;
-	new_list_element->type = 0;
-	new_list_element->next = NULL;
+	new_list_element = initialize_elem(new_list_element);
 	return (new_list_element);
 }
 

@@ -5,6 +5,8 @@ SOURCES =  ft_printf.c \
 		  treat_and_store_argument.c \
 		  test.c \
 		  flags.c \
+		  print.c \
+		  get_hex_adr.c \
 
 LIBDIR = libft
 SDIR = srcs
