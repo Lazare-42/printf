@@ -10,9 +10,10 @@ static t_printf	*initialize_elem(t_printf *new_list_element)
 	ft_memset(new_list_element->modifier, 0, 3);
 	new_list_element->width = 0;
 	new_list_element->sharp = 0;
-	new_list_element->precision = 0;
+	new_list_element->precision = -1;
 	new_list_element->show_sign = 0;
 	new_list_element->left_align_output = -1;
+	new_list_element->malloc_precision_width = 0;
 	new_list_element->next = NULL;
 	return (new_list_element);
 }
@@ -28,6 +29,19 @@ static t_printf	*new_list_element(void)
 	return (new_list_element);
 }
 
+void			free_lst(t_printf **elem)
+{
+	t_printf *tmp;
+
+	tmp = NULL;
+	while (*elem)
+	{
+		tmp = *elem;
+		*elem = (*elem)->next;
+		ft_memdel((void*)&tmp);
+	}
+}
+
 t_printf		*set_get_arg_list(int get_first)
 {
 	static t_printf	*arg_list = NULL;
@@ -36,6 +50,8 @@ t_printf		*set_get_arg_list(int get_first)
 
 	tmp = NULL;
 	new = NULL;
+	if (get_first < 0)
+		free_lst(&arg_list);
 	if (!(arg_list))
 	{
 		if (!(arg_list = new_list_element()))

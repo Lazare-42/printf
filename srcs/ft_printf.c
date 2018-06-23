@@ -13,21 +13,6 @@
  ** return of ft_printf is defined and found in set_get_return() 
  */
 
-int			set_get_return(int value)
-{
-	static int return_val = 0;
-
-	if (return_val == -1)
-		return (-1);
-	if (!value)
-		return (return_val);
-	if (value == -1)
-		return_val = -1;
-	else
-		return_val += value;
-	return (return_val);
-}
-
 char	*store_string(char *format, char **print_str)
 {
 	while (*format && (*format != '%' || (*format == '%' && *(1 + format) == '%')))
@@ -52,20 +37,21 @@ char	*store_string(char *format, char **print_str)
 	return (format);
 }
 
-int			parse(char *format, va_list ap)
+void	parse(char *format, va_list ap)
 {
 	t_printf	*argument;
 
 	argument = NULL;
 	if (!(argument = set_get_arg_list(0)))
-		return (set_get_return((-1)));
+	{
+		set_get_return((-1));
+		return ;
+	}
 	format = store_string(format, &(argument->before));
 	if (*format && *format == '%' && *(1 + format) && *(1 + format) != '%')
-		format = treat_and_store_argument(ap, &argument, (char*)format);
+		format = treat_and_store_argument(ap, &argument, (char*)++format);
 	if (*format)
 		parse(format, ap);
-	// you probably want to return from the print function itself instead of from here
-	return (set_get_return(0));
 }
 
 
@@ -75,11 +61,18 @@ int			ft_printf(const char *restrict format, ...)
 	char		*format_cpy;
 
 	format_cpy = NULL;
+	if (!(format))
+	{
+		ft_putstr_fd("Please stop fooling around with my ft_printf.", 2);
+		return (-1);
+	}
 	if (!(format_cpy = ft_strdup(format)))
 		return (-1);
 	va_start(ap, format);
 	parse(format_cpy, ap);
 	va_end(ap);
-//	print_list();
-	return (set_get_return(0));
+	if ((set_get_return(0) > -1))
+		return (print_list());
+	else
+		return (-1);
 }

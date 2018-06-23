@@ -1,51 +1,28 @@
 #include "../includes/printf.h"
 #include "../libft/includes/libft.h"
 
-void		print_list(void)
+int		print_list(void)
 {
 	t_printf	*argument;
+	char		*print;
 
 	argument = NULL;
+	print = NULL;
 	if (!(argument = set_get_arg_list(1)))
-		(set_get_return((-1)));
+		return (-1);
 	while (argument)
 	{
 		if (argument->before)
-		{
-			ft_putstr(argument->before);
-			ft_putchar('\n');
-		}
-		if (argument->show_sign)
-		{
-			ft_putchar(argument->show_sign);
-			ft_putchar('\n');
-		}
-		if (argument->left_align_output)
-		{
-			ft_putnbr(argument->left_align_output);
-			ft_putchar('\n');
-		}
-		if (argument->width)
-		{
-			ft_putnbr(argument->width);
-			ft_putchar('\n');
-		}
-		if (argument->precision)
-		{
-			ft_putnbr(argument->precision);
-			ft_putchar('\n');
-		}
-		if (argument->type)
-		{
-			write(1, &(argument->type), 1);
-			ft_putchar('\n');
-		}
-		if ((argument->modifier)[0])
-		{
-			ft_putstr(argument->modifier);
-			ft_putchar('\n');
-		}
+			if (!(print = ft_strjoinfree(&print, &(argument->before), 'B')))
+				return (set_get_return(-1));
+		if (argument->arg)
+			if (!(print = ft_strjoinfree(&print, &(argument->arg), 'B')))
+				return (set_get_return(-1));
+		(argument->before) ? ft_memdel((void*)&(argument->before)) : 0;
+		(argument->arg) ? ft_memdel((void*)&(argument->before)) : 0;
 		argument = argument->next;
 	}
+	set_get_arg_list(-1);
+	return (write(1, print, ft_strlen(print)));
 }
 

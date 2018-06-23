@@ -1,12 +1,15 @@
 NAME = printf_test
 
-SOURCES =  ft_printf.c \
-		  list_management.c \
-		  treat_and_store_argument.c \
-		  test.c \
-		  flags.c \
-		  print.c \
+SOURCES = get_modifiers.c \
+		  ft_printf.c \
 		  get_hex_adr.c \
+		  list_management.c \
+		  precision_width.c \
+		  print.c \
+		  set_get_static_var.c \
+		  test.c \
+		  treat_and_store_argument.c \
+		  width_padding.c \
 
 LIBDIR = libft
 SDIR = srcs

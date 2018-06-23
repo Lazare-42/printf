@@ -19,7 +19,6 @@
 typedef struct		s_printf
 {
 	char			*before;
-	void			*data;
 	char			*arg;
 	char 			type;
 	char			modifier[3];
@@ -28,6 +27,7 @@ typedef struct		s_printf
 	char			sharp;
 	int				width;
 	int				precision;
+	char			malloc_precision_width;	
 	struct s_printf	*next;
 }					t_printf;
 
@@ -39,8 +39,12 @@ int					ft_printf(const char *restrict format, ...);
 t_printf			*set_get_arg_list(int get_first);
 char 				*treat_and_store_argument(va_list ap, t_printf **argument, char *format);
 char				*get_flags(t_printf **argument, char *format);
+char				*get_precision(va_list ap, t_printf **argument, char *format);
+char				*get_width(va_list ap, t_printf **argument, char *format);
+char				set_get_flags_presence(int yes);
 int					set_get_return(int value);
-void				print_list(void);
-void				get_hex_ptr_adr(va_list ap, char **argument);
+int					print_list(void);
+char				*get_hex_ptr_adr(va_list ap, int argument_precision);
+t_printf			*apply_precision_width(t_printf *argument);
 
 #endif

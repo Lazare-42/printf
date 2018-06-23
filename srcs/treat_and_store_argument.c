@@ -28,50 +28,71 @@ static int	type_to_int_base(char type)
 		return (16);
 }
 
-void		int_type(char type, long int value, char **string, int sizeof_var)
+char		*int_type(char type, long int value, int sizeof_var)
 {
-	char	*tmp;
+	char	*arg;
 
-	tmp = NULL;
+	arg = NULL;
 	if (ft_strchr("diD", type))
-		tmp = ft_ltoa(value);
+		arg = ft_ltoa(value);
 	else
-		tmp = ft_u_base_converter(type_to_int_base(type), value, sizeof_var);
-	if (type == 'X')
-		ft_mystriter(&tmp, ft_mins_to_caps);
-	if (tmp)
-		*string = ft_strjoinfree(string, &tmp, 'B');
+		arg = ft_u_base_converter(type_to_int_base(type), value, sizeof_var);
+	return (arg);
+}
+
+char		*treat_store_modifier_data(char type, va_list ap, char *modifier)
+{
+	char	*arg;
+
+	arg = NULL;
+	if (ft_strchr("ouxX", type))
+	{
+		if (!(ft_strcmp("hh", modifier)))
+			arg = ft_u_base_converter(type_to_int_base(type), va_arg(ap, unsigned int), sizeof(unsigned char));
+		else if (*modifier == 'h')
+			arg = ft_u_base_converter(type_to_int_base(type), va_arg(ap, unsigned int), sizeof(unsigned short));
+		if (!(ft_strcmp("ll", modifier)))
+			arg = ft_u_base_converter(type_to_int_base(type), va_arg(ap, unsigned long long), sizeof(unsigned long long));
+		else if (*modifier == 'l')
+			arg = ft_u_base_converter(type_to_int_base(type), va_arg(ap, unsigned long), sizeof(unsigned long));
+		else if (*modifier == 'j')
+			arg = ft_u_base_converter(type_to_int_base(type), va_arg(ap, uintmax_t), sizeof(uintmax_t));
+		else if (*modifier == 'z')
+			arg = ft_u_base_converter(type_to_int_base(type), va_arg(ap, size_t), sizeof(size_t));
+	}
+	/*
+	else if (type == 'C' || *modifier == 'c')
+		arg = va_arg(ap, wint_t);
+	else if (type == 'S' || * modifier == 's')
+		arg = va_arg(ap, wchar_t);
+		*/
+	return (arg);
 }
 
 t_printf	*store_type_data(va_list ap, t_printf *argument)
 {
 	// but wait this *if* should be one function below
-	// of course not return argument but treat as if modifier was present
-	if ((ft_strchr("diouxXcs", argument->type)) && (*(argument->modifier) || argument->type == 'C' || argument->type == 'S'))
-		return (argument);
+	if ((ft_strchr("ouxXcs", (argument)->type)) && (*((argument)->modifier) || (argument)->type == 'C' || (argument)->type == 'S'))
+		(argument)->arg = treat_store_modifier_data((argument)->type, ap, (argument)->modifier);
 	else
 	{
-		if (ft_strchr("diouxX", argument->type))
-			int_type(argument->type, va_arg(ap, int), &(argument->before), sizeof(int));
-		else if (ft_strchr("DOU", argument->type))
-			int_type(argument->type, va_arg(ap, long int), &(argument->before), sizeof(long int));
-		else if (argument->type == 'c')
-			argument->before = ft_strjoinfree_str_char(&(argument->before), va_arg(ap, int));
-		else if (argument->type == 's')
-			argument->before = ft_joinfree_heapstr_stackstr(&(argument->before), va_arg(ap, char *), 'b');
-		else if (argument->type == 'p')
-			get_hex_ptr_adr(ap, &(argument->before));
+		if (ft_strchr("diouxX", (argument)->type))
+			(argument)->arg = int_type((argument)->type, va_arg(ap, int), sizeof(int));
+		else if (ft_strchr("DOU", (argument)->type))
+			(argument)->arg = int_type((argument)->type, va_arg(ap, long int), sizeof(long int));
+		else if ((argument)->type == 'c')
+			(argument)->arg = ft_strjoinfree_str_char(&(argument)->arg, (char)va_arg(ap, int));
+		else if ((argument)->type == 's')
+			(argument)->arg = ft_strdup(va_arg(ap, char *));
+		else if ((argument)->type == 'p')
+			(argument)->arg = get_hex_ptr_adr(ap, argument->precision);
 	}
-	if (!(argument->before))
-		return (NULL);
-	else
-	{
-		ft_putstr(argument->before);
-		return (argument);
-	}
+	if ((argument)->type == 'X' && ((argument)->arg))
+		ft_mystriter(&((argument)->arg), ft_mins_to_caps);
+	return (argument);
 }
 
-char	*store_modifier(va_list ap, t_printf **argument, char *format)
+char	*store_modifier(t_printf **argument, char *format)
 {
 	if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)))
 	{
@@ -85,34 +106,17 @@ char	*store_modifier(va_list ap, t_printf **argument, char *format)
 	}
 	(*argument)->type = *format;
 	format++;
-	*argument = store_type_data(ap, *argument);
 	return (format);
 }
 
 char 	*treat_and_store_argument(va_list ap, t_printf **argument, char *format)
 {
-	format++;
 	format = get_flags(argument, format);
-	if (ft_isdigit(*format))
-	{
-		(*argument)->width = ft_atoi(format);
-		while (ft_isdigit(*format))
-			format++;
-	}
-	else if (*format == '*' && format++)
-		(*argument)->width = va_arg(ap, int);
-	if (*format && *format == '.')
-	{
-		format++;
-		if (*format && ft_isdigit(*format))
-		{
-			(*argument)->precision = ft_atoi(format);
-			while (ft_isdigit(*format))
-				format++;
-		}
-		else if (*format == '*' && format++)
-			(*argument)->precision = va_arg(ap, int);
-	}
-	format = store_modifier(ap, argument, format);
+	format = get_width(ap, argument, format);
+	format = get_precision(ap, argument, format);
+	format = store_modifier(argument, format);
+	*argument = store_type_data(ap, *argument);
+	if (set_get_flags_presence(0) || (*argument)->width || (*argument)->precision > -1)
+		*argument = apply_precision_width(*argument);
 	return (format);
 }
