@@ -60,6 +60,8 @@ static	t_printf	*apply_plus_minus_flags(t_printf *argument)
 
 static	t_printf	*apply_precision(t_printf *argument)
 {
+	// you're not checking for malloc errors in strnew or in 
+	// strndup => think about how you're constructing the error feedback 
 	int		strlen;
 	char	*tmp;
 	int		i;
@@ -84,6 +86,19 @@ static	t_printf	*apply_precision(t_printf *argument)
 	return (argument);
 }
 
+t_printf		*apply_sharp(t_printf *argument)
+{
+	// you're not checking for malloc errors in strnew or in 
+	// strndup => think about how you're constructing the error feedback 
+	if (argument->type == 'o')
+		argument->arg = ft_strjoinfree_char_str('0', &(argument->arg));
+	else if (argument->type == 'x' && *argument->arg != '0')
+		argument->arg = ft_joinfree_heapstr_stackstr(&(argument->arg), "0x", 'a');
+	else if (argument->type == 'X' && *argument->arg != '0')
+		argument->arg = ft_joinfree_heapstr_stackstr(&(argument->arg), "0X", 'a');
+	return (argument);
+}
+
 t_printf		*apply_precision_width(t_printf *argument)
 {
 	if (!(argument)->arg)
@@ -99,5 +114,7 @@ t_printf		*apply_precision_width(t_printf *argument)
 		argument = apply_precision(argument);
 	if (argument->width)
 		argument = apply_width(argument);
+	if (argument->sharp && ft_strchr("xoX", argument->type))
+		argument = apply_sharp(argument);
 	return (argument);
 }

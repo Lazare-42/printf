@@ -89,9 +89,17 @@ printf("'%p'\n",(void*)0);
 printf("'%.p'\n",(void*)0);
 ft_printf("'%p'\n",(void*)0);
 ft_printf("'%.p'\n",(void*)0);
+\   -   escape the next character
+"   -   start or end of string
+’   -   start or end a character constant
+%   -   start a format specification
+\\  -   print a backslash
+\"  -   print a double quote
+\’  -   print a single quote
+%%  -   print a percent sign
 */
-printf("%5.5s\n","heheheheheheheheeheh");
-ft_printf("%5.5s\n","heheheheheheheheeheh");
+printf("%#x\n", 1);
+ft_printf("%#x\n", 1);
 	/*
 	   ft_putchar('\n');
 	ft_putchar('\n');

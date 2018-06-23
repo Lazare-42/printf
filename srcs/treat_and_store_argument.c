@@ -28,7 +28,7 @@ static int	type_to_int_base(char type)
 		return (16);
 }
 
-char		*int_type(char type, long int value, int sizeof_var)
+char		*int_type(char type, uintmax_t value, int sizeof_var)
 {
 	char	*arg;
 
