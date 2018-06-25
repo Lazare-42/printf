@@ -1,8 +1,5 @@
 #include "printf.h"
 #include "../libft/includes/libft.h"
-#include <stdarg.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 /*
  ** the fonction parse stores the string argument 
@@ -15,7 +12,8 @@
 
 char	*store_string(char *format, char **print_str)
 {
-	while (*format && (*format != '%' || (*format == '%' && *(1 + format) == '%')))
+	while (*format && (*format != '%' || (*format == '%' &&
+					*(1 + format) == '%')))
 	{
 		if (*format && *format == '%' && *(1 + format) && *(1 + format) == '%')
 		{
@@ -50,7 +48,7 @@ void	parse(char *format, va_list ap)
 	format = store_string(format, &(argument->before));
 	if (*format && *format == '%' && *(1 + format) && *(1 + format) != '%')
 		format = treat_and_store_argument(ap, &argument, (char*)++format);
-	if (*format)
+	if (*format && set_get_return(0) != -1)
 		parse(format, ap);
 }
 

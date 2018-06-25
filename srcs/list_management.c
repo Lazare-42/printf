@@ -13,7 +13,6 @@ static t_printf	*initialize_elem(t_printf *new_list_element)
 	new_list_element->precision = -1;
 	new_list_element->show_sign = 0;
 	new_list_element->left_align_output = -1;
-	new_list_element->malloc_precision_width = 0;
 	new_list_element->next = NULL;
 	return (new_list_element);
 }

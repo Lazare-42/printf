@@ -98,8 +98,10 @@ ft_printf("'%.p'\n",(void*)0);
 \’  -   print a single quote
 %%  -   print a percent sign
 */
-printf("%#x\n", 1);
-ft_printf("%#x\n", 1);
+printf("%jd\n", (intmax_t)1);
+ft_printf("%jd\n", (intmax_t)1);
+printf("\n%*.*jX\n ok we are test %*.*s \n", -10, 10, (intmax_t)10909, 30, 3, "THIS ONE");
+ft_printf("\n%*.*jX\n ok we are test %*.*s \n", -10, 10, (intmax_t)10909, 30, 3, "THIS ONE");
 	/*
 	   ft_putchar('\n');
 	ft_putchar('\n');

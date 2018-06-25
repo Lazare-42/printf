@@ -27,7 +27,6 @@ typedef struct		s_printf
 	char			sharp;
 	int				width;
 	int				precision;
-	char			malloc_precision_width;	
 	struct s_printf	*next;
 }					t_printf;
 

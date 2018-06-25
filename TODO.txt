@@ -1,3 +1,0 @@
-	// parsing should be up and well now you need to get the date according
-	// to data type and modifier
-	// in treat_and_store argument

@@ -5,7 +5,7 @@
  ** flag - which left aligns output and flag 0 which prepends 0 in front
  ** both use same element of the structure left_align_output as they cannot  
  ** coexist. Default left_align_output is -1
- */
+*/
 
 char	*get_precision(va_list ap, t_printf **argument, char *format)
 {
@@ -19,10 +19,6 @@ char	*get_precision(va_list ap, t_printf **argument, char *format)
 			(*argument)->precision = ft_atoi(format);
 			while (ft_isdigit(*format))
 				format++;
-			if (((*argument)->malloc_precision_width))
-				(*argument)->malloc_precision_width = 2;
-			else
-				(*argument)->malloc_precision_width = 1;
 		}
 		else if (*format == '*' && format++)
 			(*argument)->precision = va_arg(ap, int);
@@ -37,7 +33,6 @@ char	*get_width(va_list ap, t_printf **argument, char *format)
 		(*argument)->width = ft_atoi(format);
 		while (ft_isdigit(*format))
 			format++;
-		(*argument)->malloc_precision_width = 1;
 	}
 	else if (*format == '*' && format++)
 		(*argument)->width = va_arg(ap, int);

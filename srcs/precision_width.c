@@ -1,11 +1,6 @@
 #include "../libft/includes/libft.h"
 #include "../includes/printf.h"
 
-// il faudrait liberer argument->width dans les cas ou il a ete malloc
-// et pas recuperer avec va_list 
-// a faire dans la fonction de liberation finale
-// aussi a y faire : ft_memdel((void**)&(argument)->arg);
-
 static	t_printf	*apply_width(t_printf *argument)
 {
 	char	*tmp;
@@ -55,13 +50,13 @@ static	t_printf	*apply_plus_minus_flags(t_printf *argument)
 		(argument)->arg = ft_strjoinfree_char_str(' ', &(argument)->arg);
 	else if ((argument)->show_sign == '+' && *((argument)->arg) != '-')
 		(argument)->arg = ft_strjoinfree_char_str('+', &(argument)->arg);
+	if (!(argument->arg))
+		set_get_return(-1);
 	return (argument);
 }
 
 static	t_printf	*apply_precision(t_printf *argument)
 {
-	// you're not checking for malloc errors in strnew or in 
-	// strndup => think about how you're constructing the error feedback 
 	int		strlen;
 	char	*tmp;
 	int		i;
@@ -71,7 +66,9 @@ static	t_printf	*apply_precision(t_printf *argument)
 	i = 0;
 	if (ft_strchr("diouxX", argument->type) && argument->precision > strlen)
 	{
-		tmp = ft_strnew(argument->precision);
+		(!(tmp = ft_strnew(argument->precision))) ? set_get_return(-1) : 0;
+		if (!tmp)
+			return (argument);
 		ft_memset(tmp, '0', argument->precision - strlen);
 		tmp = ft_strcat(tmp, argument->arg);
 		ft_memdel((void**)&(argument->arg));
@@ -88,14 +85,19 @@ static	t_printf	*apply_precision(t_printf *argument)
 
 t_printf		*apply_sharp(t_printf *argument)
 {
-	// you're not checking for malloc errors in strnew or in 
-	// strndup => think about how you're constructing the error feedback 
 	if (argument->type == 'o')
 		argument->arg = ft_strjoinfree_char_str('0', &(argument->arg));
 	else if (argument->type == 'x' && *argument->arg != '0')
-		argument->arg = ft_joinfree_heapstr_stackstr(&(argument->arg), "0x", 'a');
+		argument->arg =
+			ft_joinfree_heapstr_stackstr(&(argument->arg), "0x", 'a');
 	else if (argument->type == 'X' && *argument->arg != '0')
-		argument->arg = ft_joinfree_heapstr_stackstr(&(argument->arg), "0X", 'a');
+		argument->arg =
+			ft_joinfree_heapstr_stackstr(&(argument->arg), "0X", 'a');
+	if (!(argument)->arg)
+	{
+		set_get_return(-1);
+		return (NULL);
+	}
 	return (argument);
 }
 

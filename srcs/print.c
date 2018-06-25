@@ -5,9 +5,11 @@ int		print_list(void)
 {
 	t_printf	*argument;
 	char		*print;
+	int			return_val;
 
 	argument = NULL;
 	print = NULL;
+	return_val = 0;
 	if (!(argument = set_get_arg_list(1)))
 		return (-1);
 	while (argument)
@@ -23,6 +25,8 @@ int		print_list(void)
 		argument = argument->next;
 	}
 	set_get_arg_list(-1);
-	return (write(1, print, ft_strlen(print)));
+	return_val = write(1, print, ft_strlen(print));
+	ft_memdel((void**)&print);
+	return (return_val);
 }
 
