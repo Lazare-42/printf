@@ -1,53 +1,170 @@
-NAME = printf_test
+# **************************************************************************** # #                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2017/03/27 14:56:05 by lazrossi          #+#    #+#              #
+#    Updated: 2018/06/25 10:33:59 by lazrossi         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-SOURCES = get_modifiers.c \
-		  ft_printf.c \
-		  get_hex_adr.c \
-		  list_management.c \
-		  precision_width.c \
-		  print.c \
-		  set_get_static_var.c \
-		  test.c \
-		  treat_and_store_argument.c \
-		  width_padding.c \
+NAME = libftprintf.a
 
-LIBDIR = libft
-SDIR = srcs
-ODIR = bin
-CFLAGS = -Wall -Wextra -Werror
-INCDIR = includes
-LDFLAGS = -L$(LIBDIR) -lft
-LNCURSES = -lncurses
-CC = clang
-SRCS = $(addprefix $(SDIR)/, $(SOURCES:.c=.c))
-OBJS = $(addprefix $(ODIR)/, $(SOURCES:.c=.o))
-OK = echo "[32m OK ✓ [0m"
+LIBFT_SRCS =	ft_advance_for_quotes.c \
+      			ft_atof.c \
+      			ft_atoi.c \
+      			ft_bzero.c \
+      			ft_check_endianness.c \
+      			ft_debug.c \
+      			ft_del_tab_str.c \
+      			ft_double_size.c \
+      			ft_freetables.c \
+      			ft_int_size.c \
+      			ft_isalnum.c \
+      			ft_isalpha.c \
+      			ft_isascii.c \
+      			ft_isdigit.c \
+      			ft_isprint.c \
+      			ft_itoa.c \
+      			ft_joinfree_heapstr_stackstr.c \
+      			ft_joinfree_stackstr_heapstr.c \
+      			ft_lstadd.c \
+      			ft_lstdel.c \
+      			ft_lstdelone.c \
+      			ft_lstiter.c \
+      			ft_lstmap.c \
+      			ft_lstnew.c \
+      			ft_ltoa.c \
+      			ft_memalloc.c \
+      			ft_memccpy.c \
+      			ft_memchr.c \
+      			ft_memcmp.c \
+      			ft_memcpy.c \
+      			ft_memdel.c \
+      			ft_memmove.c \
+      			ft_memset.c \
+      			ft_mins_to_caps.c \
+      			ft_myexit.c \
+      			ft_mystriter.c \
+      			ft_printtables.c \
+      			ft_put_error_return_null.c \
+      			ft_put_fatal_error.c \
+      			ft_putabs.c \
+      			ft_putchar.c \
+      			ft_putchar_fd.c \
+      			ft_putendl.c \
+      			ft_putendl_fd.c \
+      			ft_putnbr.c \
+      			ft_putnbr_fd.c \
+      			ft_putstr.c \
+      			ft_putstr_fd.c \
+      			ft_putwhites.c \
+      			ft_s_base_converter.c \
+      			ft_split_char.c \
+      			ft_split_whitespaces.c \
+      			ft_split_whitespaces_nokots.c \
+      			ft_str_is_printable.c \
+      			ft_str_isalpha.c \
+      			ft_strcat.c \
+      			ft_strchr.c \
+      			ft_strclr.c \
+      			ft_strcmp.c \
+      			ft_strcpy.c \
+      			ft_strdel.c \
+      			ft_strdup.c \
+      			ft_strdupfrom_free.c \
+      			ft_strequ.c \
+      			ft_striter.c \
+      			ft_striteri.c \
+      			ft_strjoin.c \
+      			ft_strjoinfree.c \
+      			ft_strjoinfree_char_str.c \
+      			ft_strjoinfree_one.c \
+      			ft_strjoinfree_str_char.c \
+      			ft_strlcat.c \
+      			ft_strlen.c \
+      			ft_strmap.c \
+      			ft_strmapi.c \
+      			ft_strncat.c \
+      			ft_strncmp.c \
+      			ft_strncpy.c \
+      			ft_strndup.c \
+      			ft_strndup_free.c \
+      			ft_strnequ.c \
+      			ft_strnew.c \
+      			ft_strnstr.c \
+      			ft_strrchr.c \
+      			ft_strsplit.c \
+      			ft_strstr.c \
+      			ft_strsub.c \
+      			ft_strtrim.c \
+      			ft_symetric_byte_swap.c \
+      			ft_tab_replacestr.c \
+      			ft_tabdel.c \
+      			ft_tabdup.c \
+      			ft_tabdup_add_free.c \
+      			ft_tabdup_and_add.c \
+      			ft_tabsize.c \
+      			ft_tolower.c \
+      			ft_toupper.c \
+      			ft_u_base_converter.c \
+      			get_next_line.c \
+      			int_ft_putchar.c \
 
-all: lib mkbin $(NAME)
+PRINTF_SRCS =   ft_printf.c \
+				get_hex_adr.c \
+				get_modifiers.c \
+				list_management.c \
+				precision_width.c \
+				print.c \
+				set_get_static_var.c \
+				treat_and_store_argument.c \
+				width_padding.c \
 
-lib:
-	@make -C $(LIBDIR)
+CC = gcc -Wall -Wextra -Werror -c
+
+ODIR = bin_libft
+
+BDIR = bin_printf
+
+S_LIB_DIR = libft_srcs
+
+S_PRINTF_DIR = printf_srcs
+
+LIBFT_OBJECT = $(addprefix $(ODIR)/, $(LIBFT_SRCS:.c=.o))
+
+PRINTF_OBJECT = $(addprefix $(BDIR)/, $(PRINTF_SRCS:.c=.o))
+
+CLEAN = /bin/rm -rf $(LIBFT_OBJECT) $(PRINTF_OBJECT)
+
+ARCH = ar rc
+
+all: mkbin $(NAME)
 
 mkbin:
 	@mkdir -p $(ODIR)
+	@mkdir -p $(BDIR)
 
-
-$(NAME): $(OBJS)
-	@ echo "[35m Entering Printf Makefile...[0m"
-	@$(CC) $(CFLAGS)  -o $(NAME) $(OBJS) -I$(INCDIR) $(LDFLAGS) $(LNCURSES)
+$(NAME): $(LIBFT_OBJECT) $(PRINTF_OBJECT)
+	@ echo "[35m Archiving printf library...[0m"
+	@$(ARCH) $(NAME) $(LIBFT_OBJECT) $(PRINTF_OBJECT)
 	@$(OK)
 
-$(ODIR)/%.o : $(SDIR)/%.c
-	@ echo "[34m Assembling Fract'ol object: [0m" $@
-	@ $(CC) $(CFLAGS) -c -o $@ $< -I$(INCDIR)
+$(ODIR)/%.o : $(S_LIB_DIR)/%.c
+	@ echo "[34m Assembling libft object: [0m" $@
+	@ $(CC) -o $@ $<
 
-clean:
-	@ echo "[31m Cleaning Fract'ol... [0m"
-	@/bin/rm -rf $(ODIR)
-	@make -C $(LIBDIR) clean
+$(BDIR)/%.o : $(S_PRINTF_DIR)/%.c
+	@ echo "[36m Assembling printf object: [0m" $@
+	@ $(CC) -o $@ $<
+
+clean: 
+	@ echo "[31m Deleting bin_lift and bin_printf... [0m"
+	@-$(CLEAN)
 
 fclean: clean
-	@/bin/rm -rf $(NAME)
-	@make -C $(LIBDIR) fclean
+	@-$(CLEAN) $(NAME)
+	@ echo "[31m Also deleted printf_libft... [0m"
 
 re: fclean all
