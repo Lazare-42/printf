@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:30:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/26 12:20:45 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/26 18:38:03 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,93 +34,73 @@ static int	type_to_int_base(char type)
 {
 	if (ft_strchr("oO", type))
 		return (8);
-	else if (ft_strchr("uU", type))
+	else if (ft_strchr("uUdiD", type))
 		return (10);
 	else
 		return (16);
 }
 
-char		*int_type(char type, uintmax_t value, int sizeof_var)
+t_printf	treat_store_modifier_data(va_list ap, t_printf argument)
 {
-	char	*arg;
-
-	arg = NULL;
-	if (ft_strchr("diD", type))
-		arg = ft_ltoa(value);
-	else
-		arg = ft_u_base_converter(type_to_int_base(type), value, sizeof_var);
-	return (arg);
-}
-
-char		*treat_store_modifier_data(char type, va_list ap, char *modifier)
-{
-	char	*arg;
-
-	arg = NULL;
-	if (ft_strchr("ouxX", type))
+	if (ft_strchr("ouxX", argument.type))
 	{
-		if (!(ft_strcmp("hh", modifier)))
-			arg = ft_u_base_converter(type_to_int_base(type),
-					va_arg(ap, unsigned int), sizeof(unsigned char));
-		else if (*modifier == 'h')
-			arg = ft_u_base_converter(type_to_int_base(type),
-					va_arg(ap, unsigned int), sizeof(unsigned short));
-		if (!(ft_strcmp("ll", modifier)))
-			arg = ft_u_base_converter(type_to_int_base(type),
-					va_arg(ap, unsigned long long), sizeof(unsigned long long));
-		else if (*modifier == 'l')
-			arg = ft_u_base_converter(type_to_int_base(type),
-					va_arg(ap, unsigned long), sizeof(unsigned long));
-		else if (*modifier == 'j')
-			arg = ft_u_base_converter(type_to_int_base(type),
-					va_arg(ap, uintmax_t), sizeof(uintmax_t));
-		else if (*modifier == 'z')
-			arg = ft_u_base_converter(type_to_int_base(type),
-					va_arg(ap, size_t), sizeof(size_t));
+		if (!(ft_strcmp("hh", argument.modifier)))
+			printf_u_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, unsigned int), sizeof(unsigned char), &argument);
+		else if (*argument.modifier == 'h')
+			printf_u_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, unsigned int), sizeof(unsigned short), &argument);
+		if (!(ft_strcmp("ll", argument.modifier)))
+			printf_u_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, unsigned long long), sizeof(unsigned long long),
+					&argument);
+		else if (*argument.modifier == 'l')
+			printf_u_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, unsigned long), sizeof(unsigned long), &argument);
+		else if (*argument.modifier == 'j')
+			printf_u_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, uintmax_t), sizeof(uintmax_t), &argument);
+		else if (*argument.modifier == 'z')
+			printf_u_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, size_t), sizeof(size_t), &argument);
 	}
-	return (arg);
-}
-
-t_printf	*store_type_data(va_list ap, t_printf *argument)
-{
-	if ((ft_strchr("ouxXcs", (argument)->type)) &&
-			(*((argument)->modifier) || (argument)->type == 'C' || (argument)->type == 'S'))
-		(argument)->arg = treat_store_modifier_data((argument)->type,
-				ap, (argument)->modifier);
-	else if (ft_strchr("diouxX", (argument)->type))
-		(argument)->arg = int_type((argument)->type, va_arg(ap, int),
-				sizeof(int));
-	else if (ft_strchr("DOU", (argument)->type))
-		(argument)->arg = int_type((argument)->type, va_arg(ap, long int),
-				sizeof(long int));
-	else if ((argument)->type == 'c' && !(argument)->arg)
-		(argument)->arg = ft_strjoinfree_str_char(&(argument)->arg,
-				(char)va_arg(ap, int));
-	else if ((argument)->type == 's')
-		(argument)->arg = ft_strdup(va_arg(ap, char *));
-	else if ((argument)->type == 'p')
-		(argument)->arg = get_hex_ptr_adr(ap, argument->precision);
-	if ((argument)->type == 'X' && ((argument)->arg))
-		ft_mystriter(&((argument)->arg), ft_mins_to_caps);
 	return (argument);
 }
 
-char	*store_modifier(t_printf **argument, char *format)
+void		store_type_data(va_list ap, t_printf *argument)
 {
-	if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)) && (*(1 + format)))
+
+	if ((ft_strchr("ouxXcs", (*argument).type)) && ((*(*argument).modifier) || (*argument).type == 'C' || (*argument).type == 'S'))
+		*argument = treat_store_modifier_data(ap, *argument);
+
+	else if (ft_strchr("diouxX", (*argument).type))
+			printf_u_base_converter(type_to_int_base((*argument).type),
+					va_arg(ap, int), sizeof(int), argument);
+	else if (ft_strchr("DOU", (*argument).type))
+			printf_u_base_converter(type_to_int_base((*argument).type),
+					va_arg(ap, long int), sizeof(long int), argument);
+	else if ((*argument).type == 'c' && !*(*argument).arg)
+		(*argument).arg[set_get_arg_len(1)] = (char)va_arg(ap, int);
+
+	else if ((*argument).type == 's')
 	{
-		(*argument)->modifier[0] = *format;
-		format++;
-		if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)))
-		{
-			(*argument)->modifier[1] = *format;
-			format++;
-		}
+		//
+		//
+		// Alright so we have a huge problem here : to avoid mallocing we want
+		// to print this string as soon as we receive it
+		// but it still needs to get formatted according to precision and width
+		// so.... How should I do ?
+		//
+		//
+		//
+		argument = print_flush
+		va_arg(ap, char *)
+			argument.arg = ft_strdup("(null)");
 	}
-	if ((ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)))
-		(*argument)->type = *format;
-	else
-		(*argument)->arg = ft_strjoinfree_str_char(&(*argument)->arg, *format);
-	format++;
-	return (format);
+	else if ((argument).type == 'p')
+		(argument).arg = get_hex_ptr_adr(ap, argument.precision);
+	if ((argument).type == 'X' && ((argument).arg))
+		ft_mystriter(&((argument).arg), ft_mins_to_caps);
+	return (argument);
 }
+

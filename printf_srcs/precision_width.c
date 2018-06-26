@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/25 20:54:46 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/26 14:01:00 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ t_printf	*apply_flag_padding(t_printf *argument)
 
 	tmp = NULL;
 	strlen = ft_strlen((argument)->arg);
-	if (strlen < (argument)->width && (argument)->left_align_output == 1)
+	if (strlen >= argument->width)
+		return (argument);
+	if ((argument)->left_align_output == 1)
 	{
 		tmp = ft_strnew((argument)->width);
 		ft_memcpy(tmp, (argument)->arg, strlen);
 		ft_memset(tmp + strlen, ' ', (argument)->width - strlen);
 	}
-	else if (strlen < (argument)->width && !((argument)->left_align_output))
+	else if (!((argument)->left_align_output))
 	{
 		tmp = ft_strnew((argument)->width);
 		ft_memset(tmp, '0', (argument)->width - strlen);
@@ -87,7 +89,7 @@ t_printf	*apply_precision(t_printf *argument)
 		(argument)->arg = tmp;
 	}
 	(!argument->precision && ft_strchr("diouxX", argument->type)
-			&& *argument->arg == '0') ? ft_memdel((void*)&(argument->arg)) : 0;
+	 && *argument->arg == '0') ? ft_memdel((void*)&(argument->arg)) : 0;
 	if (!argument->precision && argument->type == 's')
 		ft_memdel((void*)&(argument->arg));
 	else if (argument->type == 's')

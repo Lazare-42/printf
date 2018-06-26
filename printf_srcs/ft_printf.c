@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/26 09:31:12 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/26 16:58:01 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,56 +30,45 @@ t_printf		*apply_precision_width(t_printf *argument)
 {
 	if (argument->show_sign)
 		argument = apply_plus_minus_flags(argument);
-	if (argument->left_align_output != -1)
-		argument = apply_flag_padding(argument);
-	if (argument->precision != -1)
-		argument = apply_precision(argument);
-	if (argument->width)
-		argument = apply_width(argument);
 	if (argument->sharp && ft_strchr("xoX", argument->type))
 		argument = apply_sharp(argument);
-	if (!(argument)->arg)
-	{
-		set_get_return(-1);
-		return (NULL);
-	}
+	if (argument->precision != -1)
+		argument = apply_precision(argument);
+	if (argument->left_align_output != -1)
+		argument = apply_flag_padding(argument);
+	if (argument->width)
+		argument = apply_width(argument);
 	return (argument);
 }
 
-char 	*treat_and_store_argument(va_list ap, t_printf **argument, char *format)
+char 	*treat_and_store_argument(va_list ap, t_printf argument, char *format)
 {
-	format = get_flags(argument, format);
-	format = get_width(ap, argument, format);
-	format = get_precision(ap, argument, format);
-	format = store_modifier(argument, format);
-	*argument = store_type_data(ap, *argument);
+	format = get_flags(&argument, format);
+	format = get_width(ap, &argument, format);
+	format = get_precision(ap, &argument, format);
+	format = get_modifier(&argument, format);
+	argument = store_type_data(ap, &argument);
 	if (set_get_flags_presence(0) || (*argument)->width ||
-			(*argument)->precision > -1)
+			*argument.precision > -1)
 	{
 		*argument = apply_precision_width(*argument);
 	}
 	return (format);
 }
 
-char	*store_string(char *format, char **print_str)
+char	*store_string(char *format, t_printf *argument)
 {
 	while (*format && (*format != '%' || (*format == '%' &&
 					((*(1 + format) == '%' ) || !(*(1 + format))))))
 	{
 		if (*format && *format == '%' && (*(1 + format) == '%'))
 		{
-			if (!(*print_str = ft_strjoinfree_str_char(print_str, '%')))
-			{
-				set_get_return(-1);
-				return (NULL);
-			}
+			(*argument).[set_get_printf_len(0)] = '%';
+			set_get_tmp_len(1);
 			format += 2;
 		}
-		if (!(*print_str = ft_strjoinfree_str_char(print_str, *format)))
-		{
-			set_get_return(-1);
-			return (NULL);
-		}
+		g_printf_str[set_get_printf_len(0)] = '%';
+		set_get_tmp_len(1);
 		format++;
 	}
 	return (format);
@@ -87,15 +76,10 @@ char	*store_string(char *format, char **print_str)
 
 void	parse(char *format, va_list ap)
 {
-	t_printf	*argument;
+	t_printf	argument;
 
-	argument = NULL;
-	if (!(argument = set_get_arg_list(0)))
-	{
-		set_get_return((-1));
-		return ;
-	}
-	format = store_string(format, &(argument->before));
+	argument = set_get_arg_list();
+	format = store_string(format, &argument);
 	if (*format && *format == '%' && *(1 + format) && *(1 + format) != '%')
 		format = treat_and_store_argument(ap, &argument, (char*)++format);
 	if (*format && set_get_return(0) != -1)
