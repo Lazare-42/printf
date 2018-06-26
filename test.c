@@ -42,24 +42,46 @@ int main()
 
  ft_printf("%.0%");                           
  printf("\n%.0%");                           
+
  ft_printf("%   %", "test");                  
  printf("%   %", "test");                  
+
  ft_printf("%010x", 542);                     
  printf("\n%010x", 542);                     
- */
+
  ft_printf("%#8x", 42);                       
  printf("\n%#8x", 42);                       
- /*
- ft_printf("%#8x", 42);                       
+
  ft_printf("%#08x", 42);                      
+ printf("\n%#08x", 42);                      
+
  ft_printf("%#-08x", 42);                     
+ printf("\n%#-08x", 42);                     
+
+ ft_printf("%#08x", 42);                      
+ printf("\n%#08x", 42);                      
+
+ ft_printf("%#-08x", 42);                     
+ printf("\n%#-08x", 42);                     
+ 
  ft_printf("@moulitest: %#.x %#.0x", 0, 0);   
+ printf("\n@moulitest: %#.x %#.0x", 0, 0);   
+
+ ft_printf("@moulitest: %#.x %#.0x", 0, 0);   
+ printf("\n@moulitest: %#.x %#.0x", 0, 0);   
+
  ft_printf("%-.2s is a string", "this");      
- ft_printf("%-5.2s is a string", "this");     
- ft_printf("%-.2s is a string", "");          
+ printf("\n%-.2s is a string", "this");      
+ ft_printf("\n%-5.2s is a string", "this");     
+ printf("\n%-5.2s is a string", "this");     
+
  ft_printf("@moulitest: %s", NULL);           
- ft_printf("%.2c", NULL);                     
+ printf("\n@moulitest: %s", NULL);           
+ */
+
  ft_printf("@moulitest: %c", 0);              
+ printf("\n@moulitest: %c", 0);              
+ /*
  ft_printf("%2c", 0);                         
  ft_printf("null %c and text", 0);            
  ft_printf("% c", 0);                         

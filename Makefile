@@ -121,6 +121,7 @@ PRINTF_SRCS =   ft_printf.c \
 				set_get_static_var.c \
 				treat_and_store_argument.c \
 				width_padding.c \
+				u_base_converter.c \
 
 CC = gcc -Wall -Wextra -Werror -c
 
