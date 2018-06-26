@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/26 14:01:00 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/26 23:30:22 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,48 +69,46 @@ t_printf	*apply_plus_minus_flags(t_printf *argument)
 	return (argument);
 }
 
-t_printf	*apply_precision(t_printf *argument)
+t_printf	*apply_precision(t_printf *argument, char *va_arg_str)
 {
 	int		strlen;
-	char	*tmp;
+	char	tmp[(*argument).precision];
 	int		i;
 
-	strlen = ft_strlen(argument->arg);
-	tmp = NULL;
 	i = 0;
-	if (ft_strchr("diouxX", argument->type) && argument->precision > strlen)
+	if (!(*argument).precision && (*argument).type == 's')
+		return ;
+	strlen = ft_strlen(va_arg_str);
+	if (ft_strchr("diouxX", (*argument).type) && (*argument).precision > strlen)
 	{
-		(!(tmp = ft_strnew(argument->precision))) ? set_get_return(-1) : 0;
-		if (!tmp)
-			return (argument);
-		ft_memset(tmp, '0', argument->precision - strlen);
-		tmp = ft_strcat(tmp, argument->arg);
-		ft_memdel((void**)&(argument->arg));
-		(argument)->arg = tmp;
+		ft_memset(tmp, '0', (*argument).precision - strlen);
+		while (va_arg_str[i])
+			tmp[(*argument).precision - strlen + i + 1] = va_arg_str[i];
+		stack_str_fill(argument, tmp);
 	}
-	(!argument->precision && ft_strchr("diouxX", argument->type)
-	 && *argument->arg == '0') ? ft_memdel((void*)&(argument->arg)) : 0;
-	if (!argument->precision && argument->type == 's')
-		ft_memdel((void*)&(argument->arg));
-	else if (argument->type == 's')
-		argument->arg = ft_strndup_free(&(argument->arg), argument->precision);
+	// 
+	// work
+	// left here
+	(!(*argument).precision && ft_strchr("diouxX", (*argument).type)
+	 && *(*argument).arg == '0') ? ft_memdel((void*)&((*argument).arg)) : 0;
+	else if ((*argument).type == 's')
+		(*argument).arg = ft_strndup_free(&((*argument).arg), (*argument).precision);
 	return (argument);
 }
 
 t_printf	*apply_sharp(t_printf *argument)
 {
 	if (argument->type == 'o')
-		argument->arg = ft_strjoinfree_char_str('0', &(argument->arg));
+		(*argument).arg[set_get_arg_len(1)] = '0'; 
 	else if (argument->type == 'x' && *argument->arg != '0')
-		argument->arg =
-			ft_joinfree_heapstr_stackstr(&(argument->arg), "0x", 'a');
-	else if (argument->type == 'X' && *argument->arg != '0')
-		argument->arg =
-			ft_joinfree_heapstr_stackstr(&(argument->arg), "0X", 'a');
-	if (!(argument)->arg)
 	{
-		set_get_return(-1);
-		return (NULL);
+		(*argument).arg[set_get_arg_len(1)] = '0'; 
+		(*argument).arg[set_get_arg_len(1)] = 'x'; 
+	}
+	else if (argument->type == 'X' && *argument->arg != '0')
+	{
+		(*argument).arg[set_get_arg_len(1)] = '0'; 
+		(*argument).arg[set_get_arg_len(1)] = 'X'; 
 	}
 	return (argument);
 }

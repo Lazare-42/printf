@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 14:01:32 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/26 18:33:30 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/26 23:03:43 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ int					set_get_arg_len(int increment);
 int					set_get_before_len(int increment);
 void				print_flush(t_printf argument);
 char				*get_hex_ptr_adr(va_list ap, int argument_precision);
-t_printf			*apply_precision_width(t_printf *argument);
 t_printf			*apply_width(t_printf *argument);
 t_printf			*apply_flag_padding(t_printf *argument);
 t_printf			*apply_plus_minus_flags(t_printf *argument);
-t_printf			*apply_precision(t_printf *argument);
+t_printf			*apply_precision(t_printf *argument, char *va_arg_str);
 t_printf			*apply_sharp(t_printf *argument);
 void				store_type_data(va_list ap, t_printf *argument);
 void				printf_u_base_converter(int base_size, uintmax_t number,
 		int sizeof_var, t_printf *argument);
+void				stack_str_fill(t_printf	*argument, char *src);
 
 #endif

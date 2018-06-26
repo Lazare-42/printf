@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/26 16:58:01 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/26 23:32:48 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char 	*treat_and_store_argument(va_list ap, t_printf argument, char *format)
 	format = get_precision(ap, &argument, format);
 	format = get_modifier(&argument, format);
 	argument = store_type_data(ap, &argument);
+	// this handler uniqueness has been taken away by the fact store_type_data also now sends to apply_precision_width in certain cases
 	if (set_get_flags_presence(0) || (*argument)->width ||
 			*argument.precision > -1)
 	{
