@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:11:11 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/25 10:00:41 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 09:35:59 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@
 ** procuces 0x0 whereas printf("%.p, (void*)0) produces 0x
 */
 
-char	*get_hex_ptr_adr(va_list ap, int argument_precision)
+// DEBUGGING NOTE : wihout testing I changed the adress producing function from
+// an s_base_converter to an u_base_converter
+
+void	get_hex_ptr_adr(va_list ap, t_printf *argument)
 {
 	void	*test_data;
 	char	*tmp;
@@ -28,14 +31,10 @@ char	*get_hex_ptr_adr(va_list ap, int argument_precision)
 	test_data = NULL;
 	tmp = NULL;
 	test_data = va_arg(ap, void*);
-	if (test_data == 0 && argument_precision)
-	{
-		if (!(tmp = ft_strdup("0")))
-			return (NULL);
-	}
-	else if (!(tmp = ft_s_base_converter(16, (uintptr_t)test_data)))
-		return (NULL);
-	if (!(tmp = ft_joinfree_heapstr_stackstr(&tmp, "0x", 'a')))
-		return (NULL);
-	return (tmp);
+	stack_str_fill(argument, "0x");
+	if (test_data == 0 && (*argument).precision)
+		stack_str_fill(argument, "0");
+	else 
+		printf_u_base_converter(16, (uintptr_t)test_data,
+				sizeof(uintptr_t), argument);
 }

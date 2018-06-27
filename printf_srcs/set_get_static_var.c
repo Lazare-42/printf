@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:29:52 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/26 16:56:41 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 11:10:44 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,16 @@ int		set_get_arg_len(int increment)
 
 	if (!increment)
 		return (len);
+	if (increment == 4097)
+	{
+		len = 0;
+		return (len);
+	}
 	if (increment < 0)
 		len -= increment;
 	else
 		len += increment;
-	return (len);
+	return (len - increment);
 }
 
 int		set_get_before_len(int increment)
@@ -38,6 +43,11 @@ int		set_get_before_len(int increment)
 
 	if (!increment)
 		return (len);
+	if (increment == 4097)
+	{
+		len = 0;
+		return (len);
+	}
 	if (increment < 0)
 		len -= increment;
 	else

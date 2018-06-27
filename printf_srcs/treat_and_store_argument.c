@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:30:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/26 23:31:42 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 09:39:26 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,23 +86,13 @@ void		store_type_data(va_list ap, t_printf *argument)
 
 	else if ((*argument).type == 's')
 	{
-		// Alright so we have a huge problem here : to avoid mallocing we want
-		// to print this string as soon as we receive it
-		// but it still needs to get formatted according to precision and width
-		// so.... How should I do ?
-		// 1. If there is no precision or width set ; you can directly print
-		// 2. Else you need to apply the parsing
-		// j
-		// I built up the function precision to directly accomodate this case
-		// However this disrupts the handler function I directly had in ft_printf
 		va_arg_str = va_arg(ap, char *);
 		if (!va_arg_str)
 			stack_str_fill(argument, "null");
+		else
+			stack_str_fill(argument, va_arg_str);
 	}
-	else if ((argument).type == 'p')
-		(argument).arg = get_hex_ptr_adr(ap, argument.precision);
-	if ((argument).type == 'X' && ((argument).arg))
-		ft_mystriter(&((argument).arg), ft_mins_to_caps);
-	return (argument);
+	else if ((*argument).type == 'p')
+		get_hex_ptr_adr(ap, argument);
 }
 

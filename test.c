@@ -63,6 +63,7 @@ int main()
 
  ft_printf("%#-08x", 42);                     
  printf("\n%#-08x", 42);                     
+ */
  
  ft_printf("@moulitest: %#.x %#.0x", 0, 0);   
  printf("\n@moulitest: %#.x %#.0x", 0, 0);   
@@ -77,7 +78,6 @@ int main()
 
  ft_printf("@moulitest: %s", NULL);           
  printf("\n@moulitest: %s", NULL);           
- */
 
  ft_printf("@moulitest: %c", 0);              
  printf("\n@moulitest: %c", 0);              

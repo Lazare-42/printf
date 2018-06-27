@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/26 18:13:07 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 09:39:18 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 		int sizeof_var, t_printf *argument)
 {
 	static char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
+	static char	base_X_output[36] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char		result[sizeof_var * 8];
 	int			i;
 
@@ -54,7 +55,10 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 	(number == 0) ? result[sizeof_var * 8] = '0' : 0;
 	while (number)
 	{
-		result[sizeof_var * 8 - i] = base_output[number % base_size];
+		if ((*argument).type != 'X')
+			result[sizeof_var * 8 - i] = base_output[number % base_size];
+		else
+			result[sizeof_var * 8 - i] = base_X_output[number % base_size];
 		number /= base_size;
 		i++;
 	}

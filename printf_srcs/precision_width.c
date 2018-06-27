@@ -6,101 +6,100 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/26 23:30:22 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 11:10:21 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 #include "../includes/printf.h"
 
-t_printf	*apply_width(t_printf *argument)
+void		apply_width(t_printf *argument)
 {
-	char	*tmp;
-	int		strlen;
-
-	tmp = NULL;
-	strlen = 0;
-	if (argument->arg)
-		strlen = ft_strlen((argument)->arg);
-	if (strlen < (argument)->width)
-	{
-		tmp = ft_strnew((argument)->width);
-		ft_memset(tmp, ' ', (argument)->width - strlen);
-		(argument->arg) ? tmp = ft_strcat(tmp, (argument)->arg) : 0;
-		(argument)->arg = tmp;
-	}
-	return (argument);
-}
-
-t_printf	*apply_flag_padding(t_printf *argument)
-{
-	char	*tmp;
-	int		strlen;
-
-	tmp = NULL;
-	strlen = ft_strlen((argument)->arg);
-	if (strlen >= argument->width)
-		return (argument);
-	if ((argument)->left_align_output == 1)
-	{
-		tmp = ft_strnew((argument)->width);
-		ft_memcpy(tmp, (argument)->arg, strlen);
-		ft_memset(tmp + strlen, ' ', (argument)->width - strlen);
-	}
-	else if (!((argument)->left_align_output))
-	{
-		tmp = ft_strnew((argument)->width);
-		ft_memset(tmp, '0', (argument)->width - strlen);
-		tmp = ft_strcat(tmp, (argument)->arg);
-	}
-	ft_memdel((void**)&((argument)->arg));
-	(argument)->arg = tmp;
-	return (argument);
-}
-
-t_printf	*apply_plus_minus_flags(t_printf *argument)
-{
-	if ((argument)->show_sign == ' ' && *((argument)->arg) != '-')
-		(argument)->arg = ft_strjoinfree_char_str(' ', &(argument)->arg);
-	else if ((argument)->show_sign == '+' && *((argument)->arg) != '-')
-		(argument)->arg = ft_strjoinfree_char_str('+', &(argument)->arg);
-	if (!(argument->arg))
-		set_get_return(-1);
-	return (argument);
-}
-
-t_printf	*apply_precision(t_printf *argument, char *va_arg_str)
-{
-	int		strlen;
-	char	tmp[(*argument).precision];
+	char	tmp[(*argument).width];
+	int		arg_len;
 	int		i;
 
-	i = 0;
-	if (!(*argument).precision && (*argument).type == 's')
-		return ;
-	strlen = ft_strlen(va_arg_str);
-	if (ft_strchr("diouxX", (*argument).type) && (*argument).precision > strlen)
+	i = -1;
+	arg_len = set_get_arg_len(0);
+	if (arg_len < (*argument).width)
 	{
-		ft_memset(tmp, '0', (*argument).precision - strlen);
-		while (va_arg_str[i])
-			tmp[(*argument).precision - strlen + i + 1] = va_arg_str[i];
+		ft_memset(tmp, ' ', (*argument).width - arg_len);
+		ft_memcpy(tmp + (*argument).width - arg_len, (*argument).arg, arg_len);
+		erase_arg_str(argument);
 		stack_str_fill(argument, tmp);
 	}
-	// 
-	// work
-	// left here
-	(!(*argument).precision && ft_strchr("diouxX", (*argument).type)
-	 && *(*argument).arg == '0') ? ft_memdel((void*)&((*argument).arg)) : 0;
-	else if ((*argument).type == 's')
-		(*argument).arg = ft_strndup_free(&((*argument).arg), (*argument).precision);
-	return (argument);
 }
 
-t_printf	*apply_sharp(t_printf *argument)
+void		apply_flag_padding(t_printf *argument)
 {
-	if (argument->type == 'o')
+	char	tmp[(*argument).width];
+	int		arg_len;
+
+	arg_len = set_get_arg_len(0);
+	if (arg_len >= argument->width)
+		return ;
+	if ((*argument).left_align_output == 1)
+	{
+		ft_memcpy(tmp, (*argument).arg, arg_len);
+		ft_memset(tmp + arg_len, ' ', (*argument).width - arg_len);
+	}
+	else if (!((*argument).left_align_output))
+	{
+		ft_memset(tmp, '0', (*argument).width - arg_len);
+		ft_memcpy(tmp + (*argument).width - arg_len, (*argument).arg, arg_len);
+	}
+	erase_arg_str(argument);
+	stack_str_fill(argument, tmp);
+}
+
+void		apply_plus_minus_flags(t_printf *argument)
+{
+	int i;
+	int	arg_len;
+
+	i = -1;
+	arg_len = set_get_arg_len(0);
+	if (*((*argument).arg) != '-')
+	{
+		while (++i < arg_len)
+			(*argument).arg[i] = (*argument).arg[i + 1];
+		if ((*argument).show_sign == ' ')
+			(*argument).arg[0] = ' ';
+		else if ((*argument).show_sign == '+')
+		set_get_arg_len(1);
+	}
+}
+
+void		apply_precision(t_printf *argument)
+{
+	char	tmp[(*argument).precision];
+	int		arg_len;
+	int		i;
+
+	i = -1;
+	arg_len = set_get_arg_len(0);
+	if (!(*argument).precision && (*argument).type == 's')
+		return ;
+	if (ft_strchr("diouxX", (*argument).type) && (*argument).precision > arg_len)
+	{
+		ft_memset(tmp, '0', (*argument).precision - arg_len);
+		while (++i < arg_len)
+			tmp[(*argument).precision - arg_len + i + 1] = (*argument).arg[i];
+		erase_arg_str(argument);
+		stack_str_fill(argument, tmp);
+	}
+	if (!(*argument).precision && ft_strchr("diouxX", (*argument).type) && *(*argument).arg == '0')
+		erase_arg_str(argument);
+	else if ((*argument).type == 's')
+		while (set_get_arg_len(0) > (*argument).precision)
+			(*argument).arg[set_get_arg_len(-1)] = 0;
+}
+
+void		apply_sharp(t_printf *argument)
+{
+	if ((*argument).type == 'o')
 		(*argument).arg[set_get_arg_len(1)] = '0'; 
-	else if (argument->type == 'x' && *argument->arg != '0')
+	else if ((*argument).type == 'x' && (*argument).arg[0] != '0')
 	{
 		(*argument).arg[set_get_arg_len(1)] = '0'; 
 		(*argument).arg[set_get_arg_len(1)] = 'x'; 
@@ -110,5 +109,4 @@ t_printf	*apply_sharp(t_printf *argument)
 		(*argument).arg[set_get_arg_len(1)] = '0'; 
 		(*argument).arg[set_get_arg_len(1)] = 'X'; 
 	}
-	return (argument);
 }

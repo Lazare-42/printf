@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/26 23:32:48 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 10:12:31 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,34 +26,30 @@
 ** ft_printf returns from the write function in print_list()
 */
 
-t_printf		*apply_precision_width(t_printf *argument)
+void		apply_precision_width(t_printf *argument)
 {
-	if (argument->show_sign)
-		argument = apply_plus_minus_flags(argument);
-	if (argument->sharp && ft_strchr("xoX", argument->type))
-		argument = apply_sharp(argument);
-	if (argument->precision != -1)
-		argument = apply_precision(argument);
-	if (argument->left_align_output != -1)
-		argument = apply_flag_padding(argument);
-	if (argument->width)
-		argument = apply_width(argument);
-	return (argument);
+	if ((*argument).show_sign)
+		 apply_plus_minus_flags(argument);
+	if ((*argument).sharp && ft_strchr("xoX", (*argument).type))
+		 apply_sharp(argument);
+	if ((*argument).precision != -1)
+		 apply_precision(argument);
+	if ((*argument).left_align_output != -1)
+		 apply_flag_padding(argument);
+	if ((*argument).width)
+		 apply_width(argument);
 }
 
-char 	*treat_and_store_argument(va_list ap, t_printf argument, char *format)
+char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 {
-	format = get_flags(&argument, format);
-	format = get_width(ap, &argument, format);
-	format = get_precision(ap, &argument, format);
-	format = get_modifier(&argument, format);
-	argument = store_type_data(ap, &argument);
-	// this handler uniqueness has been taken away by the fact store_type_data also now sends to apply_precision_width in certain cases
-	if (set_get_flags_presence(0) || (*argument)->width ||
-			*argument.precision > -1)
-	{
-		*argument = apply_precision_width(*argument);
-	}
+	format = get_flags(argument, format);
+	format = get_width(ap, argument, format);
+	format = get_precision(ap, argument, format);
+	format = get_modifier(argument, format);
+	store_type_data(ap, argument);
+	if (set_get_flags_presence(0) || (*argument).width ||
+			(*argument).precision > -1)
+		apply_precision_width(argument);
 	return (format);
 }
 
@@ -64,34 +60,31 @@ char	*store_string(char *format, t_printf *argument)
 	{
 		if (*format && *format == '%' && (*(1 + format) == '%'))
 		{
-			(*argument).[set_get_printf_len(0)] = '%';
-			set_get_tmp_len(1);
+			(*argument).before[set_get_before_len(1)] = '%';
 			format += 2;
 		}
-		g_printf_str[set_get_printf_len(0)] = '%';
-		set_get_tmp_len(1);
+		(*argument).before[set_get_before_len(1)] = '%';
 		format++;
 	}
 	return (format);
 }
 
-void	parse(char *format, va_list ap)
+void	parse(char *format, va_list ap, t_printf *argument)
 {
-	t_printf	argument;
-
-	argument = set_get_arg_list();
-	format = store_string(format, &argument);
+	format = store_string(format, argument);
 	if (*format && *format == '%' && *(1 + format) && *(1 + format) != '%')
-		format = treat_and_store_argument(ap, &argument, (char*)++format);
+		format = treat_and_store_argument(ap, argument, (char*)++format);
 	if (*format && set_get_return(0) != -1)
-		parse(format, ap);
+		parse(format, ap, argument);
 }
 
 int		ft_printf(const char *restrict format, ...)
 {
 	va_list		ap;
 	char		*format_cpy;
+	t_printf	argument;
 
+	argument = set_get_arg_list();
 	format_cpy = NULL;
 	if (!(format))
 	{
@@ -101,11 +94,14 @@ int		ft_printf(const char *restrict format, ...)
 	if (!(format_cpy = ft_strdup(format)))
 		return (-1);
 	va_start(ap, format);
-	parse(format_cpy, ap);
+	parse(format_cpy, ap, &argument);
 	va_end(ap);
 	ft_memdel((void**)&format_cpy);
 	if ((set_get_return(0) > -1))
-		return (print_list());
+	{
+		print_flush(argument);
+		return (set_get_return(0));
+	}
 	else
 		return (-1);
 }
