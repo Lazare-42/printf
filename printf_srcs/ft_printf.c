@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 10:12:31 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 11:36:29 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,50 +53,50 @@ char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 	return (format);
 }
 
-char	*store_string(char *format, t_printf *argument)
+const char	*store_string(const char *format, t_printf *argument)
 {
 	while (*format && (*format != '%' || (*format == '%' &&
 					((*(1 + format) == '%' ) || !(*(1 + format))))))
 	{
-		if (*format && *format == '%' && (*(1 + format) == '%'))
+		if (*format == '%' && (*(1 + format) == '%'))
 		{
 			(*argument).before[set_get_before_len(1)] = '%';
 			format += 2;
 		}
-		(*argument).before[set_get_before_len(1)] = '%';
+		(*argument).before[set_get_before_len(1)] = *format;
+//		this line up there was probably for the case of a lone % before EOS
 		format++;
 	}
 	return (format);
 }
 
-void	parse(char *format, va_list ap, t_printf *argument)
+void	parse(const char *format, va_list ap, t_printf *argument)
 {
 	format = store_string(format, argument);
 	if (*format && *format == '%' && *(1 + format) && *(1 + format) != '%')
 		format = treat_and_store_argument(ap, argument, (char*)++format);
 	if (*format && set_get_return(0) != -1)
+	{
+		print_flush(*argument);
+		*argument = set_get_arg_list();
 		parse(format, ap, argument);
+	}
 }
 
 int		ft_printf(const char *restrict format, ...)
 {
 	va_list		ap;
-	char		*format_cpy;
 	t_printf	argument;
 
 	argument = set_get_arg_list();
-	format_cpy = NULL;
 	if (!(format))
 	{
 		ft_putstr_fd("Please stop fooling around with my ft_printf.", 2);
 		return (-1);
 	}
-	if (!(format_cpy = ft_strdup(format)))
-		return (-1);
 	va_start(ap, format);
-	parse(format_cpy, ap, &argument);
+	parse(format, ap, &argument);
 	va_end(ap);
-	ft_memdel((void**)&format_cpy);
 	if ((set_get_return(0) > -1))
 	{
 		print_flush(argument);

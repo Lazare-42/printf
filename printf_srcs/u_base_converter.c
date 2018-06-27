@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 09:39:18 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 11:50:37 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 		number /= base_size;
 		i++;
 	}
-	while (i >= 0)
-	{
-		(*argument).arg[set_get_arg_len(1)] = result[sizeof_var * 8 - i];
-		i--;
-	}
+	ft_memcpy((*argument).arg, result + sizeof_var * 8 - i + 1, i);
+	set_get_arg_len(i);
 }

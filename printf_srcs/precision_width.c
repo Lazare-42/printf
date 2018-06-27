@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 11:10:21 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 12:05:34 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,16 +97,19 @@ void		apply_precision(t_printf *argument)
 
 void		apply_sharp(t_printf *argument)
 {
+	int arg_len;
+	int	i;
+
+	i = -1;
+	arg_len = set_get_arg_len(0);
 	if ((*argument).type == 'o')
 		(*argument).arg[set_get_arg_len(1)] = '0'; 
-	else if ((*argument).type == 'x' && (*argument).arg[0] != '0')
+	else if ((*argument).arg[0] != '0')
 	{
-		(*argument).arg[set_get_arg_len(1)] = '0'; 
-		(*argument).arg[set_get_arg_len(1)] = 'x'; 
-	}
-	else if (argument->type == 'X' && *argument->arg != '0')
-	{
-		(*argument).arg[set_get_arg_len(1)] = '0'; 
-		(*argument).arg[set_get_arg_len(1)] = 'X'; 
+		while (++i < arg_len)
+			 (*argument).arg[i + 2] = (*argument).arg[i];
+		(*argument).arg[0] = '0'; 
+		(*argument).arg[1] = ((*argument).type == 'x') ? 'x' : 'X';
+		set_get_arg_len(2);
 	}
 }
