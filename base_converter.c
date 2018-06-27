@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 11:50:37 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 16:43:57 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 {
 	static char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
 	static char	base_X_output[36] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char		result[sizeof_var * 8];
+	char		result[sizeof_var * 8 + 1];
 	int			i;
 
 	i = 0;
@@ -60,6 +60,38 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 		else
 			result[sizeof_var * 8 - i] = base_X_output[number % base_size];
 		number /= base_size;
+		i++;
+	}
+	ft_memcpy((*argument).arg, result + sizeof_var * 8 - i + 1, i);
+	set_get_arg_len(i);
+}
+
+void				printf_s_base_converter(int base_size, intmax_t number,
+		int sizeof_var, t_printf *argument)
+{
+	static char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
+	static char	base_X_output[36] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char		result[sizeof_var * 8 + 1];
+	int			i;
+	int			sign;
+
+	i = 0;
+	sign = 0;
+	(number < 0) ? sign= 1 : 0;
+	(number < 0) ? number *= -1 : 0;
+	(number == 0) ? result[sizeof_var * 8] = '0' : 0;
+	while (number)
+	{
+		if ((*argument).type != 'X')
+			result[sizeof_var * 8 - i] = base_output[number % base_size];
+		else
+			result[sizeof_var * 8 - i] = base_X_output[number % base_size];
+		number /= base_size;
+		i++;
+	}
+	if (sign)
+	{
+		result[sizeof_var * 8 - i] = '-';
 		i++;
 	}
 	ft_memcpy((*argument).arg, result + sizeof_var * 8 - i + 1, i);

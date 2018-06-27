@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 11:36:29 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 15:12:06 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ const char	*store_string(const char *format, t_printf *argument)
 			format += 2;
 		}
 		(*argument).before[set_get_before_len(1)] = *format;
-//		this line up there was probably for the case of a lone % before EOS
 		format++;
 	}
 	return (format);

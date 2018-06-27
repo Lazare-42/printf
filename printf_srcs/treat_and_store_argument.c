@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:30:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 11:58:32 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 18:46:14 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ static int	type_to_int_base(char type)
 		return (16);
 }
 
-t_printf	treat_store_modifier_data(va_list ap, t_printf argument)
+t_printf	treat_store_modifier_u_data(va_list ap, t_printf argument)
 {
-	if (ft_strchr("ouxX", argument.type))
+	if (ft_strchr("oux", argument.type))
 	{
 		if (!(ft_strcmp("hh", argument.modifier)))
 			printf_u_base_converter(type_to_int_base(argument.type),
@@ -67,30 +67,61 @@ t_printf	treat_store_modifier_data(va_list ap, t_printf argument)
 	return (argument);
 }
 
+t_printf	treat_store_modifier_s_data(va_list ap, t_printf argument)
+{
+	if (ft_strchr("di", argument.type))
+	{
+		if (!(ft_strcmp("hh", argument.modifier)))
+			printf_s_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, int), sizeof(signed char), &argument);
+		else if (*argument.modifier == 'h')
+			printf_s_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, int), sizeof(short), &argument);
+		if (!(ft_strcmp("ll", argument.modifier)))
+			printf_s_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, long long), sizeof(long long),
+					&argument);
+		else if (*argument.modifier == 'l')
+			printf_s_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, long), sizeof(long), &argument);
+		else if (*argument.modifier == 'j')
+			printf_s_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, intmax_t), sizeof(intmax_t), &argument);
+		else if (*argument.modifier == 'z')
+			printf_s_base_converter(type_to_int_base(argument.type),
+					va_arg(ap, size_t), sizeof(size_t), &argument);
+	}
+	return (argument);
+}
+
+
 void		store_type_data(va_list ap, t_printf *argument)
 {
 	char	*va_arg_str;
 
 	va_arg_str = NULL;
-	if ((ft_strchr("ouxXcs", (*argument).type)) && ((*(*argument).modifier) || (*argument).type == 'C' || (*argument).type == 'S'))
-		*argument = treat_store_modifier_data(ap, *argument);
-
+	if ((ft_strchr("ouxXcs", (*argument).type)) && ((*argument->modifier) || (*argument).type == 'C' || (*argument).type == 'S'))
+		*argument = treat_store_modifier_u_data(ap, *argument);
 	else if (ft_strchr("diouxX", (*argument).type))
-			printf_u_base_converter(type_to_int_base((*argument).type),
+	{
+		if (!((*argument->modifier)))
+			printf_s_base_converter(type_to_int_base((*argument).type),
 					va_arg(ap, int), sizeof(int), argument);
+		else 
+			*argument = treat_store_modifier_s_data(ap, *argument);
+	}
 	else if (ft_strchr("DOU", (*argument).type))
 			printf_u_base_converter(type_to_int_base((*argument).type),
 					va_arg(ap, long int), sizeof(long int), argument);
 	else if ((*argument).type == 'c' && !*(*argument).arg)
 		(*argument).arg[set_get_arg_len(1)] = (char)va_arg(ap, int);
-
 	else if ((*argument).type == 's')
 	{
 		va_arg_str = va_arg(ap, char *);
 		if (!va_arg_str)
-			stack_str_fill(argument, "null");
+			stack_str_fill(argument, "(null)", 6);
 		else
-			stack_str_fill(argument, va_arg_str);
+			stack_str_fill(argument, va_arg_str, -1);
 	}
 	else if ((*argument).type == 'p')
 		get_hex_ptr_adr(ap, argument);

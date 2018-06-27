@@ -120,8 +120,7 @@ PRINTF_SRCS =   ft_printf.c \
 				print.c \
 				set_get_static_var.c \
 				treat_and_store_argument.c \
-				width_padding.c \
-				u_base_converter.c \
+				base_converter.c \
 				stack_str_operations.c \
 
 CC = gcc -Wall -Wextra -Werror -c
@@ -149,7 +148,7 @@ mkbin:
 	@mkdir -p $(BDIR)
 
 $(NAME): $(LIBFT_OBJECT) $(PRINTF_OBJECT)
-	@ echo "[35m Archiving printf library...[0m"
+	@ echo "[35m Archiving  printf library...[0m"
 	@$(ARCH) $(NAME) $(LIBFT_OBJECT) $(PRINTF_OBJECT)
 	@$(OK)
 

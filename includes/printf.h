@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 14:01:32 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 11:12:58 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/27 16:40:55 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct		s_printf
 {
 	char			before[4096];
 	char			arg[4096];
+	char			tmp[4096];
 	char			character;
 	char 			type;
 	char			modifier[3];
@@ -57,7 +58,9 @@ void				apply_sharp(t_printf *argument);
 void				store_type_data(va_list ap, t_printf *argument);
 void				printf_u_base_converter(int base_size, uintmax_t number,
 		int sizeof_var, t_printf *argument);
-void				stack_str_fill(t_printf	*argument, char *src);
+void				printf_s_base_converter(int base_size, intmax_t number,
+		int sizeof_var, t_printf *argument);
+void				stack_str_fill(t_printf	*argument, char *src, int size);
 void				erase_arg_str(t_printf	*argument);
 
 #endif
