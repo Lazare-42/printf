@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 14:01:32 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 16:40:55 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/28 09:00:49 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int					printf(const char *restrict format, ...);
 char				char_type_add(char c);
 int					set_get_precision(int yes);
 int					ft_printf(const char *restrict format, ...);
-t_printf			set_get_arg_list(void);
+t_printf			initialize_elem(void);
 char 				*treat_and_store_argument(va_list ap, t_printf *argument,
 		char *format);
 char				*get_flags(t_printf *argument, char *format);
@@ -47,6 +47,7 @@ char				*get_modifier(t_printf *argument, char *format);
 char				set_get_flags_presence(int yes);
 int					set_get_return(int value);
 int					set_get_arg_len(int increment);
+int					set_get_put_sign_back(int yes);
 int					set_get_before_len(int increment);
 void				print_flush(t_printf argument);
 void				get_hex_ptr_adr(va_list ap, t_printf *argument);
@@ -62,5 +63,6 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 		int sizeof_var, t_printf *argument);
 void				stack_str_fill(t_printf	*argument, char *src, int size);
 void				erase_arg_str(t_printf	*argument);
+void				irrational_printf_changes(t_printf	*argument);
 
 #endif

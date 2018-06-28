@@ -6,13 +6,14 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 18:50:02 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/28 16:36:13 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 #include "../includes/printf.h"
 #include <inttypes.h>
+#include <stdio.h>
 
 /*
 ** u in ft_u_base_converter stands for unsigned base converter
@@ -53,6 +54,7 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 	i = 0;
 	number = take_out_bits(number, sizeof_var);
 	(number == 0) ? result[sizeof_var * 8] = '0' : 0;
+	(number == 0) ? i++ : 0;
 	while (number)
 	{
 		if ((*argument).type != 'X')
@@ -74,6 +76,21 @@ int					check_negativity(intmax_t number, int sizeof_var)
 		return (0);
 }
 
+intmax_t				convert_overflow(int sizeof_var, intmax_t number)
+{
+	if ((int)sizeof(number) > sizeof_var)
+	{
+		if (sizeof_var == sizeof(short))
+			number = (short)number;
+		if (sizeof_var == sizeof(int))
+			number = (int)number;
+		if (sizeof_var == sizeof(long))
+			number = (long)number;
+			number = (long)number;
+	}
+	return (number);
+}
+
 void				printf_s_base_converter(int base_size, intmax_t number,
 		int sizeof_var, t_printf *argument)
 {
@@ -85,13 +102,13 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 
 	i = 0;
 	sign = 0;
-	
+	number = convert_overflow(sizeof_var, number);
 	if (number < 0)
-	{
 		sign = 1;
+	if (number < 0)
 		number *= -1;
-	}
 	(number == 0) ? result[sizeof_var * 8] = '0' : 0;
+	(number == 0) ? i++ : 0;
 	while (number)
 	{
 		if ((*argument).type != 'X')

@@ -122,6 +122,7 @@ PRINTF_SRCS =   ft_printf.c \
 				treat_and_store_argument.c \
 				base_converter.c \
 				stack_str_operations.c \
+				irrational_printf_changes.c \
 
 CC = gcc -Wall -Wextra -Werror -c
 

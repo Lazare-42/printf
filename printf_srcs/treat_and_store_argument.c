@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:30:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 18:46:14 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/28 16:18:29 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	type_to_int_base(char type)
 
 t_printf	treat_store_modifier_u_data(va_list ap, t_printf argument)
 {
-	if (ft_strchr("oux", argument.type))
+	if (ft_strchr("ouxXcSC", argument.type))
 	{
 		if (!(ft_strcmp("hh", argument.modifier)))
 			printf_u_base_converter(type_to_int_base(argument.type),
@@ -100,9 +100,12 @@ void		store_type_data(va_list ap, t_printf *argument)
 	char	*va_arg_str;
 
 	va_arg_str = NULL;
-	if ((ft_strchr("ouxXcs", (*argument).type)) && ((*argument->modifier) || (*argument).type == 'C' || (*argument).type == 'S'))
+	if ((ft_strchr("ouxXcSC", (*argument).type)) && ((*argument->modifier)))
 		*argument = treat_store_modifier_u_data(ap, *argument);
-	else if (ft_strchr("diouxX", (*argument).type))
+	else if (ft_strchr("ouxX", (*argument).type))
+			printf_u_base_converter(type_to_int_base((*argument).type),
+					va_arg(ap, int), sizeof(int), argument);
+	else if (ft_strchr("di", (*argument).type))
 	{
 		if (!((*argument->modifier)))
 			printf_s_base_converter(type_to_int_base((*argument).type),
@@ -111,7 +114,7 @@ void		store_type_data(va_list ap, t_printf *argument)
 			*argument = treat_store_modifier_s_data(ap, *argument);
 	}
 	else if (ft_strchr("DOU", (*argument).type))
-			printf_u_base_converter(type_to_int_base((*argument).type),
+			printf_s_base_converter(type_to_int_base((*argument).type),
 					va_arg(ap, long int), sizeof(long int), argument);
 	else if ((*argument).type == 'c' && !*(*argument).arg)
 		(*argument).arg[set_get_arg_len(1)] = (char)va_arg(ap, int);
@@ -126,4 +129,3 @@ void		store_type_data(va_list ap, t_printf *argument)
 	else if ((*argument).type == 'p')
 		get_hex_ptr_adr(ap, argument);
 }
-

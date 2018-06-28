@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 15:12:06 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/28 16:45:31 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@
 
 void		apply_precision_width(t_printf *argument)
 {
-	if ((*argument).show_sign)
-		 apply_plus_minus_flags(argument);
-	if ((*argument).sharp && ft_strchr("xoX", (*argument).type))
+	if (argument->sharp && ft_strchr("xoX", argument->type))
 		 apply_sharp(argument);
-	if ((*argument).precision != -1)
+	if (argument->precision != -1)
 		 apply_precision(argument);
-	if ((*argument).left_align_output != -1)
+	if (argument->show_sign)
+		 apply_plus_minus_flags(argument);
+	if (argument->left_align_output != -1)
 		 apply_flag_padding(argument);
-	if ((*argument).width)
+	if (argument->width)
 		 apply_width(argument);
 }
 
@@ -59,10 +59,7 @@ const char	*store_string(const char *format, t_printf *argument)
 					((*(1 + format) == '%' ) || !(*(1 + format))))))
 	{
 		if (*format == '%' && (*(1 + format) == '%'))
-		{
-			(*argument).before[set_get_before_len(1)] = '%';
-			format += 2;
-		}
+			format++;
 		(*argument).before[set_get_before_len(1)] = *format;
 		format++;
 	}
@@ -77,7 +74,7 @@ void	parse(const char *format, va_list ap, t_printf *argument)
 	if (*format && set_get_return(0) != -1)
 	{
 		print_flush(*argument);
-		*argument = set_get_arg_list();
+		*argument = initialize_elem();
 		parse(format, ap, argument);
 	}
 }
@@ -87,7 +84,7 @@ int		ft_printf(const char *restrict format, ...)
 	va_list		ap;
 	t_printf	argument;
 
-	argument = set_get_arg_list();
+	argument = initialize_elem();
 	if (!(format))
 	{
 		ft_putstr_fd("Please stop fooling around with my ft_printf.", 2);
