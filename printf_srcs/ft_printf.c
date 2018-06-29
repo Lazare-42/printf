@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/28 16:45:31 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/28 22:08:18 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@
 
 void		apply_precision_width(t_printf *argument)
 {
-	if (argument->sharp && ft_strchr("xoX", argument->type))
-		 apply_sharp(argument);
 	if (argument->precision != -1)
 		 apply_precision(argument);
-	if (argument->show_sign)
+	if (argument->show_sign || set_get_put_sign_back(0))
 		 apply_plus_minus_flags(argument);
 	if (argument->left_align_output != -1)
 		 apply_flag_padding(argument);
 	if (argument->width)
 		 apply_width(argument);
+	if (argument->sharp && ft_strchr("xoX", argument->type))
+		 apply_sharp(argument);
 }
 
 char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
@@ -47,6 +47,8 @@ char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 	format = get_precision(ap, argument, format);
 	format = get_modifier(argument, format);
 	store_type_data(ap, argument);
+	if (argument->arg[0] == '0' && ft_strchr("oXx", argument->type))
+			argument->sharp = 0;
 	if (set_get_flags_presence(0) || (*argument).width ||
 			(*argument).precision > -1)
 		apply_precision_width(argument);
@@ -56,7 +58,7 @@ char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 const char	*store_string(const char *format, t_printf *argument)
 {
 	while (*format && (*format != '%' || (*format == '%' &&
-					((*(1 + format) == '%' ) || !(*(1 + format))))))
+			((*(1 + format) == '%' ) || !(*(1 + format))))))
 	{
 		if (*format == '%' && (*(1 + format) == '%'))
 			format++;

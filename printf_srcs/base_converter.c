@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/28 16:36:13 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/28 20:52:18 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,19 @@ intmax_t				convert_overflow(int sizeof_var, intmax_t number)
 {
 	if ((int)sizeof(number) > sizeof_var)
 	{
+		if (sizeof_var == sizeof(char))
+			number = (char)number;
 		if (sizeof_var == sizeof(short))
 			number = (short)number;
 		if (sizeof_var == sizeof(int))
 			number = (int)number;
 		if (sizeof_var == sizeof(long))
 			number = (long)number;
-			number = (long)number;
+		if (sizeof_var == sizeof(long long))
+			number = (long long)number;
+		if (sizeof_var > (int)sizeof(long long))
+			debug();
+			number = (intmax_t)number;
 	}
 	return (number);
 }

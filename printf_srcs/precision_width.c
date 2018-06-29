@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/28 16:57:29 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/29 09:38:32 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void		apply_width(t_printf *argument)
 
 	i = -1;
 	arg_len = set_get_arg_len(0);
-	if (arg_len < (*argument).width)
+	if (arg_len < argument->width)
 	{
 		ft_memset(argument->tmp, ' ', (*argument).width - arg_len);
 		ft_memcpy(argument->tmp + (*argument).width - arg_len, (*argument).arg, arg_len);
@@ -32,7 +32,10 @@ void		apply_width(t_printf *argument)
 void		apply_flag_padding(t_printf *argument)
 {
 	int		arg_len;
+	char	fill;
 
+	fill = (argument->precision < argument->width &&
+			argument->precision != -1) ? ' ' : '0';
 	arg_len = set_get_arg_len(0);
 	if (arg_len >= argument->width)
 		return ;
@@ -43,14 +46,14 @@ void		apply_flag_padding(t_printf *argument)
 	}
 	else if (!((*argument).left_align_output))
 	{
-		ft_memset(argument->tmp, '0', (*argument).width - arg_len);
+		ft_memset(argument->tmp, fill, (*argument).width - arg_len);
 		if (ft_strchr("dDioOuUxX", argument->type) && (argument->arg[0] == '-'
 					|| argument->arg[0] == '+'))
 		{
 			argument->tmp[0] = (argument->arg[0] == '-') ?  '-' : '+';
 			argument->arg[0] = '0';
 		}
-		ft_memcpy(argument->tmp + (*argument).width - arg_len, (*argument).arg, arg_len);
+		ft_memcpy(argument->tmp + argument->width - arg_len, argument->arg, arg_len);
 	}
 	argument->tmp[(*argument).width] = 0;
 	stack_str_fill(argument, argument->tmp, argument->width);
@@ -62,6 +65,8 @@ void		apply_plus_minus_flags(t_printf *argument)
 	int	arg_len;
 
 	i = -1;
+	if (argument->type == 'u')
+		return ;
 	arg_len = set_get_arg_len(0);
 	if (*argument->arg != '-' || set_get_put_sign_back(0))
 	{
@@ -69,7 +74,7 @@ void		apply_plus_minus_flags(t_printf *argument)
 			argument->arg[arg_len - i] = argument->arg[arg_len - i - 1];
 		if (set_get_put_sign_back(0) < 0)
 			argument->arg[0] = '-';
-		if ((*argument).show_sign == ' ')
+		if ((*argument).show_sign == ' ' && argument->type != 'u')
 			argument->arg[0] = ' ';
 		else if ((*argument).show_sign == '+' || set_get_put_sign_back(0) > 0)
 			argument->arg[0] = '+';
@@ -82,14 +87,17 @@ void		apply_precision(t_printf *argument)
 	int		arg_len;
 
 	arg_len = set_get_arg_len(0);
+	if (argument->precision < arg_len)
+		return ;
 	if (argument->arg[0] && ft_strchr("diouxX", argument->type))
 		argument->arg[set_get_arg_len(-1)] = '0';
-	if ((*argument->arg == '-' || argument->show_sign) && arg_len - 1 < argument->precision && ft_strchr("diouxX", argument->type))
+	if ((*argument->arg == '-') && arg_len - 1 < argument->precision && ft_strchr("diouxX", argument->type))
 	{
 		(*argument->arg == '-') ? set_get_put_sign_back(-1) : set_get_put_sign_back(1);
+		set_get_arg_len(1);
 		argument->arg[0] = '0';
 	}
-	if (ft_strchr("diouxX", argument->type) && argument->precision > arg_len)
+	if (ft_strchr("diouxX", argument->type))
 	{
 		ft_memset(argument->tmp, '0', argument->precision - arg_len);
 		ft_memcpy(argument->tmp + argument->precision - arg_len, argument->arg, argument->precision);
@@ -104,6 +112,8 @@ void		apply_precision(t_printf *argument)
 	}
 }
 
+
+// this function is broken in certain cases
 void		apply_sharp(t_printf *argument)
 {
 	int		arg_len;
@@ -111,19 +121,19 @@ void		apply_sharp(t_printf *argument)
 
 	i = -1;
 	arg_len = set_get_arg_len(0);
-	if ((*argument).type == 'o' && argument->arg[0] != '0')
+	if (argument->width < argument->precision || argument->precision == -1)
+		(argument->type == 'o') ? set_get_arg_len(1) : set_get_arg_len(2);
+	if (argument->type == 'o')
 	{
-		while (++i < arg_len)
-			 argument->arg[arg_len - i] = argument->arg[arg_len - i - 1];
-		argument->arg[0] = '0';
-		set_get_arg_len(1);
+	if (argument->width < argument->precision || argument->precision == -1)
+			while (++i < arg_len && ft_isdigit(argument->arg[arg_len - i - 1]))
+				argument->arg[arg_len - i] = argument->arg[arg_len - i - 1];
+		argument->arg[i] = '0';
+		return ;
 	}
-	else if ((*argument).arg[0] != '0')
-	{
+	if (argument->width < argument->precision || argument->precision == -1)
 		while (++i < arg_len)
-			 argument->arg[arg_len - i + 1] = argument->arg[arg_len - i - 1];
-		(*argument).arg[0] = '0'; 
-		(*argument).arg[1] = ((*argument).type == 'x') ? 'x' : 'X';
-		set_get_arg_len(2);
-	}
+			argument->arg[arg_len - i + 1] = argument->arg[arg_len - i - 1];
+	argument->arg[0] = '0'; 
+	argument->arg[1] = (argument->type == 'x') ? 'x' : 'X';
 }
