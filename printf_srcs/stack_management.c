@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/30 12:44:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/30 23:34:44 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/30 23:51:31 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	store_values(t_printf	*arg, void	*dst, int src_len, int sizeof_memop)
 	dst_byte = dst;
 	src_byte = arg->to_store;
 	stack_len = (arg->location == 1) ? arg->before_arg_len : arg->before_len;
-	stack_len = (arg->location == 2) ? arg->before_len : arg->arg_len;
+	stack_len = (arg->location == 2 && arg->location != 1) ? arg->before_len : arg->arg_len;
 	while (sizeof_memop--)
 	{
 		if (stack_len == BUFF_SIZE / 3)
@@ -37,8 +37,6 @@ void	store_values(t_printf	*arg, void	*dst, int src_len, int sizeof_memop)
 		if (src_len)
 			i++;
 	}
-	ft_putnbr(stack_len);
-	ft_putchar('\n');
 	if (arg->location == 1)
 		arg->before_arg_len += stack_len;
 	else if (arg->location == 2)
@@ -56,13 +54,13 @@ void		print(t_printf *arg, void *str, int location)
 	ft_memcpy(final_str, str, arg->before_len);
 	write_size += arg->before_len;
 	arg->before_len = 0;
-	if (location == -2 || location == -3)
+	if (location == -2 || location == -3 || !location)
 	{
 		ft_memcpy(final_str + write_size, str + BUFF_SIZE / 3, arg->before_arg_len);
 		write_size += arg->before_arg_len; 
 		arg->before_arg_len = 0;
 	}
-	if (location == -3)
+	if (location == -3 || !location)
 	{
 		ft_memcpy(final_str + write_size, str + 2 * (BUFF_SIZE / 3), arg->arg_len);
 		write_size += arg->arg_len; 

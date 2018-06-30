@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/30 14:14:25 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/01 00:04:37 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ const char	*store_string(const char *format, t_printf *argument)
 		if (*format == '%' && (*(1 + format) == '%'))
 			format++;
 		argument->to_store = (void*)format;
-		store_print_handler(argument, 1, sizeof(char), 1);
+		store_print_handler(argument, 1, 1, 1);
 		format++;
 	}
 	return (format);
@@ -104,6 +104,7 @@ int		ft_printf(const char *restrict format, ...)
 	va_end(ap);
 	if ((set_get_return(0) > -1))
 	{
+		debug();
 		store_print_handler(&argument, 0, 0, 0);
 		return (set_get_return(0));
 	}

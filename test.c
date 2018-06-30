@@ -35,7 +35,7 @@ char	*print_bits(void *ptr, int size)
 int main()
 {
 
-ft_printf("vvsdfdfdflkjnvn%#21s coucou", "HI");                      
+ft_printf("Test\n");                      
 //printf("\n%#21x coucou", 4);                      
 /*
 ft_printf("\n@moulitest: %s", NULL);            
