@@ -10,7 +10,6 @@
 # **************************************************************************** #
 
 NAME = libftprintf.a
-
 LIBFT_SRCS =	ft_advance_for_quotes.c \
       			ft_atof.c \
       			ft_atoi.c \
@@ -66,6 +65,7 @@ LIBFT_SRCS =	ft_advance_for_quotes.c \
       			ft_split_whitespaces_nokots.c \
       			ft_str_is_printable.c \
       			ft_str_isalpha.c \
+				ft_str_mins_to_caps.c \
       			ft_strcat.c \
       			ft_strchr.c \
       			ft_strclr.c \
@@ -109,22 +109,28 @@ LIBFT_SRCS =	ft_advance_for_quotes.c \
       			ft_tolower.c \
       			ft_toupper.c \
       			ft_u_base_converter.c \
-      			get_next_line.c \
       			int_ft_putchar.c \
 
 PRINTF_SRCS =   ft_printf.c \
 				get_hex_adr.c \
 				get_modifiers.c \
-				list_management.c \
+				stack_management.c \
 				precision_width.c \
-				print.c \
 				set_get_static_var.c \
 				treat_and_store_argument.c \
 				base_converter.c \
-				stack_str_operations.c \
-				irrational_printf_changes.c \
 
-CC = gcc -Wall -Wextra -Werror -c
+# CC = gcc -Wall -Wextra -Werror -c -g
+
+ASAN = 
+ifeq ($(DEBUG), yes)
+	ASAN=-fsanitize=address
+endif
+CC = gcc -Wall -Wextra -Werror -c $(ASAN)
+
+#DEBUG = ""
+#if ${DEBUG}
+#	CC += ASAN	
 
 ODIR = bin_libft
 
@@ -149,6 +155,7 @@ mkbin:
 	@mkdir -p $(BDIR)
 
 $(NAME): $(LIBFT_OBJECT) $(PRINTF_OBJECT)
+	echo ${CC}
 	@ echo "[35m Archiving  printf library...[0m"
 	@$(ARCH) $(NAME) $(LIBFT_OBJECT) $(PRINTF_OBJECT)
 	@$(OK)

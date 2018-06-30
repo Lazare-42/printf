@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/30 15:40:47 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/30 23:32:36 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,13 @@ void		apply_width(t_printf *argument)
 	{
 		argument->to_store = (void*)&fill;
 		if (argument->left_align_output == 1)
+		{
+			ft_putchar('\n');
+			ft_putnbr(argument->width - argument->arg_len - argument->precision);
+			ft_putchar('\n');
 		store_print_handler(argument, 3, 0, argument->width -
 				argument->arg_len - argument->precision);
+		}
 		else
 		store_print_handler(argument, 2, sizeof(char), argument->width -
 				argument->arg_len - argument->precision);

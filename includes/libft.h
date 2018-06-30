@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/18 15:27:37 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/25 18:27:59 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/30 23:29:22 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <stddef.h>
 # include <inttypes.h>
 
-# include "get_next_line.h"
 # include "printf.h"
 
 typedef	struct		s_list
@@ -63,6 +62,7 @@ int					ft_isprint(int c);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 int					ft_str_isalpha(char *str);
+void				ft_str_mins_to_caps(char *c);
 void				*ft_memalloc(size_t size);
 void				ft_memdel(void **ap);
 char				*ft_strnew(size_t size);
