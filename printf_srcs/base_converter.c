@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/28 20:52:18 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/30 12:09:48 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,26 +46,27 @@ unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var)
 void				printf_u_base_converter(int base_size, uintmax_t number,
 		int sizeof_var, t_printf *argument)
 {
-	static char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
-	static char	base_X_output[36] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char		result[sizeof_var * 8 + 1];
+	char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
+	char		result[20];
 	int			i;
 
 	i = 0;
 	number = take_out_bits(number, sizeof_var);
-	(number == 0) ? result[sizeof_var * 8] = '0' : 0;
+	(number == 0) ? result[19] = '0' : 0;
+	(number == 0 && argument->sharp) ? argument->sharp = 0 : 0;
 	(number == 0) ? i++ : 0;
+	if (number == 0 && argument->precision == -1)
+		return ;
 	while (number)
 	{
-		if ((*argument).type != 'X')
-			result[sizeof_var * 8 - i] = base_output[number % base_size];
-		else
-			result[sizeof_var * 8 - i] = base_X_output[number % base_size];
+		result[19 - i] = base_output[number % base_size];
 		number /= base_size;
 		i++;
 	}
-	ft_memcpy((*argument).arg, result + sizeof_var * 8 - i + 1, i);
-	set_get_arg_len(i);
+	if (argument->type == 'X')
+		ft_str_mins_to_caps(&result[20] - i);
+	argument->to_store = &result[20 - i];
+	store_print_handler(argument, 3, sizeof(char), i);
 }
 
 int					check_negativity(intmax_t number, int sizeof_var)
@@ -91,7 +92,6 @@ intmax_t				convert_overflow(int sizeof_var, intmax_t number)
 		if (sizeof_var == sizeof(long long))
 			number = (long long)number;
 		if (sizeof_var > (int)sizeof(long long))
-			debug();
 			number = (intmax_t)number;
 	}
 	return (number);
@@ -100,33 +100,26 @@ intmax_t				convert_overflow(int sizeof_var, intmax_t number)
 void				printf_s_base_converter(int base_size, intmax_t number,
 		int sizeof_var, t_printf *argument)
 {
-	static char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
-	static char	base_X_output[36] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char		result[sizeof_var * 8 + 1];
+	char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
+	char		result[19];
 	int			i;
-	int			sign;
 
 	i = 0;
-	sign = 0;
+	if (number == 0 && !argument->precision)
+		return ;
 	number = convert_overflow(sizeof_var, number);
 	if (number < 0)
-		sign = 1;
+		argument->sign[0] = '-';
 	if (number < 0)
 		number *= -1;
-	(number == 0) ? result[sizeof_var * 8] = '0' : 0;
+	(number == 0) ? result[18] = '0' : 0;
 	(number == 0) ? i++ : 0;
 	while (number)
 	{
-		if ((*argument).type != 'X')
-			result[sizeof_var * 8 - i] = base_output[number % base_size];
-		else
-			result[sizeof_var * 8 - i] = base_X_output[number % base_size];
+		result[18 - i] = base_output[number % base_size];
 		number /= base_size;
 		i++;
 	}
-	(sign) ? result[sizeof_var * 8 - i] = '-' : 0;
-	(sign) ? i++ : 0;
-	ft_memcpy((*argument).arg, result + sizeof_var * 8 - i + 1, i);
-	set_get_arg_len(i);
+	argument->to_store = &result[19 - i];
+	store_print_handler(argument, 3, sizeof(char), i);
 }
-

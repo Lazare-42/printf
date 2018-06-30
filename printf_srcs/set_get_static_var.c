@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:29:52 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/29 09:38:33 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/29 11:18:51 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,42 +17,6 @@ int		set_get_precision(int yes)
 	if (yes)
 		answer = 1;
 	return (answer);
-}
-
-int		set_get_arg_len(int increment)
-{
-	static int len = 0;
-
-	if (!increment)
-		return (len);
-	if (increment == 4097)
-	{
-		len = 0;
-		return (len);
-	}
-	if (increment < 0)
-		len += increment;
-	else
-		len += increment;
-	return (len - increment);
-}
-
-int		set_get_before_len(int increment)
-{
-	static int len = 0;
-
-	if (!increment)
-		return (len);
-	if (increment == 4097)
-	{
-		len = 0;
-		return (len);
-	}
-	if (increment < 0)
-		len += increment;
-	else
-		len += increment;
-	return (len - increment);
 }
 
 int		set_get_put_sign_back(int yes)

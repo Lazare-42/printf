@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/28 14:57:17 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/30 12:09:47 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 		else if (*format == '*' && format++)
 			(*argument).precision = va_arg(ap, int);
 	}
+	if (argument->sharp)
+	{
+		(argument->width >= argument->precision) ? argument->width-- : 0;
+		(argument->width >= argument->precision) ? argument->width-- : 0;
+	}
 	return (format);
 }
 
@@ -58,15 +63,15 @@ char	*get_flags(t_printf *argument, char *format)
 	{
 		set_get_flags_presence(1);
 		if (*format == '-')
-			(*argument).left_align_output = 1;
+			argument->left_align_output = 1;
 		if (*format == '0' && argument->left_align_output != 1)
-			(*argument).left_align_output = 0;
+			argument->left_align_output = 0;
 		if (*format == ' ' && (*argument).show_sign != '+')
-			(*argument).show_sign = ' ';
+			argument->show_sign = ' ';
 		if (*format == '+')
-			(*argument).show_sign = '+';
+			argument->show_sign = '+';
 		if (*format == '#')
-			(*argument).sharp = 1;
+			argument->sharp = 1;
 		format++;
 	}
 	return (format);
@@ -90,8 +95,6 @@ char	*get_modifier(t_printf *argument, char *format)
 		if (*format == 'c' && argument->show_sign)
 			argument->show_sign = 0;
 	}
-	else
-		(*argument).arg[set_get_arg_len(1)] = *format;
 	format++;
 	return (format);
 }

@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:30:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/28 16:18:29 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/29 21:24:45 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,15 +116,19 @@ void		store_type_data(va_list ap, t_printf *argument)
 	else if (ft_strchr("DOU", (*argument).type))
 			printf_s_base_converter(type_to_int_base((*argument).type),
 					va_arg(ap, long int), sizeof(long int), argument);
-	else if ((*argument).type == 'c' && !*(*argument).arg)
-		(*argument).arg[set_get_arg_len(1)] = (char)va_arg(ap, int);
+	else if ((*argument).type == 'c')
+		store_print_handler(va_arg(ap, void*), 3, sizeof(char), 1);
 	else if ((*argument).type == 's')
 	{
 		va_arg_str = va_arg(ap, char *);
 		if (!va_arg_str)
-			stack_str_fill(argument, "(null)", 6);
-		else
-			stack_str_fill(argument, va_arg_str, -1);
+		{
+			store_print_handler((void*)"null", 2, sizeof(char), 6);
+			return ;
+		}
+		argument->to_store = (void*)va_arg_str;
+			store_print_handler(argument, 3, sizeof(char),
+					ft_strlen(va_arg_str) - argument->precision);
 	}
 	else if ((*argument).type == 'p')
 		get_hex_ptr_adr(ap, argument);

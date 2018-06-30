@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:11:11 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/27 13:51:36 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/06/29 17:54:57 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,13 @@ void	get_hex_ptr_adr(va_list ap, t_printf *argument)
 	test_data = NULL;
 	tmp = NULL;
 	test_data = va_arg(ap, void*);
-	stack_str_fill(argument, "0x", 2);
-	if (test_data == 0 && (*argument).precision)
-		stack_str_fill(argument, "0", 1);
+	argument->to_store = (void*)"0x";
+	store_print_handler(argument, 3, sizeof(char), 2);
+	if (test_data == 0 && argument->precision)
+	{
+		argument->to_store = (void*)"0";
+		store_print_handler(argument, 3, sizeof(char), 1);
+	}
 	else 
 		printf_u_base_converter(16, (uintptr_t)test_data,
 				sizeof(uintptr_t), argument);
