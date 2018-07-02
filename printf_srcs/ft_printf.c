@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/02 23:41:14 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/03 01:14:30 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,6 @@ void		apply_precision_width(t_printf *argument)
 
 char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 {
-	format = get_flags(argument, format);
-	format = get_width(ap, argument, format);
-	format = get_precision(ap, argument, format);
-	format = get_modifier(argument, format);
 	store_type_data(ap, argument);
 	if (argument->sharp)
 	{
@@ -67,46 +63,50 @@ char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 	return (format);
 }
 
-const char	*store_string(const char *format, t_printf *argument)
+t_printf	initialize_elem(void)
 {
-	while (*format && (*format != '%' || (*format == '%' &&
-!ft_strchr("sSpdDioOuUxXcCeEfFgGaAn0# -.", *(format + 1))) || !(*(1 + format))))
-	{
-		if (*format == '%' && (*(1 + format) == '%'))
-			format++;
-		argument->to_store = (void*)format;
-		store_print_handler(argument, 1, 1, 1);
-		format++;
-	}
-	return (format);
+	t_printf argument;
+
+	argument.type = '0';
+	ft_memset(argument.modifier, 0, 3);
+	ft_memset(argument.sign, 0, 3);
+	argument.before_len = 0;
+	argument.before_arg_len = 0;
+	argument.arg_len = 0;
+	argument.width = 0;
+	argument.sharp = 0;
+	argument.precision = 0;
+	argument.show_sign = 0;
+	argument.left_align_output = -1;
+	return (argument);
 }
 
-void	parse(const char *format, va_list ap, t_printf *argument)
+void	parsing_handler(char *format, va_list ap)
 {
-	format = store_string(format, argument);
-	if (*format && *format == '%' && *(1 + format) && *(1 + format) != '%')
-		format = treat_and_store_argument(ap, argument, (char*)++format);
+	t_printf	argument;
+
+	argument = initialize_elem();
+	format = parse(format, &argument, ap);
+	if (argument.type)
+		treat_and_store_argument(ap, &argument, (char*)format);
 	if (*format)
 	{
-		store_print_handler(argument, 0, 0, 0);
-		*argument = initialize_elem();
-		parse(format, ap, argument);
+		store_print_handler(&argument, 0, 0, 0);
+		parsing_handler(format, ap);
 	}
 }
 
 int		ft_printf(const char *restrict format, ...)
 {
 	va_list		ap;
-	t_printf	argument;
 
-	argument = initialize_elem();
 	if (!(format))
 	{
 		ft_putstr_fd("Please stop fooling around with my ft_printf.", 2);
 		return (-1);
 	}
 	va_start(ap, format);
-	parse(format, ap, &argument);
+	parsing_handler((char*)format, ap);
 	va_end(ap);
 	store_print_handler(&argument, 0, 0, 0);
 	return (set_get_return(0));

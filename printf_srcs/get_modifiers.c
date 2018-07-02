@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/02 22:47:33 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/03 00:55:03 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 char	*get_precision(va_list ap, t_printf *argument, char *format)
 {
-	if (*format && *format == '.')
+	if (format && *format && *format == '.')
 	{
 		format++;
 		if (*format && *format != '*' && !(ft_isdigit(*format)))
@@ -40,21 +40,21 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 
 char	*get_width(va_list ap, t_printf *argument, char *format)
 {
-	if (ft_isdigit(*format))
+	if (format && ft_isdigit(*format))
 	{
 		argument->width = ft_atoi(format);
 		while (ft_isdigit(*format))
 			format++;
 	}
-	else if (*format == '*' && format++)
+	else if (format && *format == '*' && format++)
 		argument->width = va_arg(ap, int);
 	return (format);
 }
 
 char	*get_flags(t_printf *argument, char *format)
 {
-	while (*format == '-' || *format == '0' || *format == '+' || *format == ' '
-			|| *format == '#')
+	while (format && (*format == '-' || *format == '0' || *format == '+' || *format == ' '
+			|| *format == '#'))
 	{
 		if (*format == '-')
 			argument->left_align_output = 1;
@@ -73,7 +73,7 @@ char	*get_flags(t_printf *argument, char *format)
 
 char	*get_modifier(t_printf *argument, char *format)
 {
-	if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)) && (*(1 + format))
+	if (format && !(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)) && (*(1 + format))
 			&& ft_strchr("hhljz", *format))
 	{
 		(*argument).modifier[0] = *format;
@@ -83,7 +83,7 @@ char	*get_modifier(t_printf *argument, char *format)
 			format++;
 		}
 	}
-	if ((ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)))
+	if ((format && ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)))
 	{
 		argument->type = *format;
 		if (*format == 'c' && argument->show_sign)
