@@ -116,7 +116,6 @@ PRINTF_SRCS =   ft_printf.c \
 				get_modifiers.c \
 				stack_management.c \
 				precision_width.c \
-				set_get_static_var.c \
 				treat_and_store_argument.c \
 				base_converter.c \
 

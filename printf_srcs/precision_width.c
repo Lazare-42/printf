@@ -18,23 +18,23 @@
 void		apply_width(t_printf *argument)
 {
 	char	fill;
+	int		fill_val;
 
-
-	fill = (argument->left_align_output) ? ' ' : '0';
-	if (argument->arg_len + argument->precision < argument->width)
+	if (argument->precision > argument->width)
+		return ;
+	fill = (argument->left_align_output == -1) ? ' ' : '0';
+	fill_val = argument->width;
+	fill_val -= (argument->precision < argument->arg_len) ?
+		argument->arg_len : argument->precision;
+	if (fill_val < argument->width)
 	{
+		if (argument->show_sign)
+			fill_val--;
 		argument->to_store = (void*)&fill;
 		if (argument->left_align_output == 1)
-		{
-			ft_putchar('\n');
-			ft_putnbr(argument->width - argument->arg_len - argument->precision);
-			ft_putchar('\n');
-		store_print_handler(argument, 3, 0, argument->width -
-				argument->arg_len - argument->precision);
-		}
+			store_print_handler(argument, 3, 0, fill_val);
 		else
-		store_print_handler(argument, 2, 1, argument->width -
-				argument->arg_len - argument->precision);
+			store_print_handler(argument, 2, 0, fill_val);
 	}
 }
 
@@ -73,21 +73,19 @@ void		apply_plus_minus_flags(t_printf *argument)
 {
 	if (argument->type == 'u')
 		return ;
-	argument->to_store = (void*)&(argument->sign[0]);
-	if (*argument->sign)
-		store_print_handler(argument, 2, 1, 1);
+	argument->to_store = (void*)&(argument->show_sign);
+	store_print_handler(argument, 2, 0, 1);
 }
 
 void		apply_precision(t_printf *argument)
 {
-	char fill;
+	char		fill;
 
 	fill = '0';
-	if (argument->precision < argument->arg_len)
+	if (argument->precision < argument->arg_len && argument->left_align_output)
 		return ;
 	argument->to_store = (void*)&fill;
-	if (ft_strchr("diouxX", argument->type))
-		store_print_handler(argument, 2, 1, argument->precision - argument->arg_len);
+	store_print_handler(argument, 2, 0, argument->precision - argument->arg_len);
 }
 
 void		apply_sharp(t_printf *argument)

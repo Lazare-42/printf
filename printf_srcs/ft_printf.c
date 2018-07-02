@@ -25,16 +25,16 @@
 ** If any error is encoutered set_get_return is set to -1. Else the function
 ** ft_printf returns from the write function in print_list()
 */
-void	test(type)
-{
-	(void)type;
-}
 
 void		apply_precision_width(t_printf *argument)
 {
 	if (argument->sharp && ft_strchr("xoX", argument->type)
 			&& !argument->left_align_output)
 		 apply_sharp(argument);
+	if (argument->show_sign && argument->left_align_output > -1)
+		 apply_plus_minus_flags(argument);
+	if (argument->precision != -1 && argument->left_align_output == 1)
+		 apply_precision(argument);
 	if (argument->width)
 		 apply_width(argument);
 	if (argument->sharp && ft_strchr("xoX", argument->type)
@@ -42,9 +42,9 @@ void		apply_precision_width(t_printf *argument)
 		 apply_sharp(argument);
 	if (argument->left_align_output == 1)
 		 apply_flag_padding(argument);
-	if (argument->show_sign || set_get_put_sign_back(0))
+	if (argument->show_sign && argument->left_align_output == -1)
 		 apply_plus_minus_flags(argument);
-	if (argument->precision != -1)
+	if (argument->precision > 0 && argument->left_align_output <= 0)
 		 apply_precision(argument);
 }
 
@@ -55,7 +55,7 @@ char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 	format = get_precision(ap, argument, format);
 	format = get_modifier(argument, format);
 	store_type_data(ap, argument);
-	if (set_get_flags_presence(0) || (*argument).width ||
+	if ((*argument).width ||
 			(*argument).precision > -1)
 		apply_precision_width(argument);
 	return (format);
@@ -80,7 +80,7 @@ void	parse(const char *format, va_list ap, t_printf *argument)
 	format = store_string(format, argument);
 	if (*format && *format == '%' && *(1 + format) && *(1 + format) != '%')
 		format = treat_and_store_argument(ap, argument, (char*)++format);
-	if (*format && set_get_return(0) != -1)
+	if (*format)
 	{
 		store_print_handler(argument, 0, 0, 0);
 		*argument = initialize_elem();
@@ -102,12 +102,5 @@ int		ft_printf(const char *restrict format, ...)
 	va_start(ap, format);
 	parse(format, ap, &argument);
 	va_end(ap);
-	if ((set_get_return(0) > -1))
-	{
-		debug();
-		store_print_handler(&argument, 0, 0, 0);
-		return (set_get_return(0));
-	}
-	else
-		return (-1);
+	return(store_print_handler(&argument, 0, 0, 0));
 }

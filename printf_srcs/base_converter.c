@@ -105,18 +105,20 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 	int			i;
 
 	i = 0;
-	if (number == 0 && !argument->precision)
+	if (number == 0 && argument->precision == -1)
 		return ;
 	number = convert_overflow(sizeof_var, number);
 	if (number < 0)
-		argument->sign[0] = '-';
+		argument->show_sign = '-';
 	if (number < 0)
 		number *= -1;
 	(number == 0) ? result[18] = '0' : 0;
 	(number == 0) ? i++ : 0;
-	while (number)
+	while (number != 0)
 	{
-		result[18 - i] = base_output[number % base_size];
+
+		result[18 - i] = base_output[(number % base_size < 0) ?
+			-(number % base_size) :number % base_size];
 		number /= base_size;
 		i++;
 	}

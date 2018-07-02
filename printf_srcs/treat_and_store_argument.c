@@ -117,13 +117,20 @@ void		store_type_data(va_list ap, t_printf *argument)
 			printf_s_base_converter(type_to_int_base((*argument).type),
 					va_arg(ap, long int), sizeof(long int), argument);
 	else if ((*argument).type == 'c')
-		store_print_handler(va_arg(ap, void*), 3, sizeof(char), 1);
+	{
+		char c;
+
+		c = va_arg(ap, int);
+		argument->to_store = (void*)&c;
+		store_print_handler(argument, 3, sizeof(char), 1);
+	}
 	else if ((*argument).type == 's')
 	{
 		va_arg_str = va_arg(ap, char *);
 		if (!va_arg_str)
 		{
-			store_print_handler((void*)"null", 2, sizeof(char), 6);
+			argument->to_store = (void*)"(null)";
+			store_print_handler(argument, 2, 1, 6);
 			return ;
 		}
 		argument->to_store = (void*)va_arg_str;

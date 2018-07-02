@@ -55,7 +55,6 @@ typedef struct		s_printf
 char				*width_padding(char *printf_str, int int_nbr);
 int					printf(const char *restrict format, ...);
 char				char_type_add(char c);
-int					set_get_precision(int yes);
 int					ft_printf(const char *restrict format, ...);
 t_printf			initialize_elem(void);
 char 				*treat_and_store_argument(va_list ap, t_printf *argument,
@@ -64,10 +63,6 @@ char				*get_flags(t_printf *argument, char *format);
 char				*get_precision(va_list ap, t_printf *argument, char *format);
 char				*get_width(va_list ap, t_printf *argument, char *format);
 char				*get_modifier(t_printf *argument, char *format);
-char				set_get_flags_presence(int yes);
-int					set_get_return(int value);
-int					set_get_put_sign_back(int yes);
-int					set_get_before_len(int increment);
 void				get_hex_ptr_adr(va_list ap, t_printf *argument);
 void				apply_width(t_printf *argument);
 void				apply_flag_padding(t_printf *argument);
@@ -81,7 +76,7 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 		int sizeof_var, t_printf *argument);
 void				stack_str_fill(t_printf	*argument, char *src, int size);
 void				erase_arg_str(t_printf	*argument);
-void		store_print_handler(t_printf *argument, int location, int sizeof_var, int
+int					store_print_handler(t_printf *argument, int location, int sizeof_var, int
 		memset);
 void				irrational_printf_changes(t_printf	*argument);
 

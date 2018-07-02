@@ -25,7 +25,7 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 	{
 		format++;
 		if (*format && *format != '*' && !(ft_isdigit(*format)))
-			(*argument).precision = 0;
+			(*argument).precision = -1;
 		else if (*format && ft_isdigit(*format))
 		{
 			(*argument).precision = ft_atoi(format);
@@ -38,7 +38,8 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 	if (argument->sharp)
 	{
 		(argument->width >= argument->precision) ? argument->width-- : 0;
-		(argument->width >= argument->precision) ? argument->width-- : 0;
+		if (ft_strchr("xX", argument->type))
+			(argument->width >= argument->precision) ? argument->width-- : 0;
 	}
 	return (format);
 }
@@ -61,7 +62,6 @@ char	*get_flags(t_printf *argument, char *format)
 	while (*format == '-' || *format == '0' || *format == '+' || *format == ' '
 			|| *format == '#')
 	{
-		set_get_flags_presence(1);
 		if (*format == '-')
 			argument->left_align_output = 1;
 		if (*format == '0' && argument->left_align_output != 1)
