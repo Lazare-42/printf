@@ -32,15 +32,36 @@ char	*print_bits(void *ptr, int size)
 	return (result);
 }
 
-//ft_printf("\n\n\n%08x", 42);                       
-//ft_printf("\n%-5d", -42);                       
-//printf("\n%-5d", -42);                       
+//ft_printf("\n\n\n\n%08x", 42);                       
+//ft_printf("\n\n%-5d", -42);                       
+//printf("\n\n%-5d", -42);                       
 int main()
 {
+ int ret;
 
-  printf("\n%d", 0);
-  ft_printf("\n%d", 0);
-/*
+ ret = ft_printf("%%####.10%% {%####.10%}"); fflush(stdout);
+ printf("\nret = %d\n", ret); fflush(stdout);
+ ret = printf("{%%####%% %####.10%}"); fflush(stdout);
+ printf("\nret = %d\n", ret); fflush(stdout);
+ ret = ft_printf("{%%10%%} {%10%}");
+ printf("\nret = %d\n", ret); fflush(stdout);
+ ret = printf("{%%10%%} {%10%}"); fflush(stdout);
+ printf("\nret = %d\n", ret); fflush(stdout);
+ ret = ft_printf("{%-10%}");
+ printf("\nret = %d\n", ret); fflush(stdout);
+ ret = printf("{%-10%}"); fflush(stdout);
+ printf("\nret = %d\n", ret); fflush(stdout);
+
+
+
+ /*
+ ft_printf("\n% Zoooo");
+ ft_printf("\n%");
+ ft_printf("\n{%}");
+  printf("\n{% %}");
+  printf("\n% Zoooo");
+  printf("\n%");
+  printf("\n{%}");
 
 */
 }

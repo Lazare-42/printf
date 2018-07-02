@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/30 12:09:47 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/02 22:47:33 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ char	*get_width(va_list ap, t_printf *argument, char *format)
 {
 	if (ft_isdigit(*format))
 	{
-		(*argument).width = ft_atoi(format);
+		argument->width = ft_atoi(format);
 		while (ft_isdigit(*format))
 			format++;
 	}
 	else if (*format == '*' && format++)
-		(*argument).width = va_arg(ap, int);
+		argument->width = va_arg(ap, int);
 	return (format);
 }
 
@@ -77,7 +77,6 @@ char	*get_modifier(t_printf *argument, char *format)
 			&& ft_strchr("hhljz", *format))
 	{
 		(*argument).modifier[0] = *format;
-		format++;
 		if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)))
 		{
 			(*argument).modifier[1] = *format;
@@ -89,6 +88,7 @@ char	*get_modifier(t_printf *argument, char *format)
 		argument->type = *format;
 		if (*format == 'c' && argument->show_sign)
 			argument->show_sign = 0;
+		format++;
 	}
 	return (format);
 }

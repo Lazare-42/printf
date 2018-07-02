@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/01 00:04:37 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/02 23:41:14 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 const char	*store_string(const char *format, t_printf *argument)
 {
 	while (*format && (*format != '%' || (*format == '%' &&
-			((*(1 + format) == '%' ) || !(*(1 + format))))))
+!ft_strchr("sSpdDioOuUxXcCeEfFgGaAn0# -.", *(format + 1))) || !(*(1 + format))))
 	{
 		if (*format == '%' && (*(1 + format) == '%'))
 			format++;
