@@ -22,20 +22,18 @@ void		apply_width(t_printf *argument)
 
 	if (argument->precision > argument->width)
 		return ;
-	fill = (argument->left_align_output == -1) ? ' ' : '0';
+	fill = (argument->left_align_output 
+			!= 1) ? '0' : ' ';
 	fill_val = argument->width;
 	fill_val -= (argument->precision < argument->arg_len) ?
 		argument->arg_len : argument->precision;
-	if (fill_val < argument->width)
-	{
-		if (argument->show_sign)
-			fill_val--;
-		argument->to_store = (void*)&fill;
-		if (argument->left_align_output == 1)
-			store_print_handler(argument, 3, 0, fill_val);
-		else
-			store_print_handler(argument, 2, 0, fill_val);
-	}
+	if (argument->show_sign)
+		fill_val--;
+	argument->to_store = (void*)&fill;
+	if (argument->left_align_output == 1)
+		store_print_handler(argument, 3, 0, fill_val);
+	else
+		store_print_handler(argument, 2, 0, fill_val);
 }
 
 void		apply_flag_padding(t_printf *argument)

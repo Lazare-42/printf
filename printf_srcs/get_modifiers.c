@@ -35,12 +35,6 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 		else if (*format == '*' && format++)
 			(*argument).precision = va_arg(ap, int);
 	}
-	if (argument->sharp)
-	{
-		(argument->width >= argument->precision) ? argument->width-- : 0;
-		if (ft_strchr("xX", argument->type))
-			(argument->width >= argument->precision) ? argument->width-- : 0;
-	}
 	return (format);
 }
 
@@ -79,7 +73,8 @@ char	*get_flags(t_printf *argument, char *format)
 
 char	*get_modifier(t_printf *argument, char *format)
 {
-	if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)) && (*(1 + format)))
+	if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)) && (*(1 + format))
+			&& ft_strchr("hhljz", *format))
 	{
 		(*argument).modifier[0] = *format;
 		format++;
@@ -95,7 +90,6 @@ char	*get_modifier(t_printf *argument, char *format)
 		if (*format == 'c' && argument->show_sign)
 			argument->show_sign = 0;
 	}
-	format++;
 	return (format);
 }
 

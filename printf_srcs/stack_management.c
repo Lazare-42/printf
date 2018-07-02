@@ -29,7 +29,7 @@ int		set_get_return(int action)
 	{
 		final_return = return_val;
 		return_val = 0;
-		return (return_val);
+		return (final_return);
 	}
 	return(0);
 }

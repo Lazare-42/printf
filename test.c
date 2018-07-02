@@ -2,6 +2,7 @@
 #include "includes/libft.h"
 #include "includes/printf.h"
 #include <stdlib.h>
+#include <limits.h>
 
 char	*print_bits(void *ptr, int size) 
 {
@@ -37,7 +38,8 @@ char	*print_bits(void *ptr, int size)
 int main()
 {
 
-  ft_printf("%-15x", 542);
+  printf("\n%d", 0);
+  ft_printf("\n%d", 0);
 /*
 
 */

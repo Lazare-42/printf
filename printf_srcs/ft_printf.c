@@ -55,6 +55,12 @@ char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 	format = get_precision(ap, argument, format);
 	format = get_modifier(argument, format);
 	store_type_data(ap, argument);
+	if (argument->sharp)
+	{
+		(argument->width >= argument->precision) ? argument->width-- : 0;
+		if (!ft_strchr("xX", argument->type))
+			(argument->width >= argument->precision) ? argument->width-- : 0;
+	}
 	if ((*argument).width ||
 			(*argument).precision > -1)
 		apply_precision_width(argument);

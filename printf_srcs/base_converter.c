@@ -101,7 +101,7 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 		int sizeof_var, t_printf *argument)
 {
 	char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
-	char		result[19];
+	char		result[21];
 	int			i;
 
 	i = 0;
@@ -112,15 +112,16 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 		argument->show_sign = '-';
 	if (number < 0)
 		number *= -1;
-	(number == 0) ? result[18] = '0' : 0;
+	(number == 0) ? result[20] = '0' : 0;
+	(number == 0) ? argument->sharp = 0 : 0;
 	(number == 0) ? i++ : 0;
 	while (number != 0)
 	{
-		result[18 - i] = base_output[(number % base_size < 0) ?
+		result[20 - i] = base_output[(number % base_size < 0) ?
 			-(number % base_size) :number % base_size];
 		number /= base_size;
 		i++;
 	}
-	argument->to_store = &result[19 - i];
+	argument->to_store = &result[21 - i];
 	store_print_handler(argument, 3, sizeof(char), i);
 }
