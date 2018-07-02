@@ -116,7 +116,6 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 	(number == 0) ? i++ : 0;
 	while (number != 0)
 	{
-
 		result[18 - i] = base_output[(number % base_size < 0) ?
 			-(number % base_size) :number % base_size];
 		number /= base_size;

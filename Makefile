@@ -121,11 +121,7 @@ PRINTF_SRCS =   ft_printf.c \
 
 # CC = gcc -Wall -Wextra -Werror -c -g
 
-ASAN = 
-ifeq ($(DEBUG), yes)
-	ASAN=-fsanitize=address
-endif
-CC = gcc -Wall -Wextra -Werror -c $(ASAN)
+CC = gcc -Wall -Wextra -Werror -c
 
 #DEBUG = ""
 #if ${DEBUG}

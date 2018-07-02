@@ -98,3 +98,21 @@ char	*get_modifier(t_printf *argument, char *format)
 	format++;
 	return (format);
 }
+
+t_printf	initialize_elem(void)
+{
+	t_printf argument;
+
+	argument.type = '0';
+	ft_memset(argument.modifier, 0, 3);
+	ft_memset(argument.sign, 0, 3);
+	argument.before_len = 0;
+	argument.before_arg_len = 0;
+	argument.arg_len = 0;
+	argument.width = 0;
+	argument.sharp = 0;
+	argument.precision = 0;
+	argument.show_sign = 0;
+	argument.left_align_output = -1;
+	return (argument);
+}

@@ -37,8 +37,7 @@ char	*print_bits(void *ptr, int size)
 int main()
 {
 
-ft_printf("Hello\n %d", 123);                   
-printf("%d", printf("Hello\n %d", 123));
+  ft_printf("%-15x", 542);
 /*
 
 */

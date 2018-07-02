@@ -102,5 +102,6 @@ int		ft_printf(const char *restrict format, ...)
 	va_start(ap, format);
 	parse(format, ap, &argument);
 	va_end(ap);
-	return(store_print_handler(&argument, 0, 0, 0));
+	store_print_handler(&argument, 0, 0, 0);
+	return (set_get_return(0));
 }

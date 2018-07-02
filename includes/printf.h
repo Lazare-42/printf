@@ -76,8 +76,9 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 		int sizeof_var, t_printf *argument);
 void				stack_str_fill(t_printf	*argument, char *src, int size);
 void				erase_arg_str(t_printf	*argument);
-int					store_print_handler(t_printf *argument, int location, int sizeof_var, int
+void				store_print_handler(t_printf *argument, int location, int sizeof_var, int
 		memset);
 void				irrational_printf_changes(t_printf	*argument);
+int					set_get_return(int action);
 
 #endif
