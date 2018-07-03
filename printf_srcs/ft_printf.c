@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/03 01:14:30 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/03 17:27:11 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ void		apply_precision_width(t_printf *argument)
 		 apply_sharp(argument);
 	if (argument->show_sign && argument->left_align_output > -1)
 		 apply_plus_minus_flags(argument);
+	/*
 	if (argument->precision != -1 && argument->left_align_output == 1 &&
 			argument->type != '0')
 		 apply_precision(argument);
+	 */
 	if (argument->width)
 		 apply_width(argument);
 	if (argument->sharp && ft_strchr("xoX", argument->type)
@@ -50,7 +52,7 @@ void		apply_precision_width(t_printf *argument)
 		 apply_precision(argument);
 }
 
-char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
+void	treat_and_store_argument(va_list ap, t_printf *argument)
 {
 	store_type_data(ap, argument);
 	if (argument->sharp && argument->type != '0')
@@ -62,7 +64,6 @@ char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 	if ((*argument).width ||
 			(*argument).precision > -1)
 		apply_precision_width(argument);
-	return (format);
 }
 
 t_printf	initialize_elem(void)
@@ -91,7 +92,7 @@ void	parsing_handler(char *format, va_list ap)
 	argument = initialize_elem();
 	format = parse(format, &argument, ap);
 	if (argument.type)
-		treat_and_store_argument(ap, &argument, (char*)format);
+		treat_and_store_argument(ap, &argument);
 	store_print_handler(&argument, 0, 0, 0);
 	if (format && *format)
 		parsing_handler(format, ap);

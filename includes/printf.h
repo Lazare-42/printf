@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/29 16:54:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/30 23:26:28 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/03 17:19:20 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ int					printf(const char *restrict format, ...);
 char				char_type_add(char c);
 int					ft_printf(const char *restrict format, ...);
 t_printf			initialize_elem(void);
-char 				*treat_and_store_argument(va_list ap, t_printf *argument,
-		char *format);
+void				treat_and_store_argument(va_list ap, t_printf *argument);
 char				*parse(char *format, t_printf *argument, va_list ap);
 char				*get_flags(t_printf *argument, char *format);
 char				*get_precision(va_list ap, t_printf *argument, char *format);

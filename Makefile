@@ -13,6 +13,7 @@ NAME = libftprintf.a
 LIBFT_SRCS =	ft_advance_for_quotes.c \
       			ft_atof.c \
       			ft_atoi.c \
+				ft_strdiff.c \
       			ft_bzero.c \
       			ft_check_endianness.c \
       			ft_debug.c \
@@ -97,6 +98,8 @@ LIBFT_SRCS =	ft_advance_for_quotes.c \
       			ft_strrchr.c \
       			ft_strsplit.c \
       			ft_strstr.c \
+				ft_strstr_whilestr.c \
+      			ft_strstrstr.c \
 				ft_strstrchr.c \
       			ft_strsub.c \
       			ft_strtrim.c \

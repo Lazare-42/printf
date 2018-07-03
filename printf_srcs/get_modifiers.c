@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/03 00:55:03 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/03 16:14:54 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,21 @@
 
 char	*get_precision(va_list ap, t_printf *argument, char *format)
 {
-	if (format && *format && *format == '.')
+	int i;
+
+	i = 0;
+	if (format && format[i] && format[i] == '.')
 	{
-		format++;
-		if (*format && *format != '*' && !(ft_isdigit(*format)))
+		i++;
+		if (format[i] && format[i] != '*' && !(ft_isdigit(format[i])))
 			(*argument).precision = -1;
-		else if (*format && ft_isdigit(*format))
+		else if (format[i] && ft_isdigit(format[i]))
 		{
 			(*argument).precision = ft_atoi(format);
-			while (ft_isdigit(*format))
-				format++;
+			while (ft_isdigit(format[i]))
+				i++;
 		}
-		else if (*format == '*' && format++)
+		else if (format[i] == '*' && format[i++])
 			(*argument).precision = va_arg(ap, int);
 	}
 	return (format);
@@ -40,55 +43,65 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 
 char	*get_width(va_list ap, t_printf *argument, char *format)
 {
-	if (format && ft_isdigit(*format))
+	int i;
+
+	i = 0;
+	if (format && ft_isdigit(format[i]))
 	{
 		argument->width = ft_atoi(format);
-		while (ft_isdigit(*format))
-			format++;
+		while (ft_isdigit(format[i]))
+			i++;
 	}
-	else if (format && *format == '*' && format++)
+	else if (format && format[i] == '*' && format[i++])
 		argument->width = va_arg(ap, int);
 	return (format);
 }
 
 char	*get_flags(t_printf *argument, char *format)
 {
-	while (format && (*format == '-' || *format == '0' || *format == '+' || *format == ' '
-			|| *format == '#'))
+	int i;
+
+
+	i = 0;
+	while (format && (format[i] == '-' || format[i] == '0' || format[i] == '+' || format[i] == ' '
+			|| format[i] == '#'))
 	{
-		if (*format == '-')
+		if (format[i] == '-')
 			argument->left_align_output = 1;
-		if (*format == '0' && argument->left_align_output != 1)
+		if (format[i] == '0' && argument->left_align_output != 1)
 			argument->left_align_output = 0;
-		if (*format == ' ' && (*argument).show_sign != '+')
+		if (format[i] == ' ' && (*argument).show_sign != '+')
 			argument->show_sign = ' ';
-		if (*format == '+')
+		if (format[i] == '+')
 			argument->show_sign = '+';
-		if (*format == '#')
+		if (format[i] == '#')
 			argument->sharp = 1;
-		format++;
+		i++;
 	}
 	return (format);
 }
 
 char	*get_modifier(t_printf *argument, char *format)
 {
-	if (format && !(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)) && (*(1 + format))
-			&& ft_strchr("hhljz", *format))
+	int i;
+
+	i = 0;
+	if (format && !(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", format[i])) && (*(1 + format))
+			&& ft_strchr("hhljz", format[i]))
 	{
-		(*argument).modifier[0] = *format;
-		if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)))
+		(*argument).modifier[0] = format[i];
+		if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", format[i])))
 		{
-			(*argument).modifier[1] = *format;
-			format++;
+			(*argument).modifier[1] = format[i];
+			i++;
 		}
 	}
-	if ((format && ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)))
+	if ((format && ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", format[i])))
 	{
-		argument->type = *format;
-		if (*format == 'c' && argument->show_sign)
+		argument->type = format[i];
+		if (format[i] == 'c' && argument->show_sign)
 			argument->show_sign = 0;
-		format++;
+		i++;
 	}
 	return (format);
 }

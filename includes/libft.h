@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/18 15:27:37 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/30 23:29:22 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/03 19:44:49 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef	struct		s_list
 }					t_list;
 
 void				ft_putstr(char *str);
+char				*ft_strdiff(char *str, char c, int size);
 int					ft_str_is_printable(char *str);
 char				*ft_itoa(int nbr);
 char				*ft_ltoa(intmax_t nbr);
@@ -46,6 +47,8 @@ char				*ft_strnstr(const char *haystack, \
 		const char *needle, size_t n);
 char				*ft_strstr(const char *haystack, const char *needle);
 char				*ft_strstrchr(char *haystack, char *needle, char stop);
+char				*ft_strstrstr(char *haystack, char *needle, char *stop);
+char				*ft_strstr_whilestr(char *haystack, char *needle, char *go);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 void				*ft_memccpy(void *dest, const void *src, int c, size_t n);

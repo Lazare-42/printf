@@ -39,20 +39,20 @@ int main()
 {
  int ret;
 
- ret = ft_printf("%%####.10%% {%####.10%}"); fflush(stdout);
+ ret = ft_printf("\n%     PPPPPP %");
  printf("\nret = %d\n", ret); fflush(stdout);
- ret = printf("%%####.10%% {%####.10%}"); fflush(stdout);
+// ret = printf("\n%       PPPPPPPPPPP %");
+ ret = printf("\n%     PPPPPP %");
  printf("\nret = %d\n", ret); fflush(stdout);
- /*
- ret = ft_printf("{%%10%%} {%10%}");
+/*
+ ret = ft_printf("before %d after", 42);
  printf("\nret = %d\n", ret); fflush(stdout);
- ret = printf("{%%10%%} {%10%}"); fflush(stdout);
+ ret = printf("before %d after", 42);
  printf("\nret = %d\n", ret); fflush(stdout);
  ret = ft_printf("{%-10%}");
  printf("\nret = %d\n", ret); fflush(stdout);
  ret = printf("{%-10%}"); fflush(stdout);
  printf("\nret = %d\n", ret); fflush(stdout);
-
 
 
  ft_printf("\n% Zoooo");

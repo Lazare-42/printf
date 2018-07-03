@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/30 23:47:25 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/03 15:56:54 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		apply_width(t_printf *argument)
 	if (argument->precision > argument->width)
 		return ;
 	fill = (argument->left_align_output 
-			!= 1) ? '0' : ' ';
+			== 0) ? '0' : ' ';
 	fill_val = argument->width;
 	fill_val -= (argument->precision < argument->arg_len) ?
 		argument->arg_len : argument->precision;
