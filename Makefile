@@ -97,6 +97,7 @@ LIBFT_SRCS =	ft_advance_for_quotes.c \
       			ft_strrchr.c \
       			ft_strsplit.c \
       			ft_strstr.c \
+				ft_strstrchr.c \
       			ft_strsub.c \
       			ft_strtrim.c \
       			ft_symetric_byte_swap.c \
@@ -115,6 +116,7 @@ PRINTF_SRCS =   ft_printf.c \
 				get_hex_adr.c \
 				get_modifiers.c \
 				stack_management.c \
+				parsing.c \
 				precision_width.c \
 				treat_and_store_argument.c \
 				base_converter.c \

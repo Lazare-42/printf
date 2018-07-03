@@ -18,7 +18,12 @@ char	*store_string(char *format, t_printf *argument)
 	while (*format && *format != '%')
 	{
 		argument->to_store = (void*)format;
-		store_print_handler(argument, 1, 1, 1);
+		store_print_handler(argument, 1, 0, 1);
+		format++;
+	}
+	if (*format == '%')
+	{
+		argument->percentage_presence = 1;
 		format++;
 	}
 	return (format);
@@ -26,20 +31,29 @@ char	*store_string(char *format, t_printf *argument)
 
 char	*parse(char *format, t_printf *argument, va_list ap)
 {
-	format++;
 	format = store_string(format, argument);
-	get_precision(ap, argument, ft_strstrchr(".", format, '%'));
-	get_width(ap, argument, ft_strstrchr("123456789", format, '.'));
-	get_width(ap, argument, ft_strstrchr("*", format, '.'));
-	get_flags(argument, ft_strstrchr("-0+ #", format, '%'));
-	get_modifier(argument, ft_strstrchr("sSpdDioOuUxXcCeEfFgGaAnhhljz", format, '%'));
-	while (*format && *format != '%')
-		format++;
-	if (!argument->type && *format == '%')
+	get_precision(ap, argument, ft_strstrchr(format, ".", '%'));
+	get_width(ap, argument, ft_strstrchr(format, "123456789", '.'));
+	get_width(ap, argument, ft_strstrchr(format, "*", '.'));
+	get_flags(argument, ft_strstrchr(format, "-0+ #",'%'));
+	get_modifier(argument, ft_strstrchr(format,"sSpdDioOuUxXcCeEfFgGaAnhhljz", '%'));
+	if (ft_strstrchr(format, "%", '\0'))
 	{
-		argument->to_store = (void*)format;
-		store_print_handler(argument, 1, 1, 1);
-		format++;
+		format = ft_strstrchr(format, "%", '\0');
+		if (argument->type == '0' && *format == '%')
+		{
+			argument->to_store = (void*)format;
+			store_print_handler(argument, 1, 1, 1);
+			format++;
+		}
 	}
+	else if (argument->type == '0' && argument->percentage_presence)
+	{
+		argument->to_store = (void*)&format[ft_strlen(format) - 1];
+		store_print_handler(argument, 1, 1, 1);
+		return (NULL);
+	}
+	else if (argument->type != '0')
+		format = ft_strstrchr(format, "sSpdDioOuUxXcCeEfFgGaAn", 0) + 1;
 	return (format);
 }

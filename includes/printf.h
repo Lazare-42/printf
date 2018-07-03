@@ -42,6 +42,7 @@ typedef struct		s_printf
 	int				return_val;
 	void			*to_store;
 	char			character;
+	char			percentage_presence;
 	char 			type;
 	char			modifier[3];
 	char			sign[3];
@@ -59,6 +60,7 @@ int					ft_printf(const char *restrict format, ...);
 t_printf			initialize_elem(void);
 char 				*treat_and_store_argument(va_list ap, t_printf *argument,
 		char *format);
+char				*parse(char *format, t_printf *argument, va_list ap);
 char				*get_flags(t_printf *argument, char *format);
 char				*get_precision(va_list ap, t_printf *argument, char *format);
 char				*get_width(va_list ap, t_printf *argument, char *format);

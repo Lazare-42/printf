@@ -33,7 +33,8 @@ void		apply_precision_width(t_printf *argument)
 		 apply_sharp(argument);
 	if (argument->show_sign && argument->left_align_output > -1)
 		 apply_plus_minus_flags(argument);
-	if (argument->precision != -1 && argument->left_align_output == 1)
+	if (argument->precision != -1 && argument->left_align_output == 1 &&
+			argument->type != '0')
 		 apply_precision(argument);
 	if (argument->width)
 		 apply_width(argument);
@@ -44,14 +45,15 @@ void		apply_precision_width(t_printf *argument)
 		 apply_flag_padding(argument);
 	if (argument->show_sign && argument->left_align_output == -1)
 		 apply_plus_minus_flags(argument);
-	if (argument->precision > 0 && argument->left_align_output <= 0)
+	if (argument->precision > 0 && argument->left_align_output <= 0 && 
+			argument->type != '0')
 		 apply_precision(argument);
 }
 
 char 	*treat_and_store_argument(va_list ap, t_printf *argument, char *format)
 {
 	store_type_data(ap, argument);
-	if (argument->sharp)
+	if (argument->sharp && argument->type != '0')
 	{
 		(argument->width >= argument->precision) ? argument->width-- : 0;
 		if (!ft_strchr("xX", argument->type))
@@ -77,6 +79,7 @@ t_printf	initialize_elem(void)
 	argument.sharp = 0;
 	argument.precision = 0;
 	argument.show_sign = 0;
+	argument.percentage_presence = 0;
 	argument.left_align_output = -1;
 	return (argument);
 }
@@ -89,11 +92,9 @@ void	parsing_handler(char *format, va_list ap)
 	format = parse(format, &argument, ap);
 	if (argument.type)
 		treat_and_store_argument(ap, &argument, (char*)format);
-	if (*format)
-	{
-		store_print_handler(&argument, 0, 0, 0);
+	store_print_handler(&argument, 0, 0, 0);
+	if (format && *format)
 		parsing_handler(format, ap);
-	}
 }
 
 int		ft_printf(const char *restrict format, ...)
@@ -108,6 +109,5 @@ int		ft_printf(const char *restrict format, ...)
 	va_start(ap, format);
 	parsing_handler((char*)format, ap);
 	va_end(ap);
-	store_print_handler(&argument, 0, 0, 0);
 	return (set_get_return(0));
 }

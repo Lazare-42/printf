@@ -41,8 +41,9 @@ int main()
 
  ret = ft_printf("%%####.10%% {%####.10%}"); fflush(stdout);
  printf("\nret = %d\n", ret); fflush(stdout);
- ret = printf("{%%####%% %####.10%}"); fflush(stdout);
+ ret = printf("%%####.10%% {%####.10%}"); fflush(stdout);
  printf("\nret = %d\n", ret); fflush(stdout);
+ /*
  ret = ft_printf("{%%10%%} {%10%}");
  printf("\nret = %d\n", ret); fflush(stdout);
  ret = printf("{%%10%%} {%10%}"); fflush(stdout);
@@ -54,7 +55,6 @@ int main()
 
 
 
- /*
  ft_printf("\n% Zoooo");
  ft_printf("\n%");
  ft_printf("\n{%}");
