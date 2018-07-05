@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/05 01:46:55 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/05 18:50:14 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 	if (format && format[i] && format[i] == '.')
 	{
 		i++;
-		if (format[i] && format[i] != '*' && !(ft_isdigit(format[i])))
+		if (format[i] && format[i] != '*' && (!(ft_isdigit(format[i]))
+					|| format[i] == '0'))
 			(*argument).precision = -1;
 		else if (format[i] && ft_isdigit(format[i]))
 		{
@@ -102,6 +103,8 @@ char	*get_modifier(t_printf *argument, char *format)
 		argument->type = format[i];
 		if (format[i] == 'c' && argument->show_sign)
 			argument->show_sign = 0;
+		if (format[i] == 'p')
+			argument->sharp = 1;
 		i++;
 	}
 	return (format);

@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/29 16:54:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/03 17:19:20 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/05 16:48:48 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 
 # include <stdarg.h>
 # include <inttypes.h>
+# include <wchar.h>
 
 
 typedef struct		s_printf
@@ -81,5 +82,7 @@ void				store_print_handler(t_printf *argument, int location, int sizeof_var, in
 		memset);
 void				irrational_printf_changes(t_printf	*argument);
 int					set_get_return(int action);
+void				store_unicode(wint_t data, t_printf *argument, int precision);
+void				store_unicode_str(wchar_t *data, t_printf *argument);
 
 #endif

@@ -3,6 +3,7 @@
 #include "includes/printf.h"
 #include <stdlib.h>
 #include <limits.h>
+#include <locale.h>
 
 char	*print_bits(void *ptr, int size) 
 {
@@ -32,19 +33,21 @@ char	*print_bits(void *ptr, int size)
 	return (result);
 }
 
-//ft_printf("\n\n\n\n%08x", 42);                       
-//ft_printf("\n\n%-5d", -42);                       
-//printf("\n\n%-5d", -42);                       
 int main()
 {
+	setlocale(LC_ALL, "");
  int ret;
 
- ret = ft_printf("% PPPPPP%");
- printf("\nret = %d\n", ret); fflush(stdout);
- ret = printf("% PPPPPP%");
- printf("\nret = %d\n", ret); fflush(stdout);
+	ret = ft_printf("%.0p, %.p", 0, 0);
+printf("\nret = %d\n", ret); fflush(stdout);
+	ret = printf("%.0p, %.p", 0, 0);
+printf("\nret = %d\n", ret); fflush(stdout);
+	/*
+	ret = ft_printf("{%05s}", "abc");
+printf("\nret = %d\n", ret); fflush(stdout);
+	ret = printf("{%05s}", "abc");
+printf("\nret = %d\n", ret); fflush(stdout);
 
- /*
  ft_printf("\n% Zoooo");
  ft_printf("\n%");
  ft_printf("\n{%}");

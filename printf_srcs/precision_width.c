@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/05 01:51:12 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/05 18:54:34 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,19 @@ void		apply_width(t_printf *argument)
 	char	fill;
 	int		fill_val;
 
-	if (argument->precision > argument->width)
+	if (argument->precision == -1)
+		argument->precision++;
+	if (argument->precision > argument->width && argument->type != 's')
 		return ;
 	fill = (argument->left_align_output 
-			== 0) ? '0' : ' ';
+			== 0 && !argument->precision) ? '0' : ' ';
 	fill_val = argument->width;
-	fill_val -= (argument->precision < argument->arg_len) ?
-		argument->arg_len : argument->precision;
+	if (ft_strchr("sS", argument->type) && argument->precision)
+		fill_val -= (argument->precision < argument->arg_len) ?
+			argument->precision : argument->arg_len;
+	else
+		fill_val -= (argument->precision < argument->arg_len) ?
+			argument->arg_len : argument->precision;
 	if (fill_val <= 0)
 		return ;
 	if (argument->show_sign)
@@ -84,7 +90,8 @@ void		apply_precision(t_printf *argument)
 	char		fill;
 
 	fill = '0';
-	if (argument->precision < argument->arg_len && argument->left_align_output)
+	if ((argument->precision < argument->arg_len && argument->left_align_output)
+			|| ft_strchr("sSCc", argument->type))
 		return ;
 	argument->to_store = (void*)&fill;
 	store_print_handler(argument, 2, 0, argument->precision - argument->arg_len);
@@ -97,11 +104,11 @@ void		apply_sharp(t_printf *argument)
 	fill = '0';
 	argument->to_store = (void*)&fill;
 	store_print_handler(argument, 2, 0, 1);
-	(argument->precision) ? argument->precision-- : argument->width--;
-	if (ft_strchr("xX", argument->type))
+	(argument->precision && argument->type != 'p') ? argument->precision-- : argument->width--;
+	if (ft_strchr("xXp", argument->type))
 	{
 		fill = (argument->type == 'X') ? 'X' : 'x';
-		argument->to_store = (void*)&(argument->type);
+		argument->to_store = (void*)&fill;
 		store_print_handler(argument, 2, 0, 1);
 //		(argument->precision) ? argument->precision-- : argument->width--;
 	}

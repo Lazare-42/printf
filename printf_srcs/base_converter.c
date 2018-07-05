@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/04 15:42:01 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/05 11:21:47 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,9 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 	int			i;
 
 	i = 0;
-	(void)sizeof_var;
 	number = take_out_bits(number, sizeof_var);
 	(number == 0) ? result[64] = '0' : 0;
-	(number == 0 && argument->sharp) ? argument->sharp = 0 : 0;
+	(number == 0 && argument->sharp && !ft_strchr("O", argument->type)) ? argument->sharp = 0 : 0;
 	(number == 0) ? i++ : 0;
 	if (number == 0 && argument->precision == -1)
 		return ;
@@ -114,7 +113,7 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 	if (number < 0)
 		number *= -1;
 	(number == 0) ? result[64] = '0' : 0;
-	(number == 0) ? argument->sharp = 0 : 0;
+//	(number == 0) ? argument->sharp = 0 : 0;
 	(number == 0) ? i++ : 0;
 	while (number != 0)
 	{

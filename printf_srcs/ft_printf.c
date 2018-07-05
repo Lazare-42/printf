@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/04 16:51:01 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/05 18:56:02 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 void		apply_precision_width(t_printf *argument)
 {
 //	printf("this is width : %d\nthis is length : %d\nthis is precision : \nthis is left_align_output : %d\n", argument->width, argument->arg_len, argument->precision, argument->left_align_output);
-	if (argument->sharp && ft_strchr("xoX", argument->type)
+	if (argument->sharp && ft_strchr("xoXp", argument->type)
 			&& !argument->left_align_output)
 		 apply_sharp(argument);
 	if (argument->show_sign && argument->left_align_output > -1)
@@ -39,7 +39,7 @@ void		apply_precision_width(t_printf *argument)
 		 apply_precision(argument);
 	if (argument->width)
 		 apply_width(argument);
-	if (argument->sharp && ft_strchr("xoXO", argument->type)
+	if (argument->sharp && ft_strchr("xoXpO", argument->type)
 			&& argument->left_align_output)
 		 apply_sharp(argument);
 	if (argument->left_align_output == 1)
@@ -61,7 +61,7 @@ void	treat_and_store_argument(va_list ap, t_printf *argument)
 			(argument->width >= argument->precision) ? argument->width-- : 0;
 	}
 	if ((*argument).width ||
-			(*argument).precision > -1)
+			(*argument).precision > -1 || argument->sharp)
 		apply_precision_width(argument);
 }
 

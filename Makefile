@@ -10,7 +10,9 @@
 # **************************************************************************** #
 
 NAME = libftprintf.a
+
 LIBFT_SRCS =	ft_advance_for_quotes.c \
+				ft_printbits.c \
       			ft_atof.c \
       			ft_atoi.c \
 				ft_strdiff.c \
@@ -123,6 +125,7 @@ PRINTF_SRCS =   ft_printf.c \
 				precision_width.c \
 				treat_and_store_argument.c \
 				base_converter.c \
+				wide_char.c \
 
 # CC = gcc -Wall -Wextra -Werror -c -g
 
