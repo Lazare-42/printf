@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/03 15:56:54 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/05 01:51:12 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void		apply_width(t_printf *argument)
 	fill_val = argument->width;
 	fill_val -= (argument->precision < argument->arg_len) ?
 		argument->arg_len : argument->precision;
+	if (fill_val <= 0)
+		return ;
 	if (argument->show_sign)
 		fill_val--;
 	argument->to_store = (void*)&fill;
@@ -69,8 +71,10 @@ void		apply_flag_padding(t_printf *argument)
 
 void		apply_plus_minus_flags(t_printf *argument)
 {
-	if (argument->type == 'u')
+	if (ft_strchr("uS", argument->type))
 		return ;
+	if (ft_strchr("cCsOo", argument->type))
+			return ;
 	argument->to_store = (void*)&(argument->show_sign);
 	store_print_handler(argument, 2, 0, 1);
 }
@@ -92,11 +96,13 @@ void		apply_sharp(t_printf *argument)
 
 	fill = '0';
 	argument->to_store = (void*)&fill;
-	store_print_handler(argument, 2, 1, 1);
-	if (argument->type != 'o')
+	store_print_handler(argument, 2, 0, 1);
+	(argument->precision) ? argument->precision-- : argument->width--;
+	if (ft_strchr("xX", argument->type))
 	{
 		fill = (argument->type == 'X') ? 'X' : 'x';
 		argument->to_store = (void*)&(argument->type);
-		store_print_handler(argument, 2, 1, 1);
+		store_print_handler(argument, 2, 0, 1);
+//		(argument->precision) ? argument->precision-- : argument->width--;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/03 16:14:54 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/05 01:46:55 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 			(*argument).precision = -1;
 		else if (format[i] && ft_isdigit(format[i]))
 		{
-			(*argument).precision = ft_atoi(format);
+			argument->precision = ft_atoi(&format[i]);
 			while (ft_isdigit(format[i]))
 				i++;
 		}
@@ -70,7 +70,8 @@ char	*get_flags(t_printf *argument, char *format)
 			argument->left_align_output = 1;
 		if (format[i] == '0' && argument->left_align_output != 1)
 			argument->left_align_output = 0;
-		if (format[i] == ' ' && (*argument).show_sign != '+')
+		if (format[i] == ' ' && (*argument).show_sign != '+' && argument->type
+				!= '0')
 			argument->show_sign = ' ';
 		if (format[i] == '+')
 			argument->show_sign = '+';
@@ -89,7 +90,7 @@ char	*get_modifier(t_printf *argument, char *format)
 	if (format && !(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", format[i])) && (*(1 + format))
 			&& ft_strchr("hhljz", format[i]))
 	{
-		(*argument).modifier[0] = format[i];
+		(*argument).modifier[0] = format[i++];
 		if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", format[i])))
 		{
 			(*argument).modifier[1] = format[i];

@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/03 20:55:56 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/04 16:51:01 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 void		apply_precision_width(t_printf *argument)
 {
+//	printf("this is width : %d\nthis is length : %d\nthis is precision : \nthis is left_align_output : %d\n", argument->width, argument->arg_len, argument->precision, argument->left_align_output);
 	if (argument->sharp && ft_strchr("xoX", argument->type)
 			&& !argument->left_align_output)
 		 apply_sharp(argument);
@@ -38,7 +39,7 @@ void		apply_precision_width(t_printf *argument)
 		 apply_precision(argument);
 	if (argument->width)
 		 apply_width(argument);
-	if (argument->sharp && ft_strchr("xoX", argument->type)
+	if (argument->sharp && ft_strchr("xoXO", argument->type)
 			&& argument->left_align_output)
 		 apply_sharp(argument);
 	if (argument->left_align_output == 1)

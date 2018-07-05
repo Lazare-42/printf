@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/30 12:09:48 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/04 15:42:01 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 #include <stdio.h>
 
 /*
-** u in ft_u_base_converter stands for unsigned base converter
-** take_out_bits' utility is to take out bits if a signed value has been passed
-** to the function ; and this value type is smaller than a uintmax_t ; the
-** largest possible type in C
-*/
+ ** u in ft_u_base_converter stands for unsigned base converter
+ ** take_out_bits' utility is to take out bits if a signed value has been passed
+ ** to the function ; and this value type is smaller than a uintmax_t ; the
+ ** largest possible type in C
+ */
 
 unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var)
 {
@@ -47,25 +47,26 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 		int sizeof_var, t_printf *argument)
 {
 	char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
-	char		result[20];
+	char		result[65];
 	int			i;
 
 	i = 0;
+	(void)sizeof_var;
 	number = take_out_bits(number, sizeof_var);
-	(number == 0) ? result[19] = '0' : 0;
+	(number == 0) ? result[64] = '0' : 0;
 	(number == 0 && argument->sharp) ? argument->sharp = 0 : 0;
 	(number == 0) ? i++ : 0;
 	if (number == 0 && argument->precision == -1)
 		return ;
 	while (number)
 	{
-		result[19 - i] = base_output[number % base_size];
+		result[64 - i] = base_output[number % base_size];
 		number /= base_size;
 		i++;
 	}
 	if (argument->type == 'X')
-		ft_str_mins_to_caps(&result[20] - i);
-	argument->to_store = &result[20 - i];
+		ft_str_mins_to_caps(&result[65] - i);
+	argument->to_store = &result[65 - i];
 	store_print_handler(argument, 3, sizeof(char), i);
 }
 
@@ -101,7 +102,7 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 		int sizeof_var, t_printf *argument)
 {
 	char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
-	char		result[21];
+	char		result[65];
 	int			i;
 
 	i = 0;
@@ -112,16 +113,16 @@ void				printf_s_base_converter(int base_size, intmax_t number,
 		argument->show_sign = '-';
 	if (number < 0)
 		number *= -1;
-	(number == 0) ? result[20] = '0' : 0;
+	(number == 0) ? result[64] = '0' : 0;
 	(number == 0) ? argument->sharp = 0 : 0;
 	(number == 0) ? i++ : 0;
 	while (number != 0)
 	{
-		result[20 - i] = base_output[(number % base_size < 0) ?
+		result[64 - i] = base_output[(number % base_size < 0) ?
 			-(number % base_size) :number % base_size];
 		number /= base_size;
 		i++;
 	}
-	argument->to_store = &result[21 - i];
+	argument->to_store = &result[65 - i];
 	store_print_handler(argument, 3, sizeof(char), i);
 }

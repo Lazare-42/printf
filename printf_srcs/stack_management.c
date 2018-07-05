@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/30 12:44:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/06/30 23:51:31 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/05 00:49:18 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,22 @@
 
 int		set_get_return(int action)
 {
-	static int return_val = 0;
-	static int final_return;
+	static int	return_val = 0;
+	int			final_ret;
 
 	if (action < 0)
 		return_val = action;
-	else if (action > 0 && return_val >= 0)
+	if (return_val < 0)
+		return (return_val);
+	else if (action > 0)
 		return_val += action;
-	else if (!action)
+	if (!action)
 	{
-		final_return = return_val;
+		final_ret = return_val;
 		return_val = 0;
-		return (final_return);
+		return (final_ret);
 	}
-	return(0);
+	return (return_val);
 }
 
 int		increment_right_value(t_printf *arg, int increment_val)
@@ -84,7 +86,8 @@ void		print(t_printf *arg, void *str, int location)
 		write_size += arg->arg_len; 
 		arg->arg_len = 0;
 	}
-	set_get_return(write(1, final_str, write_size));
+	if (write_size)
+		set_get_return(write(1, final_str, write_size));
 }
 
 void		store_print_handler(t_printf	*arg, int location, int src_len, int
