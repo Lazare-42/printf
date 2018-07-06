@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 00:14:26 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/05 01:44:06 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/06 04:30:11 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 char	*store_string(char *format, t_printf *argument)
 {
-	while (*format && *format != '%')
+	while (*format && !ft_strchr("*%", *format))
 	{
 		argument->to_store = (void*)format;
 		store_print_handler(argument, 1, 0, 1);
 		format++;
 	}
-	if (*format == '%')
+	if (*format == '%' || (*format == '*' && *(1 + format) && ft_strchr(".#.123456789sSpdDioOuUxXcCeEfFgGaAnhhljz", *(1 + format))))
 	{
 		argument->percentage_presence = 1;
 		format++;
