@@ -36,13 +36,25 @@ char	*print_bits(void *ptr, int size)
 int main()
 {
 	setlocale(LC_ALL, "");
- int ret;
 
-	ret = ft_printf("{%#.3o}", 1);
+	int ret;
+
+ ret =  ft_printf("\n%#6x", 2500);
 	printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("{%#.3o}", 1);
+ ret =  printf("\n%#6x", 2500);
 	printf("\nret = %d\n", ret); fflush(stdout);
 	/*
+ ret =  ft_printf("\n%-#6o", 2500);
+	printf("\nret = %d\n", ret); fflush(stdout);
+ ret =  printf("\n%#8x", 42);
+	printf("\nret = %d\n", ret); fflush(stdout);
+ ret =  printf("\n%#08x", 42);
+	printf("\nret = %d\n", ret); fflush(stdout);
+ ret =  printf("\n%#6o", 2500);
+
+	ret = ft_printf("{%*3d}", 0, 0);
+	ret = printf("{%*3d}", 0);
+	printf("\nret = %d\n", ret); fflush(stdout);
 	ret = ft_printf("%#o", 0);
 	ret = printf("%#o", 0);
 printf("\nret = %d\n", ret); fflush(stdout);

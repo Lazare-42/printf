@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 00:14:26 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/06 04:30:11 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 00:19:36 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ char	*parse(char *format, t_printf *argument, va_list ap)
 {
 	format = store_string(format, argument);
 	get_modifier(argument, ft_strstr_whilestr(format,"sSpdDioOuUxXcCeEfFgGaAnhhljz", "*-0+ #.123456789sSpdDioOuUxXcCeEfFgGaAnhhljz"));
-	get_precision(ap, argument, ft_strstrchr(format, ".", '%'));
 	get_width(ap, argument, ft_strstrstr(format, "123456789", ".%sSpdDioOuUxXcCeEfFgGaAnhhljz"));
 	get_width(ap, argument, ft_strstrstr(format, "*", ".%sSpdDioOuUxXcCeEfFgGaAnhhljz"));
+	get_precision(ap, argument, ft_strstrchr(format, ".", '%'));
 	get_flags(argument, ft_strstrstr(format, "-0+ #",".%123456789sSpdDioOuUxXcCeEfFgGaAnhhljz"));
 	if (ft_strstrchr(format, "%", '\0') && argument->type == '0')
 	{

@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/06 04:23:22 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 00:31:37 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,23 @@ char	*get_flags(t_printf *argument, char *format)
 			argument->left_align_output = 1;
 		if (format[i] == '0' && argument->left_align_output != 1)
 			argument->left_align_output = 0;
-		if (format[i] == ' ' && (*argument).show_sign != '+' && argument->type
-				!= '0')
+		if (format[i] == ' ' && (*argument).show_sign != '+' && !ft_strchr("0Xx", argument->type)
+				&& !argument->sharp)
 			argument->show_sign = ' ';
-		if (format[i] == '+')
+		if (format[i] == '+' && !argument->sharp && !ft_strchr("Xx", argument->type))
 			argument->show_sign = '+';
 		if (format[i] == '#')
+		{
 			argument->sharp = 1;
+			argument->show_sign = 0;
+			argument->show_sign = 0;
+		}
 		i++;
 	}
+	/*
+	if (argument->type == 'x' && argument->width > 0)
+		argument->width--;
+		*/
 	return (format);
 }
 
@@ -123,5 +131,12 @@ char	*get_modifier(t_printf *argument, char *format)
 			argument->sharp = 1;
 		i++;
 	}
+	/*
+	if (ft_strchr("xX", argument->type) && argument->width > 0)
+	{
+		if (argument->sharp)
+			argument->width--;
+	}
+	*/
 	return (format);
 }
