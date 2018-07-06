@@ -38,9 +38,9 @@ int main()
 	setlocale(LC_ALL, "");
  int ret;
 
-	ret = ft_printf("%.0p, %.p", 0, 0);
+	ret = ft_printf("{%05p}", 0);
 printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("%.0p, %.p", 0, 0);
+	ret = printf("{%05p}", 0);
 printf("\nret = %d\n", ret); fflush(stdout);
 	/*
 	ret = ft_printf("{%05s}", "abc");

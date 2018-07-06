@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/05 18:54:34 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/06 03:14:13 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void		apply_sharp(t_printf *argument)
 	fill = '0';
 	argument->to_store = (void*)&fill;
 	store_print_handler(argument, 2, 0, 1);
-	(argument->precision && argument->type != 'p') ? argument->precision-- : argument->width--;
+//	(argument->precision && argument->type != 'p') ? argument->precision-- : argument->width--;
 	if (ft_strchr("xXp", argument->type))
 	{
 		fill = (argument->type == 'X') ? 'X' : 'x';

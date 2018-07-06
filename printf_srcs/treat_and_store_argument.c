@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:30:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/05 17:32:06 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/06 01:56:23 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,6 @@ void		store_type_data(va_list ap, t_printf *argument)
 		store_unicode(va_arg(ap, wint_t), argument, 4);
 	else if (argument->type == 'S' || (argument->type == 's' && *argument->modifier == 'l'))
 		store_unicode_str(va_arg(ap, wchar_t*), argument);
-	else if ((*argument).type == 'p')
+	if ((*argument).type == 'p')
 		get_hex_ptr_adr(ap, argument);
 }
