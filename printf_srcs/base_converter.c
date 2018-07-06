@@ -53,7 +53,9 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 	i = 0;
 	number = take_out_bits(number, sizeof_var);
 	(number == 0) ? result[64] = '0' : 0;
-	(number == 0 && argument->sharp && !ft_strchr("pO", argument->type)) ? argument->sharp = 0 : 0;
+	if ((!argument->precision && argument->type == 'o') || ft_strchr("xX", argument->type))
+	(number == 0 && argument->sharp && !ft_strchr("pOo", argument->type)) ? argument->sharp = 0 : 0;
+	//((int)number <= (base_size - 1) && argument->precision >= 0) ? argument->type = '-' : 0;
 	(number == 0) ? i++ : 0;
 	if (number == 0 && argument->precision == -1)
 		return ;

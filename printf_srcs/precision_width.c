@@ -90,7 +90,9 @@ void		apply_precision(t_printf *argument)
 	char		fill;
 
 	fill = '0';
-	if ((argument->precision < argument->arg_len && argument->left_align_output)
+	//if (argument->type == 'o')
+	//	argument->precision--;
+	if ((argument->precision <= argument->arg_len && argument->left_align_output)
 			|| ft_strchr("sSCc", argument->type))
 		return ;
 	argument->to_store = (void*)&fill;
@@ -104,7 +106,7 @@ void		apply_sharp(t_printf *argument)
 	fill = '0';
 	argument->to_store = (void*)&fill;
 	store_print_handler(argument, 2, 0, 1);
-//	(argument->precision && argument->type != 'p') ? argument->precision-- : argument->width--;
+//	(argument->precision && argument->type != 'o') ? argument->precision-- : argument->width--;
 	if (ft_strchr("xXp", argument->type))
 	{
 		fill = (argument->type == 'X') ? 'X' : 'x';
