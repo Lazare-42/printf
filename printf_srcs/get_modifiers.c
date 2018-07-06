@@ -37,6 +37,8 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 				argument->precision = 0;
 				argument->left_align_output = 0;
 			}
+			else if (argument->precision == 0)
+				argument->precision = -1;
 		}
 		else if (format[i] && format[i] != '*' && (!(ft_isdigit(format[i]))
 					|| format[i] == '0'))

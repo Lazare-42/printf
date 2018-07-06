@@ -38,9 +38,9 @@ int main()
 	setlocale(LC_ALL, "");
  int ret;
 
-	ret = printf("{%*.s}", 0, "42");
+	ret = ft_printf("{%.*s}", 10,  0);
 	printf("\nret = %d\n", ret); fflush(stdout);
-	ret = ft_printf("{%.*s}", 0,  "42");
+	ret = printf("{%.*s}",  10,  0);
 	printf("\nret = %d\n", ret); fflush(stdout);
 	/*
 	ret = ft_printf("%#o", 0);

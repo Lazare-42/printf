@@ -28,7 +28,7 @@
 
 void		apply_precision_width(t_printf *argument)
 {
-//	printf("this is width : %d\nthis is length : %d\nthis is precision : \nthis is left_align_output : %d\n", argument->width, argument->arg_len, argument->precision, argument->left_align_output);
+//	printf("this is width : %d\nthis is length : %d\nthis is precision : %d\nthis is left_align_output : %d\n", argument->width, argument->arg_len, argument->precision, argument->left_align_output);
 	if (argument->sharp && ft_strchr("xoXp", argument->type)
 			&& !argument->left_align_output)
 		 apply_sharp(argument);
