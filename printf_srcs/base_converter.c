@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/06 04:17:17 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/06 22:39:29 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 	(number == 0) ? result[64] = '0' : 0;
 	if ((!argument->precision && argument->type == 'o') || ft_strchr("xX", argument->type))
 	(number == 0 && argument->sharp && !ft_strchr("pOo", argument->type)) ? argument->sharp = 0 : 0;
-	//((int)number <= (base_size - 1) && argument->precision >= 0) ? argument->type = '-' : 0;
 	(number == 0) ? i++ : 0;
+	if (number == 0 && argument->sharp && argument->type == 'o')
+		return ;
 	if (number == 0 && argument->precision == -1)
 		return ;
 	while (number)
