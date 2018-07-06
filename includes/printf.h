@@ -26,7 +26,7 @@
 
 # define PRINTF_H
 
-# define BUFF_SIZE 3000
+# define BUFF_SIZE 12288
 
 # include <stdarg.h>
 # include <inttypes.h>

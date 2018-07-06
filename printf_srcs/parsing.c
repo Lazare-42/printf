@@ -15,13 +15,13 @@
 
 char	*store_string(char *format, t_printf *argument)
 {
-	while (*format && !ft_strchr("*%", *format))
+	while (*format && *format != '%')
 	{
 		argument->to_store = (void*)format;
 		store_print_handler(argument, 1, 0, 1);
 		format++;
 	}
-	if (*format == '%' || (*format == '*' && *(1 + format) && ft_strchr(".#.123456789sSpdDioOuUxXcCeEfFgGaAnhhljz", *(1 + format))))
+	if (*format == '%')
 	{
 		argument->percentage_presence = 1;
 		format++;
@@ -32,10 +32,10 @@ char	*store_string(char *format, t_printf *argument)
 char	*parse(char *format, t_printf *argument, va_list ap)
 {
 	format = store_string(format, argument);
+	get_modifier(argument, ft_strstr_whilestr(format,"sSpdDioOuUxXcCeEfFgGaAnhhljz", "*-0+ #.123456789sSpdDioOuUxXcCeEfFgGaAnhhljz"));
 	get_precision(ap, argument, ft_strstrchr(format, ".", '%'));
 	get_width(ap, argument, ft_strstrstr(format, "123456789", ".%sSpdDioOuUxXcCeEfFgGaAnhhljz"));
 	get_width(ap, argument, ft_strstrstr(format, "*", ".%sSpdDioOuUxXcCeEfFgGaAnhhljz"));
-	get_modifier(argument, ft_strstr_whilestr(format,"sSpdDioOuUxXcCeEfFgGaAnhhljz", "-0+ #.123456789sSpdDioOuUxXcCeEfFgGaAnhhljz"));
 	get_flags(argument, ft_strstrstr(format, "-0+ #",".%123456789sSpdDioOuUxXcCeEfFgGaAnhhljz"));
 	if (ft_strstrchr(format, "%", '\0') && argument->type == '0')
 	{
@@ -60,5 +60,6 @@ char	*parse(char *format, t_printf *argument, va_list ap)
 	}
 	else if (argument->type != '0')
 		format = ft_strstrchr(format, "sSpdDioOuUxXcCeEfFgGaAn", 0) + 1;
+//	printf("\n this is argument type : %c, this is is precision : %d, this is width : %d", argument->type, argument->precision, argument->width);
 	return (format);
 }

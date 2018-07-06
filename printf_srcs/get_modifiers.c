@@ -1,4 +1,4 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_modifiers.c                                    :+:      :+:    :+:   */
@@ -14,10 +14,12 @@
 #include "../includes/printf.h"
 
 /*
-** flag - which left aligns output and flag 0 which prepends 0 in front
-** both use same element of the structure left_align_output as they cannot
-** coexist. Default left_align_output is -1
-*/
+ ** flag - which left aligns output and flag 0 which prepends 0 in front
+ ** both use same element of the structure left_align_output as they cannot
+ ** coexist. Default left_align_output is -1
+			if (argument->precision == 0 && argument->type == 's')
+				argument->precision = 0;
+ */
 
 char	*get_precision(va_list ap, t_printf *argument, char *format)
 {
@@ -27,7 +29,16 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 	if (format && format[i] && format[i] == '.')
 	{
 		i++;
-		if (format[i] && format[i] != '*' && (!(ft_isdigit(format[i]))
+		if (format[i] == '*' && format[i++])
+		{
+			argument->precision = va_arg(ap, int);
+			if (argument->precision < 0)
+			{
+				argument->precision = 0;
+				argument->left_align_output = 0;
+			}
+		}
+		else if (format[i] && format[i] != '*' && (!(ft_isdigit(format[i]))
 					|| format[i] == '0'))
 			(*argument).precision = -1;
 		else if (format[i] && ft_isdigit(format[i]))
@@ -36,8 +47,6 @@ char	*get_precision(va_list ap, t_printf *argument, char *format)
 			while (ft_isdigit(format[i]))
 				i++;
 		}
-		else if (format[i] == '*' && format[i++])
-			(*argument).precision = va_arg(ap, int);
 	}
 	return (format);
 }
@@ -55,6 +64,11 @@ char	*get_width(va_list ap, t_printf *argument, char *format)
 	}
 	else if (format && format[i] == '*' && format[i++])
 		argument->width = va_arg(ap, int);
+	if (argument->width < 0)
+	{
+		argument->width *= -1;
+		argument->left_align_output = 1;
+	}
 	return (format);
 }
 
@@ -65,7 +79,7 @@ char	*get_flags(t_printf *argument, char *format)
 
 	i = 0;
 	while (format && (format[i] == '-' || format[i] == '0' || format[i] == '+' || format[i] == ' '
-			|| format[i] == '#'))
+				|| format[i] == '#'))
 	{
 		if (format[i] == '-')
 			argument->left_align_output = 1;
@@ -98,7 +112,7 @@ char	*get_modifier(t_printf *argument, char *format)
 			i++;
 		}
 	}
-	if ((format && ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", format[i])))
+	if ((format && ft_strchr("*sSpdDioOuUxXcCeEfFgGaAn", format[i])))
 	{
 		argument->type = format[i];
 		if (format[i] == 'c' && argument->show_sign)

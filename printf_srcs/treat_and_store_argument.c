@@ -139,7 +139,9 @@ void		store_type_data(va_list ap, t_printf *argument)
 		}
 		argument->to_store = (void*)va_arg_str;
 		if (argument->precision > 0 && argument->precision < (int)ft_strlen(va_arg_str))
+		{
 			store_print_handler(argument, 3, 1, argument->precision);
+		}
 		else
 			store_print_handler(argument, 3, 1, ft_strlen(va_arg_str));
 	}
