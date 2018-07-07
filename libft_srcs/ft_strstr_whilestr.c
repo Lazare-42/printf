@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/19 14:32:30 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/03 18:56:17 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 16:21:36 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ char	*ft_strstr_whilestr(char *haystack, char *needle, char *go)
 	while (haystack[i] && ft_strchr(go, haystack[i]))
 	{
 		j = 0;
-		while (needle[j] && ft_strchr(go, needle[j]) && needle[j] != haystack[i])
+		while (needle[j] && ft_strchr(go, needle[j])
+				&& needle[j] != haystack[i])
 			j++;
-		if (haystack[i] == needle[j])
+		if (needle[j] && haystack[i] == needle[j])
 			return (&(haystack[i]));
 		i++;
 	}

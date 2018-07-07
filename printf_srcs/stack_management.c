@@ -6,54 +6,55 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/30 12:44:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/05 00:49:18 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 15:35:48 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "printf.h"
 #include <wchar.h>
 #include <unistd.h>
 #include "../includes/libft.h"
 
-int		set_get_return(int action)
+static unsigned char	g_str[BUFF_SIZE];
+static int				g_return_val = 0;
+
+int						set_get_return(int action)
 {
-	static int	return_val = 0;
 	int			final_ret;
 
 	if (action < 0)
-		return_val = action;
-	if (return_val < 0)
-		return (return_val);
+		g_return_val = action;
+	if (g_return_val < 0)
+		return (g_return_val);
 	else if (action > 0)
-		return_val += action;
+		g_return_val += action;
 	if (!action)
 	{
-		final_ret = return_val;
-		return_val = 0;
+		final_ret = g_return_val;
+		g_return_val = 0;
 		return (final_ret);
 	}
-	return (return_val);
+	return (g_return_val);
 }
 
-int		increment_right_value(t_printf *arg, int increment_val)
+static int				increment_right_value(t_printf *arg, int increment_val)
 {
 	if (arg->location == 1)
 		return (arg->before_len += increment_val);
 	else if (arg->location == 2)
 		return (arg->before_arg_len += increment_val);
-	else 
+	else
 		return (arg->arg_len += increment_val);
 }
 
-void	store_values(t_printf	*arg, void	*dst, int src_len, int sizeof_memop)
+void					store_values(t_printf *arg, int buff_location,
+		int src_len, int sizeof_memop)
 {
 	unsigned char	*src_byte;
 	unsigned char	*dst_byte;
 	int				i;
 
 	i = 0;
-	dst_byte = dst;
+	dst_byte = g_str + buff_location;
 	src_byte = arg->to_store;
 	while (sizeof_memop--)
 	{
@@ -65,46 +66,47 @@ void	store_values(t_printf	*arg, void	*dst, int src_len, int sizeof_memop)
 	}
 }
 
-void		print(t_printf *arg, void *str, int location)
+static void				print(t_printf *arg, int location)
 {
 	unsigned char	final_str[BUFF_SIZE];
 	int				write_size;
 
 	write_size = 0;
-	ft_memcpy(final_str, str, arg->before_len);
+	ft_memcpy(final_str, g_str, arg->before_len);
 	write_size += arg->before_len;
 	arg->before_len = 0;
 	if (location == -2 || location == -3 || !location)
 	{
-		ft_memcpy(final_str + write_size, str + BUFF_SIZE / 3, arg->before_arg_len);
-		write_size += arg->before_arg_len; 
+		ft_memcpy(final_str + write_size, g_str
+				+ BUFF_SIZE / 3, arg->before_arg_len);
+		write_size += arg->before_arg_len;
 		arg->before_arg_len = 0;
 	}
 	if (location == -3 || !location)
 	{
-		ft_memcpy(final_str + write_size, str + 2 * (BUFF_SIZE / 3), arg->arg_len);
-		write_size += arg->arg_len; 
+		ft_memcpy(final_str + write_size, g_str + 2
+				* (BUFF_SIZE / 3), arg->arg_len);
+		write_size += arg->arg_len;
 		arg->arg_len = 0;
 	}
 	if (write_size)
 		set_get_return(write(1, final_str, write_size));
 }
 
-void		store_print_handler(t_printf	*arg, int location, int src_len, int
-		sizeof_memop)
+void					store_print_handler(t_printf *arg,
+		int location, int src_len, int sizeof_memop)
 {
-	static unsigned char	str[BUFF_SIZE];
-
 	if (location > 0)
 		arg->location = location;
 	if (location == 1)
-		store_values(arg, (void*)str, src_len, sizeof_memop);
+		store_values(arg, 0, src_len, sizeof_memop);
 	else if (location == 2)
-		store_values(arg, (void*)str + BUFF_SIZE / 3, src_len, sizeof_memop);
+		store_values(arg, BUFF_SIZE / 3, src_len, sizeof_memop);
 	else if (location == 3)
-		store_values(arg, (void*)str + 2 * BUFF_SIZE / 3, src_len, sizeof_memop);
+		store_values(arg, 2 * BUFF_SIZE / 3,
+				src_len, sizeof_memop);
 	if (location == 1 || location == 2 || location == 3)
 		return ;
 	else
-		print(arg, str, location);
+		print(arg, location);
 }

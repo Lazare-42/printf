@@ -6,11 +6,11 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 19:27:05 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/03 19:45:07 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 15:30:32 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stdlib.h>
+#include <stdlib.h>
 
 char	*ft_strdiff(char *str, char c, int size)
 {

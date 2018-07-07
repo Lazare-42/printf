@@ -118,14 +118,14 @@ LIBFT_SRCS =	ft_advance_for_quotes.c \
       			int_ft_putchar.c \
 
 PRINTF_SRCS =   ft_printf.c \
-				get_hex_adr.c \
 				get_modifiers.c \
 				stack_management.c \
 				parsing.c \
 				precision_width.c \
-				treat_and_store_argument.c \
 				base_converter.c \
 				wide_char.c \
+				store_nbr_data.c \
+				store_char_data.c \
 
 # CC = gcc -Wall -Wextra -Werror -c -g
 
@@ -147,7 +147,7 @@ LIBFT_OBJECT = $(addprefix $(ODIR)/, $(LIBFT_SRCS:.c=.o))
 
 PRINTF_OBJECT = $(addprefix $(BDIR)/, $(PRINTF_SRCS:.c=.o))
 
-CLEAN = /bin/rm -rf $(LIBFT_OBJECT) $(PRINTF_OBJECT)
+CLEAN = rm -rf $(ODIR) $(BDIR)
 
 ARCH = ar rc
 

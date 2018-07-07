@@ -6,22 +6,23 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/04 18:22:51 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/04 18:26:39 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 15:29:54 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*print_bits(void *ptr, int size) 
+char	*print_bits(void *ptr, int size)
 {
-	int i;
-	int bit_nbr = 0;
-	char *result;
-	char *test;
+	int		i;
+	int		bit_nbr;
+	char	*result;
+	char	*test;
 	int		j;
 
 	i = 7;
 	j = 0;
+	bit_nbr = 0;
 	test = ptr;
 	if (!(result = ft_strnew(size * 10)))
 		return (NULL);
@@ -39,4 +40,3 @@ char	*print_bits(void *ptr, int size)
 	}
 	return (result);
 }
-

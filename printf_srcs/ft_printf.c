@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 11:52:32 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 15:50:27 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,43 +20,46 @@
 ** sends the structure and the va_list element
 ** to the function treat_and_store elements which stores all required elements
 ** (width, precision, argument itself) in the structure and eventually sends
-** the structure and its element to the precision and width handler, 
+** the structure and its element to the precision and width handler,
 ** apply_precision_width
 ** If any error is encoutered set_get_return is set to -1. Else the function
 ** ft_printf returns from the write function in print_list()
 */
 
-void		apply_precision_width(t_printf *argument)
+static void		apply_precision_width(t_printf *argument)
 {
-//	printf("this is width : %d\nthis is length : %d\nthis is precision : %d\nthis is left_align_output : %d\n", argument->width, argument->arg_len, argument->precision, argument->left_align_output);
 	if (argument->sharp && ft_strchr("xoXp", argument->type)
 			&& !argument->left_align_output)
-		 apply_sharp(argument);
+		apply_sharp(argument);
 	if (argument->show_sign && argument->left_align_output > -1)
-		 apply_plus_minus_flags(argument);
-	if (argument->precision != -1 && argument->left_align_output == 1 &&
-			argument->type != '0')
-		 apply_precision(argument);
+		apply_plus_minus_flags(argument);
+	if (argument->precision != -1 && argument->left_align_output == 1
+			&& argument->type != '0')
+		apply_precision(argument);
 	if (argument->width)
-		 apply_width(argument);
+		apply_width(argument);
 	if (argument->sharp && ft_strchr("xoXpO", argument->type)
 			&& argument->left_align_output)
-		 apply_sharp(argument);
+		apply_sharp(argument);
 	if (argument->left_align_output == 1)
-		 apply_flag_padding(argument);
+		apply_flag_padding(argument);
 	if (argument->show_sign && argument->left_align_output == -1)
-		 apply_plus_minus_flags(argument);
-	if (argument->precision > 0 && argument->left_align_output <= 0 && 
-			argument->type != '0')
-		 apply_precision(argument);
+		apply_plus_minus_flags(argument);
+	if (argument->precision > 0 && argument->left_align_output <= 0
+			&& argument->type != '0')
+		apply_precision(argument);
 }
 
-void	treat_and_store_argument(va_list ap, t_printf *argument)
+static void		treat_and_store_argument(va_list ap, t_printf *argument)
 {
-	store_type_data(ap, argument);
+	if (ft_strchr("ouxXdiOUDb", argument->type))
+		store_number_data(ap, argument);
+	else
+		store_char_data(ap, argument);
 	if (argument->sharp && argument->type != '0')
 	{
-		(argument->width >= argument->precision && argument->type != 'o') ? argument->width-- : 0;
+		if (argument->width >= argument->precision && argument->type != 'o')
+			argument->width--;
 		if (!ft_strchr("xX", argument->type))
 			(argument->width >= argument->precision) ? argument->width-- : 0;
 		if (argument->type == 'o' && argument->sharp
@@ -68,7 +71,7 @@ void	treat_and_store_argument(va_list ap, t_printf *argument)
 		apply_precision_width(argument);
 }
 
-t_printf	initialize_elem(void)
+static t_printf	initialize_elem(void)
 {
 	t_printf argument;
 
@@ -87,7 +90,7 @@ t_printf	initialize_elem(void)
 	return (argument);
 }
 
-void	parsing_handler(char *format, va_list ap)
+static void		parsing_handler(char *format, va_list ap)
 {
 	t_printf	argument;
 
@@ -100,7 +103,7 @@ void	parsing_handler(char *format, va_list ap)
 		parsing_handler(format, ap);
 }
 
-int		ft_printf(const char *restrict format, ...)
+int				ft_printf(const char *restrict format, ...)
 {
 	va_list		ap;
 

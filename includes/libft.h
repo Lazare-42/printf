@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/18 15:27:37 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/04 18:23:22 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 15:36:45 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,6 @@ char				*ft_u_base_converter(int base_size,
 		uintmax_t number, int sizeof_var);
 char				ft_mins_to_caps(char c);
 void				*ft_symetric_byte_swap(void	*ptr, int size);
-int 				ft_check_endianness(void);
+int					ft_check_endianness(void);
 char				*print_bits(void *ptr, int size);
 #endif

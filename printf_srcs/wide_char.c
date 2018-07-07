@@ -6,13 +6,12 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/04 17:52:50 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/05 17:21:42 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 13:51:56 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/printf.h"
 #include "../includes/libft.h"
-#include <stdlib.h>
 
 void		send_unicode(void *c, t_printf *argument, int byte_size)
 {

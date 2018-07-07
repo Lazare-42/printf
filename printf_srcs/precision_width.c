@@ -6,14 +6,12 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 11:51:27 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 13:48:47 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 #include "../includes/printf.h"
-
-#include <stdio.h>
 
 void		apply_width(t_printf *argument)
 {
@@ -24,7 +22,7 @@ void		apply_width(t_printf *argument)
 		argument->precision++;
 	if (argument->precision > argument->width && argument->type != 's')
 		return ;
-	fill = (argument->left_align_output 
+	fill = (argument->left_align_output
 			== 0 && !argument->precision) ? '0' : ' ';
 	fill_val = argument->width;
 	if (ft_strchr("sS", argument->type) && argument->precision)
@@ -47,9 +45,7 @@ void		apply_width(t_printf *argument)
 void		apply_flag_padding(t_printf *argument)
 {
 	char	fill;
-	char	space_for_sign;
 
-	space_for_sign = 0;
 	fill = (argument->precision < argument->width &&
 			argument->precision != -1) ? ' ' : '0';
 	if (argument->arg_len >= argument->width)
@@ -67,7 +63,8 @@ void		apply_flag_padding(t_printf *argument)
 			return ;
 		}
 		argument->to_store = (void*)&fill;
-		store_print_handler(argument, 2, 1, argument->width - argument->arg_len);
+		store_print_handler(argument, 2, 1,
+				argument->width - argument->arg_len);
 		argument->to_store = (void*)&(argument->sign[0]);
 		store_print_handler(argument, 2, 1, 1);
 	}
@@ -78,7 +75,7 @@ void		apply_plus_minus_flags(t_printf *argument)
 	if (ft_strchr("uS", argument->type))
 		return ;
 	if (ft_strchr("cCsOo", argument->type))
-			return ;
+		return ;
 	argument->to_store = (void*)&(argument->show_sign);
 	store_print_handler(argument, 2, 0, 1);
 }
@@ -88,11 +85,13 @@ void		apply_precision(t_printf *argument)
 	char		fill;
 
 	fill = '0';
-	if ((argument->precision <= argument->arg_len && argument->left_align_output)
+	if ((argument->precision <= argument->arg_len
+				&& argument->left_align_output)
 			|| ft_strchr("sSCc", argument->type))
 		return ;
 	argument->to_store = (void*)&fill;
-	store_print_handler(argument, 2, 0, argument->precision - argument->arg_len);
+	store_print_handler(argument, 2, 0,
+			argument->precision - argument->arg_len);
 }
 
 void		apply_sharp(t_printf *argument)

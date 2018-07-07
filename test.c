@@ -39,9 +39,7 @@ int main()
 
 	int ret;
 
-  ret = ft_printf("%s %s  string. gg!", "this", "is");
-	printf("\nret = %d\n", ret); fflush(stdout);
-  ret = printf("%s %s  string. gg!", "this", "is");
+  ret = ft_printf("%b\n", 7, 700);
 	printf("\nret = %d\n", ret); fflush(stdout);
 	/*
  ret =  printf("\n%#8x", 42);
