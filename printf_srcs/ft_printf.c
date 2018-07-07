@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 00:27:17 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 11:52:32 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	treat_and_store_argument(va_list ap, t_printf *argument)
 	store_type_data(ap, argument);
 	if (argument->sharp && argument->type != '0')
 	{
-		(argument->width >= argument->precision) ? argument->width-- : 0;
+		(argument->width >= argument->precision && argument->type != 'o') ? argument->width-- : 0;
 		if (!ft_strchr("xX", argument->type))
 			(argument->width >= argument->precision) ? argument->width-- : 0;
 		if (argument->type == 'o' && argument->sharp

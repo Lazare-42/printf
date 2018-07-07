@@ -39,13 +39,11 @@ int main()
 
 	int ret;
 
- ret =  ft_printf("\n%#6x", 2500);
+  ret = ft_printf("%s %s  string. gg!", "this", "is");
 	printf("\nret = %d\n", ret); fflush(stdout);
- ret =  printf("\n%#6x", 2500);
+  ret = printf("%s %s  string. gg!", "this", "is");
 	printf("\nret = %d\n", ret); fflush(stdout);
 	/*
- ret =  ft_printf("\n%-#6o", 2500);
-	printf("\nret = %d\n", ret); fflush(stdout);
  ret =  printf("\n%#8x", 42);
 	printf("\nret = %d\n", ret); fflush(stdout);
  ret =  printf("\n%#08x", 42);

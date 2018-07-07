@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 00:31:37 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 12:17:57 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,6 @@ char	*get_flags(t_printf *argument, char *format)
 		}
 		i++;
 	}
-	/*
-	if (argument->type == 'x' && argument->width > 0)
-		argument->width--;
-		*/
 	return (format);
 }
 
@@ -131,12 +127,5 @@ char	*get_modifier(t_printf *argument, char *format)
 			argument->sharp = 1;
 		i++;
 	}
-	/*
-	if (ft_strchr("xX", argument->type) && argument->width > 0)
-	{
-		if (argument->sharp)
-			argument->width--;
-	}
-	*/
 	return (format);
 }

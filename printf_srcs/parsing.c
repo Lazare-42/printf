@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 00:14:26 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 00:19:36 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 12:19:00 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*parse(char *format, t_printf *argument, va_list ap)
 	get_modifier(argument, ft_strstr_whilestr(format,"sSpdDioOuUxXcCeEfFgGaAnhhljz", "*-0+ #.123456789sSpdDioOuUxXcCeEfFgGaAnhhljz"));
 	get_width(ap, argument, ft_strstrstr(format, "123456789", ".%sSpdDioOuUxXcCeEfFgGaAnhhljz"));
 	get_width(ap, argument, ft_strstrstr(format, "*", ".%sSpdDioOuUxXcCeEfFgGaAnhhljz"));
-	get_precision(ap, argument, ft_strstrchr(format, ".", '%'));
+	get_precision(ap, argument, ft_strstrstr(format, ".", "%sSpdDioOuUxXcCeEfFgGaAnhhljz"));
 	get_flags(argument, ft_strstrstr(format, "-0+ #",".%123456789sSpdDioOuUxXcCeEfFgGaAnhhljz"));
 	if (ft_strstrchr(format, "%", '\0') && argument->type == '0')
 	{
@@ -58,8 +58,9 @@ char	*parse(char *format, t_printf *argument, va_list ap)
 			format++;
 		}
 	}
-	else if (argument->type != '0')
+	else if (ft_strchr("xX", argument->type) && argument->sharp && argument->width > 1)
+		argument->width--;
+	if (argument->type != '0')
 		format = ft_strstrchr(format, "sSpdDioOuUxXcCeEfFgGaAn", 0) + 1;
-//	printf("\n this is argument type : %c, this is is precision : %d, this is width : %d", argument->type, argument->precision, argument->width);
 	return (format);
 }
