@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 16:42:42 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 19:34:06 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	get_precision(va_list ap, t_printf *argument, char *format)
 
 void	get_width(va_list ap, t_printf *argument, char *format)
 {
+	debug();
 	if (format && ft_isdigit(*format))
 	{
 		argument->width = ft_atoi(format);
@@ -85,7 +86,7 @@ void	get_flags(t_printf *argument, char *format)
 	}
 }
 
-void	get_modifier(t_printf *argument, char *format)
+char	*get_modifier(t_printf *argument, char *format)
 {
 	if (format && !(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format))
 			&& (*(1 + format)) && ft_strchr("hhljz", *format))
@@ -103,4 +104,5 @@ void	get_modifier(t_printf *argument, char *format)
 			argument->sharp = 1;
 		format++;
 	}
+	return (format);
 }

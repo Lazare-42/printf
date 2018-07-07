@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 00:14:26 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 16:42:35 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/07 19:37:02 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,31 @@ static	char	*type_0_modifications(char *format, t_printf *argument)
 
 char			*parse(char *format, t_printf *argument, va_list ap)
 {
+	int i;
+	int point;
+
+	i = 0;
+	point  = 0;
 	format = store_string(format, argument);
-	get_modifier(argument,
-		ft_strstr_whilestr(format, "sSpdDioOuUxXcCeEfFgGaAnhhljz",
-			"*-0+ #.123456789sSpdDioOuUxXcCeEfFgGaAnhhljz"));
-	get_width(ap, argument,
-		ft_strstrstr(format, "123456789", ".%sSpdDioOuUxXcCeEfFgGaAnhhljz"));
-	get_width(ap, argument,
-		ft_strstrstr(format, "*", ".%sSpdDioOuUxXcCeEfFgGaAnhhljz"));
-	get_precision(ap, argument,
-		ft_strstrstr(format, ".", "%sSpdDioOuUxXcCeEfFgGaAnhhljz"));
-	get_flags(argument,
-		ft_strstrstr(format,
-			"-0+ #", ".%123456789sSpdDioOuUxXcCeEfFgGaAnhhljz"));
-	if (argument->type == '0')
+	while (format[i] && argument->type == '0' && format[i] != '%')
+	{
+		if (ft_strchr("-0+ #", format[i]))
+			get_flags(argument, format);
+		else if ((ft_isdigit(format[i]) || format[i] == '*') && !point)
+			get_width(ap, argument, format);
+		else if (format[i] == '.')
+		{
+			point = 1;
+			get_precision(ap, argument, format);	
+		}
+		else if (ft_strchr("sSpdDioOuUxXcCeEfFgGaAnhhljz", format[i]))
+			format = get_modifier(argument,format);
+		i++;
+	}
+	if (argument->type == '0' && format)
 		format = type_0_modifications(format, argument);
 	else if (ft_strchr("xX", argument->type) && argument->sharp
 			&& argument->width > 1)
 		argument->width--;
-	if (argument->type != '0')
-		format = ft_strstrchr(format, "sSpdDioOuUxXcCeEfFgGaAn", 0) + 1;
 	return (format);
 }
