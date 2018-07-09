@@ -19,8 +19,11 @@
 ** coexist. Default left_align_output is -1
 */
 
-void	get_precision(va_list ap, t_printf *argument, char *format)
+int		get_precision(va_list ap, t_printf *argument, char *format)
 {
+	char *tmp;
+
+	tmp = format;
 	if (format && *format && *format == '.')
 	{
 		format++;
@@ -40,12 +43,17 @@ void	get_precision(va_list ap, t_printf *argument, char *format)
 			(*argument).precision = -1;
 		else if (*format && ft_isdigit(*format))
 			argument->precision = ft_atoi(format);
+		while (ft_isdigit(*format))
+			format++;
 	}
+	return (format - tmp);
 }
 
-void	get_width(va_list ap, t_printf *argument, char *format)
+int		get_width(va_list ap, t_printf *argument, char *format)
 {
-	debug();
+	char *tmp;
+
+	tmp = format;
 	if (format && ft_isdigit(*format))
 	{
 		argument->width = ft_atoi(format);
@@ -59,10 +67,14 @@ void	get_width(va_list ap, t_printf *argument, char *format)
 		argument->width *= -1;
 		argument->left_align_output = 1;
 	}
+	return (format - tmp);
 }
 
-void	get_flags(t_printf *argument, char *format)
+int		get_flags(t_printf *argument, char *format)
 {
+	char *tmp;
+
+	tmp = format;
 	while (format && (*format == '-' || *format == '0' || *format == '+'
 				|| *format == ' ' || *format == '#'))
 	{
@@ -71,10 +83,9 @@ void	get_flags(t_printf *argument, char *format)
 		if (*format == '0' && argument->left_align_output != 1)
 			argument->left_align_output = 0;
 		if (*format == ' ' && (*argument).show_sign != '+'
-				&& !ft_strchr("0Xx", argument->type) && !argument->sharp)
+				&& !argument->sharp)
 			argument->show_sign = ' ';
-		if (*format == '+' && !argument->sharp
-				&& !ft_strchr("Xx", argument->type))
+		if (*format == '+' && !argument->sharp)
 			argument->show_sign = '+';
 		if (*format == '#')
 		{
@@ -84,10 +95,14 @@ void	get_flags(t_printf *argument, char *format)
 		}
 		format++;
 	}
+	return (format - tmp);
 }
 
-char	*get_modifier(t_printf *argument, char *format)
+int		get_modifier(t_printf *argument, char *format)
 {
+	char *tmp;
+
+	tmp = format;
 	if (format && !(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format))
 			&& (*(1 + format)) && ft_strchr("hhljz", *format))
 	{
@@ -102,7 +117,9 @@ char	*get_modifier(t_printf *argument, char *format)
 			argument->show_sign = 0;
 		if (*format == 'p')
 			argument->sharp = 1;
+		if (ft_strchr("xXp", *format))
+			argument->show_sign = 0;
 		format++;
 	}
-	return (format);
+	return (format - tmp);
 }

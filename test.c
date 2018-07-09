@@ -39,7 +39,9 @@ int main()
 
 	int ret;
 
-  ret = ft_printf("%b\n", 7, 700);
+	ret = ft_printf("% x|%+x", 42, 42);
+	printf("\nret = %d\n", ret); fflush(stdout);
+	ret = printf("% x|%+x", 42, 42);
 	printf("\nret = %d\n", ret); fflush(stdout);
 	/*
  ret =  printf("\n%#8x", 42);

@@ -14,17 +14,17 @@
 #include "../includes/libft.h"
 
 /*
-** the fonction parse stores the string argument
-** in a string in a structure of a linked list.
-** If it meets an argument it
-** sends the structure and the va_list element
-** to the function treat_and_store elements which stores all required elements
-** (width, precision, argument itself) in the structure and eventually sends
-** the structure and its element to the precision and width handler,
-** apply_precision_width
-** If any error is encoutered set_get_return is set to -1. Else the function
-** ft_printf returns from the write function in print_list()
-*/
+ ** the fonction parse stores the string argument
+ ** in a string in a structure of a linked list.
+ ** If it meets an argument it
+ ** sends the structure and the va_list element
+ ** to the function treat_and_store elements which stores all required elements
+ ** (width, precision, argument itself) in the structure and eventually sends
+ ** the structure and its element to the precision and width handler,
+ ** apply_precision_width
+ ** If any error is encoutered set_get_return is set to -1. Else the function
+ ** ft_printf returns from the write function in print_list()
+ */
 
 static void		apply_precision_width(t_printf *argument)
 {
@@ -34,7 +34,7 @@ static void		apply_precision_width(t_printf *argument)
 	if (argument->show_sign && argument->left_align_output > -1)
 		apply_plus_minus_flags(argument);
 	if (argument->precision != -1 && argument->left_align_output == 1
-			&& argument->type != '0')
+			&& argument->type)
 		apply_precision(argument);
 	if (argument->width)
 		apply_width(argument);
@@ -46,7 +46,7 @@ static void		apply_precision_width(t_printf *argument)
 	if (argument->show_sign && argument->left_align_output == -1)
 		apply_plus_minus_flags(argument);
 	if (argument->precision > 0 && argument->left_align_output <= 0
-			&& argument->type != '0')
+			&& argument->type)
 		apply_precision(argument);
 }
 
@@ -56,7 +56,7 @@ static void		treat_and_store_argument(va_list ap, t_printf *argument)
 		store_number_data(ap, argument);
 	else
 		store_char_data(ap, argument);
-	if (argument->sharp && argument->type != '0')
+	if (argument->sharp && argument->type)
 	{
 		if (argument->width >= argument->precision && argument->type != 'o')
 			argument->width--;
@@ -66,16 +66,13 @@ static void		treat_and_store_argument(va_list ap, t_printf *argument)
 				&& argument->precision > argument->arg_len)
 			argument->precision--;
 	}
-	if ((*argument).width ||
-			(*argument).precision > -1 || argument->sharp)
-		apply_precision_width(argument);
 }
 
 static t_printf	initialize_elem(void)
 {
 	t_printf argument;
 
-	argument.type = '0';
+	argument.type = 0;
 	ft_memset(argument.modifier, 0, 3);
 	ft_memset(argument.sign, 0, 3);
 	argument.before_len = 0;
@@ -98,6 +95,9 @@ static void		parsing_handler(char *format, va_list ap)
 	format = parse(format, &argument, ap);
 	if (argument.type)
 		treat_and_store_argument(ap, &argument);
+	if (argument.width ||
+			argument.precision > -1 || argument.sharp)
+		apply_precision_width(&argument);
 	store_print_handler(&argument, 0, 0, 0);
 	if (format && *format)
 		parsing_handler(format, ap);
