@@ -98,7 +98,7 @@ static void		parsing_handler(char *format, va_list ap)
 	if (argument.width ||
 			argument.precision > -1 || argument.sharp)
 		apply_precision_width(&argument);
-	store_print_handler(&argument, 0, 0, 0);
+	store_print_handler(&argument, -4, 0, 0);
 	if (format && *format)
 		parsing_handler(format, ap);
 }
@@ -115,5 +115,6 @@ int				ft_printf(const char *restrict format, ...)
 	va_start(ap, format);
 	parsing_handler((char*)format, ap);
 	va_end(ap);
+	store_print_handler(NULL, 0, 0, 0);
 	return (set_get_return(0));
 }

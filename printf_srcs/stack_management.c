@@ -15,6 +15,7 @@
 #include "../includes/libft.h"
 
 static unsigned char	g_str[BUFF_SIZE];
+static  unsigned char	g_final_str[BUFF_SIZE * 3];
 static int				g_return_val = 0;
 
 int						set_get_return(int action)
@@ -68,29 +69,37 @@ void					store_values(t_printf *arg, int buff_location,
 
 static void				print(t_printf *arg, int location)
 {
-	unsigned char	final_str[BUFF_SIZE];
 	int				write_size;
+	unsigned char	final_str[4096];
 
 	write_size = 0;
 	ft_memcpy(final_str, g_str, arg->before_len);
 	write_size += arg->before_len;
 	arg->before_len = 0;
-	if (location == -2 || location == -3 || !location)
+	if (location == -2 || location == -3 || location == -4)
 	{
 		ft_memcpy(final_str + write_size, g_str
 				+ BUFF_SIZE / 3, arg->before_arg_len);
 		write_size += arg->before_arg_len;
 		arg->before_arg_len = 0;
 	}
-	if (location == -3 || !location)
+	if (location == -3 || location == -4)
 	{
 		ft_memcpy(final_str + write_size, g_str + 2
 				* (BUFF_SIZE / 3), arg->arg_len);
 		write_size += arg->arg_len;
 		arg->arg_len = 0;
 	}
-	if (write_size)
-		set_get_return(write(1, final_str, write_size));
+	if (write_size + g_return_val > BUFF_SIZE * 3)
+	{
+		set_get_return(write(1, &g_final_str, set_get_return(0)));
+		ft_memcpy(g_final_str, final_str, write_size);
+	}
+	else if (write_size)
+	{
+		ft_memcpy(g_final_str + g_return_val, final_str, write_size);
+		set_get_return(write_size);
+	}
 }
 
 void					store_print_handler(t_printf *arg,
@@ -107,6 +116,10 @@ void					store_print_handler(t_printf *arg,
 				src_len, sizeof_memop);
 	if (location == 1 || location == 2 || location == 3)
 		return ;
-	else
+	else if (location == -4)
 		print(arg, location);
+	else if (g_return_val <= BUFF_SIZE * 3)
+		set_get_return(write(1, &g_final_str, set_get_return(0)));
+	else
+		set_get_return(write(1, &g_final_str, g_return_val % (BUFF_SIZE * 3)));
 }

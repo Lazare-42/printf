@@ -58,7 +58,7 @@ static void	treat_store_modifier_s_data(va_list ap, t_printf *argument)
 	else if (*argument->modifier == 'h')
 		printf_s_base_converter(type_to_int_base(argument->type),
 				va_arg(ap, int), sizeof(short), argument);
-	if (!(ft_strcmp("ll", argument->modifier)))
+	else if (!(ft_strcmp("ll", argument->modifier)))
 		printf_s_base_converter(type_to_int_base(argument->type),
 				va_arg(ap, long long), sizeof(long long),
 				argument);
@@ -75,12 +75,7 @@ static void	treat_store_modifier_s_data(va_list ap, t_printf *argument)
 
 void		store_number_data(va_list ap, t_printf *argument)
 {
-	if ((ft_strchr("ouxX", (*argument).type)) && ((*argument->modifier)))
-		treat_store_modifier_u_data(ap, argument);
-	else if (ft_strchr("ouxX", (*argument).type))
-		printf_u_base_converter(type_to_int_base((*argument).type),
-				va_arg(ap, int), sizeof(int), argument);
-	else if (ft_strchr("di", (*argument).type))
+	if (argument->type == 'd')
 	{
 		if (!((*argument->modifier)))
 			printf_s_base_converter(type_to_int_base((*argument).type),
@@ -88,6 +83,11 @@ void		store_number_data(va_list ap, t_printf *argument)
 		else
 			treat_store_modifier_s_data(ap, argument);
 	}
+	else if ((ft_strchr("ouxX", (*argument).type)) && ((*argument->modifier)))
+		treat_store_modifier_u_data(ap, argument);
+	else if (ft_strchr("ouxX", (*argument).type))
+		printf_u_base_converter(type_to_int_base((*argument).type),
+				va_arg(ap, int), sizeof(int), argument);
 	else if (ft_strchr("OU", (*argument).type))
 		printf_u_base_converter(type_to_int_base((*argument).type),
 				va_arg(ap, long int), sizeof(long int), argument);

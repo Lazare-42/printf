@@ -14,10 +14,10 @@
 #include "../includes/printf.h"
 
 /*
-** flag - which left aligns output and flag 0 which prepends 0 in front
-** both use same element of the structure left_align_output as they cannot
-** coexist. Default left_align_output is -1
-*/
+ ** flag - which left aligns output and flag 0 which prepends 0 in front
+ ** both use same element of the structure left_align_output as they cannot
+ ** coexist. Default left_align_output is -1
+ */
 
 int		get_precision(va_list ap, t_printf *argument, char *format)
 {
@@ -103,23 +103,9 @@ int		get_modifier(t_printf *argument, char *format)
 	char *tmp;
 
 	tmp = format;
-	if (format && !(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format))
-			&& (*(1 + format)) && ft_strchr("hhljz", *format))
-	{
-		(*argument).modifier[0] = *format++;
-		if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)))
-			(*argument).modifier[1] = *format++;
-	}
-	if ((format && ft_strchr("*sSpdDioOuUxXcCeEfFgGaAn", *format)))
-	{
-		argument->type = *format;
-		if (*format == 'c' && argument->show_sign)
-			argument->show_sign = 0;
-		if (*format == 'p')
-			argument->sharp = 1;
-		if (ft_strchr("xXp", *format))
-			argument->show_sign = 0;
-		format++;
-	}
+	(*argument).modifier[0] = *format++;
+	if (!(ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format)))
+		(*argument).modifier[1] = *format++;
 	return (format - tmp);
 }
+

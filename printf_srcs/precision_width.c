@@ -85,13 +85,12 @@ void		apply_precision(t_printf *argument)
 	char		fill;
 
 	fill = '0';
-	if ((argument->precision <= argument->arg_len
-				&& argument->left_align_output)
+	if (argument->precision <= argument->arg_len
 			|| ft_strchr("sSCc", argument->type))
 		return ;
 	argument->to_store = (void*)&fill;
 	store_print_handler(argument, 2, 0,
-			argument->precision - argument->arg_len);
+		argument->precision - argument->arg_len);
 }
 
 void		apply_sharp(t_printf *argument)

@@ -13,6 +13,8 @@
 #include "../includes/printf.h"
 #include "../includes/libft.h"
 
+// definir percentage_presence en globale ? Pour l'enlever de la structure
+
 static char		*store_string(char *format, t_printf *argument)
 {
 	while (*format && *format != '%')
@@ -29,71 +31,70 @@ static char		*store_string(char *format, t_printf *argument)
 	return (format);
 }
 
-char	*type_0_modifications(char *format, t_printf *argument)
+static char		*type_0_modifications(char *format, t_printf *argument)
 {
-	if (ft_strstrchr(format, "%", '\0'))
+	if (argument->percentage_presence && *format != '%')
 	{
-		format = ft_strstrchr(format, "%", '\0');
-		if (argument->type == 0 && *format == '%')
-		{
-			argument->to_store = (void*)format;
-			store_print_handler(argument, 3, 1, 1);
-			format++;
-		}
+		argument->to_store = (void*)format;
+		store_print_handler(argument, 3, 1, 1);
+		format++;
 	}
-	else if (argument->percentage_presence)
+	else if (*format == '%')
 	{
-		while (*format && ft_strchr(
-					"-0+ #.123456789sSpdDioOuUxXcCeEfFgGaAnhhljz", *format))
-			format++;
-		if (*format && !argument->type && *format != '%')
-		{
-			argument->to_store = (void*)format;
-			store_print_handler(argument, 3, 1, 1);
-			format++;
-		}
+		argument->to_store = (void*)format;
+		store_print_handler(argument, 3, 1, 1);
+		format++;
 	}
 	return (format);
+}
+
+int		get_type(t_printf *argument, char *format)
+{
+	char *tmp;
+
+	tmp = format;
+	if (*format == 'i')
+		argument->type = 'd';
+	else
+		argument->type = *format;
+	if (*format == 'p')
+		argument->sharp = 1;
+	if (argument->show_sign && ft_strchr("xXpc", *format))
+	{
+		argument->show_sign = 0;
+	}
+	else if (ft_strchr("xX", argument->type) && argument->sharp
+			&& argument->width > 1)
+		argument->width--;
+	format++;
+	return (format - tmp);
 }
 
 char			*parse(char *format, t_printf *argument, va_list ap)
 {
 	int tmp;
-	int point;
 
-	point  = 0;
+	tmp = 1;
 	format = store_string(format, argument);
-	while (*format && *format != '%')
+	while (*format && tmp)
 	{
 		tmp = 0;
-		if (ft_strchr("-0+ #", *format))
-		{
-			if ((tmp = get_flags(argument, format)))
-				format += tmp;
-		}
-		else if((ft_isdigit(*format) || *format == '*') && !point)
-		{
-			if ((tmp = get_width(ap, argument, format)))
-				format += tmp;
-		}
-		else if (*format == '.')
-		{
-			point = 1;
-			if ((tmp = get_precision(ap, argument, format)))
-				format += tmp;
-		}
-		if (ft_strchr("sSpdDioOuUxXcCeEfFgGaAnhhljz", *format))
-		{
-			format  += get_modifier(argument, format);
-			break ;
-		}
-		if (tmp == 0)
-			break ;
+		if (ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format))
+			format  += get_type(argument, format);
+		else if (ft_strchr("-0+ #", *format)
+				&& (tmp = get_flags(argument, format)))
+			format += tmp;
+		else if((ft_isdigit(*format) || *format == '*')
+				&& !argument->precision
+				&& (tmp = get_width(ap, argument, format)))
+			format += tmp;
+		else if (*format == '.' && (tmp = get_precision(ap, argument, format)))
+			format += tmp;
+		else if (format && ft_strchr("hhljz", *format))
+			if ((tmp = get_modifier(argument, format)))
+				format  += tmp;
 	}
-	if (!argument->type && format)
+	if (!argument->type && *format)
 		format = type_0_modifications(format, argument);
-	else if (ft_strchr("xX", argument->type) && argument->sharp
-			&& argument->width > 1)
-		argument->width--;
 	return (format);
 }

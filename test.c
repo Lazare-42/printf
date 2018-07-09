@@ -33,17 +33,19 @@ char	*print_bits(void *ptr, int size)
 	return (result);
 }
 
+#include <math.h>
+
 int main()
 {
 	setlocale(LC_ALL, "");
 
 	int ret;
 
-	ret = ft_printf("% x|%+x", 42, 42);
+
+  ret = ft_printf("%.*d", 1366, 1);
 	printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("% x|%+x", 42, 42);
-	printf("\nret = %d\n", ret); fflush(stdout);
-	/*
+  /*jhjhh
+  ret = ft_printf("@main_ftprintf: %###-#0000 33...12..#0+0d", 256); -> "@main_ftprintf: +256                             "
  ret =  printf("\n%#8x", 42);
 	printf("\nret = %d\n", ret); fflush(stdout);
  ret =  printf("\n%#08x", 42);
