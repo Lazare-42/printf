@@ -42,7 +42,7 @@ int main()
 	int ret;
 
 
-  ret = ft_printf("%.*d", 10000, 9999);
+	ret = ft_printf("{%b}", 36, 35);
 	printf("\nret = %d\n", ret); fflush(stdout);
   /*jhjhh
   ret = ft_printf("@main_ftprintf: %###-#0000 33...12..#0+0d", 256); -> "@main_ftprintf: +256                             "

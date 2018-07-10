@@ -94,4 +94,7 @@ void		store_number_data(va_list ap, t_printf *argument)
 	else if (argument->type == 'D')
 		printf_s_base_converter(type_to_int_base((*argument).type),
 				va_arg(ap, long int), sizeof(long int), argument);
+	else if (argument->type == 'b')
+		printf_s_base_converter(va_arg(ap, int),
+				va_arg(ap, intmax_t), sizeof(intmax_t), argument);
 }

@@ -79,7 +79,7 @@ char			*parse(char *format, t_printf *argument, va_list ap)
 	while (*format && tmp)
 	{
 		tmp = 0;
-		if (ft_strchr("sSpdDioOuUxXcCeEfFgGaAn", *format))
+		if (ft_strchr("sSpdDioOuUxXcCeEfFgGaAnb", *format))
 			format  += get_type(argument, format);
 		else if (ft_strchr("-0+ #", *format)
 				&& (tmp = get_flags(argument, format)))
