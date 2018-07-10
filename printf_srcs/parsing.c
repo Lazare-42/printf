@@ -13,17 +13,20 @@
 #include "../includes/printf.h"
 #include "../includes/libft.h"
 
-// definir percentage_presence en globale ? Pour l'enlever de la structure
-
 static char		*store_string(char *format, t_printf *argument)
 {
-	while (*format && *format != '%')
+	while (format && *format && *format != '%')
 	{
-		argument->to_store = (void*)format;
-		store_print_handler(argument, 1, 0, 1);
-		format++;
+		if (*format == '[' && *(1 + format) && *(1 + format) == '[')
+			format = terminal_formatting(format, argument);
+		if (format && *format && *format != '%')
+		{
+			argument->to_store = (void*)format;
+			store_print_handler(argument, 1, 0, 1);
+			format++;
+		}
 	}
-	if (*format == '%')
+	if (format && *format == '%')
 	{
 		argument->percentage_presence = 1;
 		format++;
@@ -76,7 +79,7 @@ char			*parse(char *format, t_printf *argument, va_list ap)
 
 	tmp = 1;
 	format = store_string(format, argument);
-	while (*format && tmp)
+	while (format && *format && tmp)
 	{
 		tmp = 0;
 		if (ft_strchr("sSpdDioOuUxXcCeEfFgGaAnb", *format))
@@ -94,7 +97,7 @@ char			*parse(char *format, t_printf *argument, va_list ap)
 			if ((tmp = get_modifier(argument, format)))
 				format  += tmp;
 	}
-	if (!argument->type && *format)
+	if (!argument->type && format && *format)
 		format = type_0_modifications(format, argument);
 	return (format);
 }

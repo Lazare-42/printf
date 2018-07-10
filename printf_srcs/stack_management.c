@@ -18,6 +18,7 @@ static unsigned char	g_str[BUFF_SIZE];
 static int			 	g_bytes_in_final_str = 0;
 static unsigned char	g_final_str[BUFF_SIZE * 3];
 static int				g_return_val = 0;
+static void				print(t_printf *arg, int location);
 
 int						set_get_return(int action)
 {
@@ -58,7 +59,7 @@ void					store_values(t_printf *arg, int buff_location,
 	while (sizeof_memop--)
 	{
 		if (*dst_location == BUFF_SIZE / 3)
-			store_print_handler(arg, -arg->location, 0, 0);
+			print(arg, -arg->location);
 		dst_byte[*dst_location] = src_byte[i];
 		(*dst_location)++;
 		if (src_len)

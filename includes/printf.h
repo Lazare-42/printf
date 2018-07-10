@@ -15,6 +15,22 @@
 # define PRINTF_H
 
 # define BUFF_SIZE 4096
+# define RESET "\x1B[0m"
+# define BLD "\x1B[1m"
+# define ITA "\x1B[3m"
+# define BLK "\x1B[6m"
+# define SWP "\x1B[7m"
+# define UND "\x1B[4m"
+# define RED "\x1B[31m"
+# define GRN "\x1B[32m"
+# define YEL "\x1B[33m"
+# define BLU "\x1B[34m"
+# define MAG "\x1B[35m"
+# define CYN "\x1B[36m"
+# define WHT "\x1B[37m"
+# define BCK "\x1B[40m"
+# define FRM "\x1B[51m"
+
 
 # include <stdarg.h>
 # include <inttypes.h>
@@ -62,5 +78,6 @@ int					set_get_return(int action);
 void				store_unicode(wint_t data, t_printf *argument,
 		int precision);
 void				store_unicode_str(wchar_t *data, t_printf *argument);
+char				*terminal_formatting(char *format, t_printf *argument);
 
 #endif
