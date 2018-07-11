@@ -159,13 +159,13 @@ mkbin:
 	@mkdir -p $(BDIR)
 
 $(NAME): $(LIBFT_OBJECT) $(PRINTF_OBJECT)
-	@echo "\x1B[33;4m Compiled with the rule :" ${CC}
-	@ echo "[35m Archiving  printf library...[0m"
+	@echo "\x1B[33;4mCompiled with the rule\x1B[0m :" ${CC}
+	@ echo "[35mPrintf library archived.[0m"
 	@$(ARCH) $(NAME) $(LIBFT_OBJECT) $(PRINTF_OBJECT)
 	@$(OK)
 
 $(ODIR)/%.o : $(S_LIB_DIR)/%.c
-	@ echo "[34m Assembling libft object: [0m" $@
+	@ echo "[34m Assembling  libft object: [0m" $@
 	@ $(CC) -o $@ $<
 
 $(BDIR)/%.o : $(S_PRINTF_DIR)/%.c
