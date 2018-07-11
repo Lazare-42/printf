@@ -159,7 +159,7 @@ mkbin:
 	@mkdir -p $(BDIR)
 
 $(NAME): $(LIBFT_OBJECT) $(PRINTF_OBJECT)
-	echo ${CC}
+	@echo "\x1B[33;4m Compiled with the rule :" ${CC}
 	@ echo "[35m Archiving  printf library...[0m"
 	@$(ARCH) $(NAME) $(LIBFT_OBJECT) $(PRINTF_OBJECT)
 	@$(OK)
