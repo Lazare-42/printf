@@ -130,7 +130,7 @@ PRINTF_SRCS =   ft_printf.c \
 
 # CC = gcc -Wall -Wextra -Werror -c -g
 
-CC = gcc -c
+CC = gcc -Wall -Werror -Wextra -c
 
 #DEBUG = ""
 #if ${DEBUG}
@@ -165,19 +165,19 @@ $(NAME): $(LIBFT_OBJECT) $(PRINTF_OBJECT)
 	@$(OK)
 
 $(ODIR)/%.o : $(S_LIB_DIR)/%.c
-	@ echo "[34m Assembling  libft object: [0m" $@
+	@ echo "[34mAssembling  libft object: [0m" $@
 	@ $(CC) -o $@ $<
 
 $(BDIR)/%.o : $(S_PRINTF_DIR)/%.c
-	@ echo "[36m Assembling printf object: [0m" $@
+	@ echo "[36mAssembling printf object: [0m" $@
 	@ $(CC) -o $@ $<
 
 clean: 
-	@ echo "[31m Deleting bin_lift and bin_printf... [0m"
+	@ echo "[31mDeleting bin_lift and bin_printf... [0m"
 	@-$(CLEAN)
 
 fclean: clean
 	@-$(CLEAN) $(NAME)
-	@ echo "[31m Also deleted printf_libft... [0m"
+	@ echo "[31mAlso deleted printf_libft... [0m"
 
 re: fclean all
