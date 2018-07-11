@@ -130,7 +130,7 @@ PRINTF_SRCS =   ft_printf.c \
 
 # CC = gcc -Wall -Wextra -Werror -c -g
 
-CC = gcc -Wall -Werror -Wextra -c
+CC = gcc -Wall -Werror -Wextra -Ofast -c
 
 #DEBUG = ""
 #if ${DEBUG}
