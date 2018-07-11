@@ -1,2 +1,0 @@
-How does casting work when I cast to a bigger type as in the function check_for_endianness
-I need to understand const char* const etc. once and for good

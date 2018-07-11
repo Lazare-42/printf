@@ -4,13 +4,18 @@
 void	help(void)
 {
 	ft_printf("Available formatting options for \
-	[[yellow]][[underline]][[bold]][[italic]]lazrossi's fr_printf\
-	[[end]] are :\n [[red]]red,\n [[green]]green,\n [[yellow]]yellow,\
+[[yellow]][[underline]][[bold]][[italic]]lazrossi's fr_printf\
+[[end]] are :\n [[red]]red,\n [[green]]green,\n [[yellow]]yellow[[end]],\
 	\n [[blue]]blue,\n [[magenta]]magenta,\n [[cyan]]cyan,\n [[white]]white,\
-	\n [[end]][[underline]]underlining[[end]],\
+	\n [[end]][[underline]]underline[[end]],\
 	\n [[bold]]bold,\n [[end]][[italic]]italic,\n [[end]][[blink]]blink,\
-	\n [[end]][[background]]setting background color\
-	\n [[swapp]]swapping foreground and background colors.[[end]]");
+	\n [[end]][[background]]setting [[underline]]background[[end]] color\
+	\n [[swapp]][[underline]][[italic]]swapp[[end]][[swapp]]ing foreground\
+ and background\
+colors.[[end]]\n Simply [[italic]]input[[end]] those options in your ft_printf\
+ string in the following fashion :\n[[end]] [[bold]][[option]]\
+	\n[[red]][[bold]][[underline]]Caution :[[end]] some escape sequences may\
+ not be supported by your terminal.");
 }
 
 char		*continue_font_formatting(char *format, t_printf *argument)
@@ -70,10 +75,10 @@ char		*continue_color_formatting(char *format, t_printf *argument)
 {
 	if (!(ft_strncmp(format, "[[blue]]", 8)))
 	{
-		argument->to_store = BLU;
+		argument->to_store = "\033[34m";
 		format += 8;
 	}
-	if (!(ft_strncmp(format, "[[magenta]]", 11)))
+	else if (!(ft_strncmp(format, "[[magenta]]", 11)))
 	{
 		argument->to_store = MAG;
 		format += 11;
