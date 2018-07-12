@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 00:14:26 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 19:37:02 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/12 18:43:21 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char		*type_0_modifications(char *format, t_printf *argument)
 	return (format);
 }
 
-int		get_type(t_printf *argument, char *format)
+int				get_type(t_printf *argument, char *format)
 {
 	char *tmp;
 
@@ -83,11 +83,11 @@ char			*parse(char *format, t_printf *argument, va_list ap)
 	{
 		tmp = 0;
 		if (ft_strchr("sSpdDioOuUxXcCeEfFgGaAnb", *format))
-			format  += get_type(argument, format);
+			format += get_type(argument, format);
 		else if (ft_strchr("-0+ #", *format)
 				&& (tmp = get_flags(argument, format)))
 			format += tmp;
-		else if((ft_isdigit(*format) || *format == '*')
+		else if ((ft_isdigit(*format) || *format == '*')
 				&& !argument->precision
 				&& (tmp = get_width(ap, argument, format)))
 			format += tmp;
@@ -95,7 +95,7 @@ char			*parse(char *format, t_printf *argument, va_list ap)
 			format += tmp;
 		else if (format && ft_strchr("hhljz", *format))
 			if ((tmp = get_modifier(argument, format)))
-				format  += tmp;
+				format += tmp;
 	}
 	if (!argument->type && format && *format)
 		format = type_0_modifications(format, argument);

@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 19:34:06 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/12 18:57:57 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,35 @@
 #include "../includes/printf.h"
 
 /*
- ** flag - which left aligns output and flag 0 which prepends 0 in front
- ** both use same element of the structure left_align_output as they cannot
- ** coexist. Default left_align_output is -1
- */
+** flag - which left aligns output and flag 0 which prepends 0 in front
+** both use same element of the structure left_align_output as they cannot
+** coexist. Default left_align_output is -1
+*/
 
 int		get_precision(va_list ap, t_printf *argument, char *format)
 {
 	char *tmp;
 
 	tmp = format;
-	if (format && *format && *format == '.')
+	format++;
+	if (*format == '*' && format++)
 	{
-		format++;
-		if (*format == '*' && format++)
+		argument->precision = va_arg(ap, int);
+		if (argument->precision < 0)
 		{
-			argument->precision = va_arg(ap, int);
-			if (argument->precision < 0)
-			{
-				argument->precision = 0;
-				argument->left_align_output = 0;
-			}
-			else if (argument->precision == 0)
-				argument->precision = -1;
+			argument->precision = 0;
+			argument->left_align_output = 0;
 		}
-		else if (*format && *format != '*' && (!(ft_isdigit(*format))
-					|| *format == '0'))
-			(*argument).precision = -1;
-		else if (*format && ft_isdigit(*format))
-			argument->precision = ft_atoi(format);
-		while (ft_isdigit(*format))
-			format++;
+		else if (argument->precision == 0)
+			argument->precision = -1;
 	}
+	else if (*format && *format != '*' && (!(ft_isdigit(*format))
+				|| *format == '0'))
+		argument->precision = -1;
+	else if (*format && ft_isdigit(*format))
+		argument->precision = ft_atoi(format);
+	while (ft_isdigit(*format))
+		format++;
 	return (format - tmp);
 }
 
@@ -108,4 +105,3 @@ int		get_modifier(t_printf *argument, char *format)
 		(*argument).modifier[1] = *format++;
 	return (format - tmp);
 }
-

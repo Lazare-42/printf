@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 14:01:32 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 15:22:22 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/12 12:50:41 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 # define WHT "\x1B[37m"
 # define BCK "\x1B[40m"
 # define FRM "\x1B[51m"
-
 
 # include <stdarg.h>
 # include <inttypes.h>
@@ -79,5 +78,6 @@ void				store_unicode(wint_t data, t_printf *argument,
 		int precision);
 void				store_unicode_str(wchar_t *data, t_printf *argument);
 char				*terminal_formatting(char *format, t_printf *argument);
+void				print(t_printf *arg, int location);
 
 #endif

@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bonus_colors_formatting.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/12 12:27:53 by lazrossi          #+#    #+#             */
+/*   Updated: 2018/07/12 12:30:26 by lazrossi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/libft.h"
 #include "../includes/printf.h"
 
-void	help(void)
+void		help(void)
 {
 	ft_printf("Available formatting options for \
 [[yellow]][[underline]][[bold]][[italic]]lazrossi's fr_printf\
@@ -10,12 +22,13 @@ void	help(void)
 	\n [[end]][[underline]]underline[[end]],\
 	\n [[bold]]bold,\n [[end]][[italic]]italic,\n [[end]][[blink]]blink,\
 	\n [[end]][[background]]setting [[underline]]background[[end]] color\
-	\n [[swapp]][[underline]][[italic]]swapp[[end]][[swapp]]ing foreground\
- and background\
-colors.[[end]]\n Simply [[italic]]input[[end]] those options in your ft_printf\
- string in the following fashion :\n[[end]] [[bold]][[option]]\
-	\n[[red]][[bold]][[underline]]Caution :[[end]] some escape sequences may\
- not be supported by your terminal.");
+	\n [[swapp]][[underline]][[italic]]swapp[[end]][[swapp]]ing foreground");
+	ft_printf("and background");
+	ft_printf("colors.[[end]]\n Simply [[italic]]input[[end]] those options");
+	ft_printf("in your ft_printf string in the following fashion :\
+			\n[[end]] [[bold]][[option]]\
+	\n[[red]][[bold]][[underline]]Caution :[[end]] some escape sequences may");
+	ft_printf(" not be supported by your terminal.");
 }
 
 char		*continue_font_formatting(char *format, t_printf *argument)
@@ -121,7 +134,7 @@ char		*terminal_formatting(char *format, t_printf *argument)
 		help();
 		return (NULL);
 	}
-	else 
+	else
 		return (format = continue_color_formatting(format, argument));
 	store_print_handler(argument, 1, 1, 5);
 	return (terminal_formatting(format, argument));

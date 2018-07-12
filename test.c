@@ -42,37 +42,25 @@ int main()
 	int ret;
 
 
-	ret = ft_printf("[[help?]]");
-  /*jhjhh
-  ret = ft_printf("@main_ftprintf: %###-#0000 33...12..#0+0d", 256); -> "@main_ftprintf: +256                             "
- ret =  printf("\n%#8x", 42);
+	ret = ft_printf("%0+5d", 42);
+	ret = ft_printf("%+010.4d", 0);
 	printf("\nret = %d\n", ret); fflush(stdout);
- ret =  printf("\n%#08x", 42);
+	ret = printf("%0+5d", 42);
+	ret = printf("%+010.4d", 0);
 	printf("\nret = %d\n", ret); fflush(stdout);
- ret =  printf("\n%#6o", 2500);
-
-	ret = ft_printf("{%*3d}", 0, 0);
-	ret = printf("{%*3d}", 0);
+	ret = ft_printf("toto%.0d et %+.d", 0, 1);
 	printf("\nret = %d\n", ret); fflush(stdout);
-	ret = ft_printf("%#o", 0);
-	ret = printf("%#o", 0);
-printf("\nret = %d\n", ret); fflush(stdout);
-	ret = ft_printf("%#.o, %#.0o", 0, 0);
-printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("%#.o, %#.0o", 0, 0);
-printf("\nret = %d\n", ret); fflush(stdout);
-	ret = ft_printf("{%05s}", "abc");
-printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("{%05s}", "abc");
-printf("\nret = %d\n", ret); fflush(stdout);
-
- ft_printf("\n% Zoooo");
- ft_printf("\n%");
- ft_printf("\n{%}");
-  printf("\n{% %}");
-  printf("\n% Zoooo");
-  printf("\n%");
-  printf("\n{%}");
+	ret = printf("toto%.0d et %+.d", 0, 1);
+	printf("\nret = %d\n", ret); fflush(stdout);
+  /*
+   * 
+	ret = ft_printf("toto%.0d et %+.i et  %   .0D !!!", 0, 0, 0);
+	ret = ft_printf("coco et %-#-#--24O titi%#012o", 12, -874);
+	ret = ft_printf("\n%024hho et%#1.2o %0012.O", (unsigned char)12, 0, 123654789);
+	ret = ft_printf("test%#.4o et %02o %0#14.0o!!", 012, 036, 12587499);
+	ret = ft_printf("cc%#.4X et %#0012x %#04hX !!", 0xaef, 0xe, (unsigned short)0);
+	ret = ft_printf("%0#10.0x %0#x", 12345, 0);
+	ret = ft_printf("%0#10.0x", 0);
   */
 
 }

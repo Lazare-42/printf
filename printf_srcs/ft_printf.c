@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 19:34:30 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/12 19:03:38 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 #include "../includes/libft.h"
 
 /*
- ** the fonction parse stores the string argument
- ** in a string in a structure of a linked list.
- ** If it meets an argument it
- ** sends the structure and the va_list element
- ** to the function treat_and_store elements which stores all required elements
- ** (width, precision, argument itself) in the structure and eventually sends
- ** the structure and its element to the precision and width handler,
- ** apply_precision_width
- ** If any error is encoutered set_get_return is set to -1. Else the function
- ** ft_printf returns from the write function in print_list()
- */
+** the fonction parse stores the string argument
+** in a string in a structure of a linked list.
+** If it meets an argument it
+** sends the structure and the va_list element
+** to the function treat_and_store elements which stores all required elements
+** (width, precision, argument itself) in the structure and eventually sends
+** the structure and its element to the precision and width handler,
+** apply_precision_width
+** If any error is encoutered set_get_return is set to -1. Else the function
+** ft_printf returns from the write function in print_list()
+*/
 
 static void		apply_precision_width(t_printf *argument)
 {
 	if (argument->sharp && ft_strchr("xoXp", argument->type)
 			&& !argument->left_align_output)
 		apply_sharp(argument);
-	if (argument->show_sign && argument->left_align_output > -1)
+	if (argument->show_sign && (argument->left_align_output == 1 || (argument->left_align_output == 0 && !argument->precision)))
 		apply_plus_minus_flags(argument);
 	if (argument->precision != -1 && argument->left_align_output == 1
 			&& argument->type)
@@ -43,7 +43,7 @@ static void		apply_precision_width(t_printf *argument)
 		apply_sharp(argument);
 	if (argument->left_align_output == 1)
 		apply_flag_padding(argument);
-	if (argument->show_sign && argument->left_align_output == -1)
+	if (argument->show_sign && (argument->left_align_output == -1  || (!argument->left_align_output && argument->precision)))
 		apply_plus_minus_flags(argument);
 	if (argument->precision > 0 && argument->left_align_output <= 0
 			&& argument->type)

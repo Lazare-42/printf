@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/30 12:44:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 15:35:48 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/12 12:47:17 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,21 @@
 #include <pthread.h>
 
 static unsigned char	g_str[BUFF_SIZE];
-static int			 	g_bytes_in_final_str = 0;
+static int				g_bytes_in_final_str = 0;
 static unsigned char	g_final_str[BUFF_SIZE * 3];
 static int				g_return_val = 0;
-static void				print(t_printf *arg, int location);
+/*
+** In function store_print_handler ; somehow this lock attempt always returned
+** entering the error condition
+**
+**pthread_mutex_t mutex;
+**
+** if ((pthread_mutex_lock(&mutex)))
+**		set_get_return(-1);
+** pthread_mutex_unlock(&mutex);
+**
+** I must've misunderstood something
+*/
 
 int						set_get_return(int action)
 {
@@ -68,7 +79,7 @@ void					store_values(t_printf *arg, int buff_location,
 	}
 }
 
-void				manage_buf(void *str, int write_size)
+void					manage_buf(void *str, int write_size)
 {
 	unsigned char	*final_str;
 
@@ -83,8 +94,7 @@ void				manage_buf(void *str, int write_size)
 	g_bytes_in_final_str = write_size + g_bytes_in_final_str;
 }
 
-
-static void				print(t_printf *arg, int location)
+void					print(t_printf *arg, int location)
 {
 	int				write_size;
 	char			final_str[BUFF_SIZE];
@@ -114,10 +124,6 @@ static void				print(t_printf *arg, int location)
 void					store_print_handler(t_printf *arg,
 		int location, int src_len, int sizeof_memop)
 {
-//	pthread_mutex_t mutex;
-
-//	if (pthread_mutex_trylock(&mutex))
-//		set_get_return(-1);
 	if (location > 0)
 		arg->location = location;
 	if (location == 1)
@@ -137,5 +143,4 @@ void					store_print_handler(t_printf *arg,
 				+ set_get_return(0));
 		g_bytes_in_final_str = 0;
 	}
-//	pthread_mutex_unlock(&mutex);
 }
