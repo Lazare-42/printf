@@ -114,10 +114,10 @@ static void				print(t_printf *arg, int location)
 void					store_print_handler(t_printf *arg,
 		int location, int src_len, int sizeof_memop)
 {
-	pthread_mutex_t mutex;
+//	pthread_mutex_t mutex;
 
-	if (pthread_mutex_trylock(&mutex))
-		set_get_return(-1);
+//	if (pthread_mutex_trylock(&mutex))
+//		set_get_return(-1);
 	if (location > 0)
 		arg->location = location;
 	if (location == 1)
@@ -137,5 +137,5 @@ void					store_print_handler(t_printf *arg,
 				+ set_get_return(0));
 		g_bytes_in_final_str = 0;
 	}
-	pthread_mutex_unlock(&mutex);
+//	pthread_mutex_unlock(&mutex);
 }

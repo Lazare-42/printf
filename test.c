@@ -42,8 +42,7 @@ int main()
 	int ret;
 
 
-	ret = ft_printf("{%b}", 36, 35);
-	printf("\nret = %d\n", ret); fflush(stdout);
+	ret = ft_printf("[[help?]]");
   /*jhjhh
   ret = ft_printf("@main_ftprintf: %###-#0000 33...12..#0+0d", 256); -> "@main_ftprintf: +256                             "
  ret =  printf("\n%#8x", 42);
