@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 00:14:26 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/12 18:43:21 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/13 16:18:23 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,7 @@ int				get_type(t_printf *argument, char *format)
 	if (*format == 'p')
 		argument->sharp = 1;
 	if (argument->show_sign && ft_strchr("xXpc", *format))
-	{
 		argument->show_sign = 0;
-	}
-	else if (ft_strchr("xX", argument->type) && argument->sharp
-			&& argument->width > 1)
-		argument->width--;
 	format++;
 	return (format - tmp);
 }
@@ -97,7 +92,9 @@ char			*parse(char *format, t_printf *argument, va_list ap)
 			if ((tmp = get_modifier(argument, format)))
 				format += tmp;
 	}
+//	printf("\n this is width %d, this is precision %d, this is left_align_output %d, this is show_sign %c2x, this is sharp %d\n", argument->width,  argument->precision, argument->left_align_output, argument->show_sign, argument->sharp); fflush(stdout);
 	if (!argument->type && format && *format)
 		format = type_0_modifications(format, argument);
+
 	return (format);
 }

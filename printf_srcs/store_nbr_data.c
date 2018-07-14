@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 13:58:39 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/07 16:18:17 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/13 12:47:00 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,7 @@ void		store_number_data(va_list ap, t_printf *argument)
 	else if (argument->type == 'b')
 		printf_s_base_converter(va_arg(ap, int),
 				va_arg(ap, intmax_t), sizeof(intmax_t), argument);
+	if ((*argument).type == 'p')
+		printf_u_base_converter(type_to_int_base(argument->type),
+				va_arg(ap, size_t), sizeof(size_t), argument);
 }

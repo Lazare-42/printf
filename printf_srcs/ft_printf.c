@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/12 19:03:38 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/13 16:18:21 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,18 @@
 
 static void		apply_precision_width(t_printf *argument)
 {
-	if (argument->sharp && ft_strchr("xoXp", argument->type)
-			&& !argument->left_align_output)
+	if (argument->sharp && ft_strchr("xoXpO", argument->type) && (!argument->left_align_output
+			&& !argument->precision))
 		apply_sharp(argument);
 	if (argument->show_sign && (argument->left_align_output == 1 || (argument->left_align_output == 0 && !argument->precision)))
 		apply_plus_minus_flags(argument);
 	if (argument->precision != -1 && argument->left_align_output == 1
 			&& argument->type)
 		apply_precision(argument);
+//printf("\n this is width %d, this is precision %d, this is left_align_output %d, this is show_sign %c2x, this is sharp %d\n", argument->width,  argument->precision, argument->left_align_output, argument->show_sign, argument->sharp); fflush(stdout);
 	if (argument->width)
 		apply_width(argument);
-	if (argument->sharp && ft_strchr("xoXpO", argument->type)
-			&& argument->left_align_output)
+	if (argument->sharp && ft_strchr("xoXpO", argument->type)	)
 		apply_sharp(argument);
 	if (argument->left_align_output == 1)
 		apply_flag_padding(argument);
@@ -52,15 +52,15 @@ static void		apply_precision_width(t_printf *argument)
 
 static void		treat_and_store_argument(va_list ap, t_printf *argument)
 {
-	if (ft_strchr("ouxXdiOUDb", argument->type))
+	if (ft_strchr("oupxXdiOUDb", argument->type))
 		store_number_data(ap, argument);
 	else
 		store_char_data(ap, argument);
 	if (argument->sharp && argument->type)
 	{
-		if (argument->width >= argument->precision && argument->type != 'o')
+		if (argument->width >= argument->precision && !ft_strchr("oO", argument->type))
 			argument->width--;
-		if (!ft_strchr("xX", argument->type))
+		if (ft_strchr("xXpo", argument->type))
 			(argument->width >= argument->precision) ? argument->width-- : 0;
 		if (argument->type == 'o' && argument->sharp
 				&& argument->precision > argument->arg_len)
@@ -96,7 +96,7 @@ static void		parsing_handler(char *format, va_list ap)
 	if (argument.type)
 		treat_and_store_argument(ap, &argument);
 	if (argument.width ||
-			argument.precision > -1 || argument.sharp)
+			argument.precision > -1 || argument.sharp || argument.show_sign)
 		apply_precision_width(&argument);
 	store_print_handler(&argument, 4, 0, 0);
 	if (format && *format)

@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/12 18:43:27 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/13 16:18:20 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,6 @@
 ** argument_precision is only present because printf("%p, (void*)0)
 ** procuces 0x0 whereas printf("%.p, (void*)0) produces 0x
 */
-
-void						get_hex_ptr_adr(va_list ap, t_printf *argument)
-{
-	void	*test_data;
-
-	test_data = NULL;
-	test_data = va_arg(ap, void*);
-	if (test_data == 0 && argument->precision >= 0)
-	{
-		argument->to_store = (void*)"0";
-		store_print_handler(argument, 3, 0, 1);
-	}
-	else
-		printf_u_base_converter(16, (uintptr_t)test_data,
-				sizeof(uintptr_t), argument);
-}
 
 static intmax_t				convert_overflow(int sizeof_var, intmax_t number)
 {
@@ -94,10 +78,8 @@ void						printf_u_base_converter(int base_size,
 	i = 0;
 	number = take_out_bits(number, sizeof_var);
 	(number == 0) ? result[64] = '0' : 0;
-	if ((!argument->precision && argument->type == 'o')
-			|| ft_strchr("xX", argument->type))
-		(number == 0 && argument->sharp && !ft_strchr("pOo", argument->type)) ?
-			argument->sharp = 0 : 0;
+	if (ft_strchr("xX", argument->type) && number == 0 && argument->sharp)
+			argument->sharp = 0;
 	(number == 0) ? i++ : 0;
 	if (number == 0 && ((argument->sharp && argument->type == 'o')
 				|| argument->precision == -1))

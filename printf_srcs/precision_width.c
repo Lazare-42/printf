@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/12 18:43:24 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/13 14:04:18 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void		apply_width(t_printf *argument)
 		argument->precision++;
 	if (argument->precision > argument->width && argument->type != 's')
 		return ;
-	fill = (argument->left_align_output
-			== 0 && !argument->precision) ? '0' : ' ';
+	fill = (!argument->left_align_output
+			&& !argument->precision && !argument->sharp) ? '0' : ' ';
 	fill_val = argument->width;
 	if (ft_strchr("sS", argument->type) && argument->precision)
 		fill_val -= (argument->precision < argument->arg_len) ?
@@ -106,4 +106,5 @@ void		apply_sharp(t_printf *argument)
 		argument->to_store = (void*)&fill;
 		store_print_handler(argument, 2, 0, 1);
 	}
+	argument->sharp = 0;
 }

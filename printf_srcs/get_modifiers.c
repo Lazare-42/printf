@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/12 18:57:57 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/13 11:52:52 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int		get_flags(t_printf *argument, char *format)
 		if (*format == '#')
 		{
 			argument->sharp = 1;
-			argument->show_sign = 0;
 			argument->show_sign = 0;
 		}
 		format++;
