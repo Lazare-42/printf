@@ -6,12 +6,13 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/12 19:03:38 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/16 12:25:00 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 #include "../includes/libft.h"
+#include <unistd.h>
 
 /*
  ** the fonction parse stores the string argument
@@ -26,7 +27,7 @@
  ** ft_printf returns from the write function in print_list()
  */
 
-static void		apply_precision_width(t_printf *argument)
+void		apply_precision_width(t_printf *argument)
 {
 	if (argument->sharp && ft_strchr("xoXp", argument->type)
 			&& !argument->left_align_output)
@@ -50,7 +51,7 @@ static void		apply_precision_width(t_printf *argument)
 		apply_precision(argument);
 }
 
-static void		treat_and_store_argument(va_list ap, t_printf *argument)
+void		treat_and_store_argument(va_list ap, t_printf *argument)
 {
 	if (ft_strchr("ouxXdiOUDb", argument->type))
 		store_number_data(ap, argument);
@@ -68,15 +69,15 @@ static void		treat_and_store_argument(va_list ap, t_printf *argument)
 	}
 }
 
-static t_printf	initialize_elem(void)
+t_printf	initialize_elem(void)
 {
 	t_printf argument;
 
 	argument.type = 0;
 	ft_memset(argument.modifier, 0, 3);
 	ft_memset(argument.sign, 0, 3);
-	argument.before_len = 0;
-	argument.before_arg_len = 0;
+//	argument.before_len = 0;
+//	argument.before_arg_len = 0;
 	argument.arg_len = 0;
 	argument.width = 0;
 	argument.sharp = 0;
@@ -92,25 +93,26 @@ static t_printf	initialize_elem(void)
 
 static void		parsing_handler(const char *format, va_list ap)
 {
-	t_printf	argument;
-	/*
-	char		string[BUFF_SIZE];
-	int			mem_pos;
-	*/
+	t_printf	argument_specs;
+	t_str		argument_str;
+//	t_str		argument_specs_str_struct;
+//	char		string[BUFF_SIZE];
+//	int			mem_pos;
+
+//	I need the future argument_specs length in order to do my padding 
 
 	while (format && *format)
 	{
 		// mem_pos = 0;
-		argument = initialize_elem();
-		// la aussi tu stores pour l'argument des char - or il faut centraliser la gestion de la memoire
-		format = parse(format, &argument, ap);
-		if (argument.type)
-			treat_and_store_argument(ap, &argument);
-		if (argument.width ||
-				argument.precision > -1 || argument.sharp)
-			apply_precision_width(&argument);
-		store_print_handler(&argument, 4, 0, 0);
-		// write(1, &string, mem_pos);
+		argument_specs = initialize_elem();
+		// la aussi tu stores pour l'argument_specs des char - or il faut centraliser la gestion de la memoire
+		format = parse(format, &argument_specs, &argument_str, ap);
+		if (argument_specs.type)
+			treat_and_store_argument(ap, &argument_specs);
+		if (argument_specs.width ||
+				argument_specs.precision > -1 || argument_specs.sharp)
+			apply_precision_width(&argument_specs);
+		write(1, argument_str.str, argument_str.position);
 	}
 }
 

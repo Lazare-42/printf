@@ -1,17 +1,18 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   bonus_colors_formatting.c                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/12 12:27:53 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/12 12:30:26 by lazrossi         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/****************************************************************************/
+/**/
+/*:::      ::::::::   */
+/*bonus_colors_formatting.c                          :+:      :+:    :+:   */
+/*+:+ +:+         +:+     */
+/*By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*+#+#+#+#+#+   +#+           */
+/*Created: 2018/07/12 12:27:53 by lazrossi          #+#    #+#             */
+/*Updated: 2018/07/12 12:30:26 by lazrossi         ###   ########.fr       */
+/**/
+/****************************************************************************/
 
 #include "../includes/libft.h"
 #include "../includes/printf.h"
+#include <unistd.h>
 
 void		help(void)
 {
@@ -31,103 +32,22 @@ void		help(void)
 	ft_printf(" not be supported by your terminal.");
 }
 
-char		*continue_font_formatting(char *format, t_printf *argument)
+const char	*continue_font_formatting(const char	*format, t_str *argument)
 {
 	if (!(ft_strncmp(format, "[[background]]", 14)))
 	{
-		argument->to_store = BCK;
-		store_print_handler(argument, 1, 1, 5);
+		update_str(argument, BCK, 5);
 		format += 14;
-		return (terminal_formatting(format, argument));
 	}
 	else if (!(ft_strncmp(format, "[[underline]]", 13)))
 	{
-		argument->to_store = UND;
+		update_str(argument, UND, 4);
 		format += 13;
 	}
 	else if (!(ft_strncmp(format, "[[swapp]]", 9)))
 	{
-		argument->to_store = SWP;
+		update_str(argument, SWP, 4);
 		format += 9;
-	}
-	else
-		return (format);
-	store_print_handler(argument, 1, 1, 4);
-	return (terminal_formatting(format, argument));
-}
-
-char		*font_formatting(char *format, t_printf *argument)
-{
-	if (!(ft_strncmp(format, "[[bold]]", 8)))
-	{
-		argument->to_store = BLD;
-		format += 8;
-	}
-	else if (!(ft_strncmp(format, "[[end]]", 7)))
-	{
-		argument->to_store = RESET;
-		format += 7;
-	}
-	else if (!(ft_strncmp(format, "[[italic]]", 10)))
-	{
-		argument->to_store = ITA;
-		format += 10;
-	}
-	else if (!(ft_strncmp(format, "[[blink]]", 9)))
-	{
-		argument->to_store = BLK;
-		format += 9;
-	}
-	else
-		return (format = continue_font_formatting(format, argument));
-	store_print_handler(argument, 1, 1, 4);
-	return (terminal_formatting(format, argument));
-}
-
-char		*continue_color_formatting(char *format, t_printf *argument)
-{
-	if (!(ft_strncmp(format, "[[blue]]", 8)))
-	{
-		argument->to_store = "\033[34m";
-		format += 8;
-	}
-	else if (!(ft_strncmp(format, "[[magenta]]", 11)))
-	{
-		argument->to_store = MAG;
-		format += 11;
-	}
-	else if (!(ft_strncmp(format, "[[cyan]]", 8)))
-	{
-		argument->to_store = CYN;
-		format += 8;
-	}
-	else if (!(ft_strncmp(format, "[[white]]", 9)))
-	{
-		argument->to_store = WHT;
-		format += 9;
-	}
-	else
-		return (format = font_formatting(format, argument));
-	store_print_handler(argument, 1, 1, 5);
-	return (terminal_formatting(format, argument));
-}
-
-char		*terminal_formatting(char *format, t_printf *argument)
-{
-	if (!(ft_strncmp(format, "[[red]]", 7)))
-	{
-		argument->to_store = RED;
-		format += 7;
-	}
-	else if (!(ft_strncmp(format, "[[green]]", 9)))
-	{
-		argument->to_store = GRN;
-		format += 9;
-	}
-	else if (!(ft_strncmp(format, "[[yellow]]", 10)))
-	{
-		argument->to_store = YEL;
-		format += 10;
 	}
 	else if (!(ft_strncmp(format, "[[help?]]", 9)))
 	{
@@ -135,7 +55,87 @@ char		*terminal_formatting(char *format, t_printf *argument)
 		return (NULL);
 	}
 	else
+		return (format);
+	return (terminal_formatting(format, argument));
+}
+
+const char	*font_formatting(const char	*format, t_str *argument)
+{
+	if (!(ft_strncmp(format, "[[bold]]", 8)))
+	{
+		update_str(argument, BLD, 4);
+		format += 8;
+	}
+	else if (!(ft_strncmp(format, "[[end]]", 7)))
+	{
+		update_str(argument, RESET, 4);
+		format += 7;
+	}
+	else if (!(ft_strncmp(format, "[[italic]]", 10)))
+	{
+		update_str(argument, ITA, 4);
+		format += 10;
+	}
+	else if (!(ft_strncmp(format, "[[blink]]", 9)))
+	{
+		update_str(argument, BLK, 4);
+		format += 9;
+	}
+	else
+		return (format = continue_font_formatting(format, argument));
+	return (terminal_formatting(format, argument));
+}
+
+const char	*continue_color_formatting(const char	*format, t_str *argument)
+{
+	if (!(ft_strncmp(format, "[[blue]]", 8)))
+	{
+		update_str(argument, BLU, 5);
+		format += 8;
+	}
+	else if (!(ft_strncmp(format, "[[magenta]]", 11)))
+	{
+		update_str(argument, MAG, 5);
+		format += 11;
+	}
+	else if (!(ft_strncmp(format, "[[cyan]]", 8)))
+	{
+		update_str(argument, CYN, 5);
+		format += 8;
+	}
+	else if (!(ft_strncmp(format, "[[white]]", 9)))
+	{
+		update_str(argument, WHT, 5);
+		format += 9;
+	}
+	else
+		return (format = font_formatting(format, argument));
+	return (terminal_formatting(format, argument));
+}
+
+const char	*terminal_formatting(const char	*format, t_str *argument)
+{
+	if (argument->position + 5 >= BUFF_SIZE - 1)
+	{
+		write(1, &argument->str, argument->position + 1);
+		argument->position = 0;
+	}
+	if (!(ft_strncmp(format, "[[red]]", 7)))
+	{
+		update_str(argument, RED, 5);
+		format += 7;
+	}
+	else if (!(ft_strncmp(format, "[[green]]", 9)))
+	{
+		update_str(argument, GRN, 5);
+		format += 9;
+	}
+	else if (!(ft_strncmp(format, "[[yellow]]", 10)))
+	{
+		update_str(argument, YEL, 5);
+		format += 10;
+	}
+	else
 		return (format = continue_color_formatting(format, argument));
-	store_print_handler(argument, 1, 1, 5);
 	return (terminal_formatting(format, argument));
 }

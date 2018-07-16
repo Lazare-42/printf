@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/12 18:57:57 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/16 08:32:28 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 ** coexist. Default left_align_output is -1
 */
 
-int		get_precision(va_list ap, t_printf *argument, char *format)
+int		get_precision(va_list ap, t_printf *argument, const char	*format)
 {
-	char *tmp;
+	const char	*tmp;
 
 	tmp = format;
 	format++;
@@ -46,9 +46,9 @@ int		get_precision(va_list ap, t_printf *argument, char *format)
 	return (format - tmp);
 }
 
-int		get_width(va_list ap, t_printf *argument, char *format)
+int		get_width(va_list ap, t_printf *argument, const char	*format)
 {
-	char *tmp;
+	const char	*tmp;
 
 	tmp = format;
 	if (format && ft_isdigit(*format))
@@ -67,9 +67,9 @@ int		get_width(va_list ap, t_printf *argument, char *format)
 	return (format - tmp);
 }
 
-int		get_flags(t_printf *argument, char *format)
+int		get_flags(t_printf *argument, const char	*format)
 {
-	char *tmp;
+	const char	*tmp;
 
 	tmp = format;
 	while (format && (*format == '-' || *format == '0' || *format == '+'
@@ -95,9 +95,9 @@ int		get_flags(t_printf *argument, char *format)
 	return (format - tmp);
 }
 
-int		get_modifier(t_printf *argument, char *format)
+int		get_modifier(t_printf *argument, const char	*format)
 {
-	char *tmp;
+	const char	*tmp;
 
 	tmp = format;
 	(*argument).modifier[0] = *format++;

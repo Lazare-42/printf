@@ -6,46 +6,28 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 00:14:26 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/12 18:43:21 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/16 12:12:36 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/printf.h"
 #include "../includes/libft.h"
 
-static const char	*store_string(const char *format, t_printf *argument)
+static const char	*store_string(const char *format, t_printf *argument_specs, t_str *argument_str)
 {
 	while (format && *format && *format != '%')
 	{
 		if (*format == '[' && *(1 + format) && *(1 + format) == '[')
-			format = terminal_formatting(format, argument);
+			format = terminal_formatting(format, argument_str);
 		if (format && *format && *format != '%')
 		{
-			argument->to_store = (void*)format;
-			store_print_handler(argument, 1, 0, 1);
+			argument_str->str[argument_str->position++] = *format;
 			format++;
 		}
 	}
 	if (format && *format == '%')
 	{
-		argument->percentage_presence = 1;
-		format++;
-	}
-	return (format);
-}
-
-static const char		*type_0_modifications(const char *format, t_printf *argument)
-{
-	if (argument->percentage_presence && *format != '%')
-	{
-		argument->to_store = (void*)format;
-		store_print_handler(argument, 3, 1, 1);
-		format++;
-	}
-	else if (*format == '%')
-	{
-		argument->to_store = (void*)format;
-		store_print_handler(argument, 3, 1, 1);
+		argument_specs->percentage_presence = 1;
 		format++;
 	}
 	return (format);
@@ -60,26 +42,26 @@ void						get_type(t_printf *argument, const char *format)
 	if (*format == 'p')
 		argument->sharp = 1;
 	if (argument->show_sign && ft_strchr("xXpc", *format))
-	{
 		argument->show_sign = 0;
-	}
 	else if (ft_strchr("xX", argument->type) && argument->sharp
 			&& argument->width > 1)
 		argument->width--;
-	format++;
 }
 
-const char			*parse(const char *format, t_printf *argument, va_list ap)
+const char			*parse(const char *format, t_printf *argument, t_str *argument_str, va_list ap)
 {
 	int tmp;
 
 	tmp = 1;
-	format = store_string(format, argument);
+	format = store_string(format, argument, argument_str);
 	while (format && *format && tmp)
 	{
 		tmp = 0;
 		if (ft_strchr("sSpdDioOuUxXcCeEfFgGaAnb", *format))
-			format += get_type(argument, format);
+		{
+			get_type(argument, format);
+			format++;
+		}
 		else if (ft_strchr("-0+ #", *format)
 				&& (tmp = get_flags(argument, format)))
 			format += tmp;
@@ -94,6 +76,6 @@ const char			*parse(const char *format, t_printf *argument, va_list ap)
 				format += tmp;
 	}
 	if (!argument->type && format && *format)
-		format = type_0_modifications(format, argument);
+		argument_str->str[argument_str->position++] = *format++;
 	return (format);
 }
