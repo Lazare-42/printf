@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/16 12:25:00 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/16 16:39:38 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
  ** ft_printf returns from the write function in print_list()
  */
 
-void		apply_precision_width(t_printf *argument)
+static void		apply_precision_width(t_printf *argument)
 {
 	if (argument->sharp && ft_strchr("xoXp", argument->type)
 			&& !argument->left_align_output)
@@ -51,37 +51,25 @@ void		apply_precision_width(t_printf *argument)
 		apply_precision(argument);
 }
 
-void		treat_and_store_argument(va_list ap, t_printf *argument)
+static void		treat_and_store_argument(va_list ap, t_printf *argument)
 {
 	if (ft_strchr("ouxXdiOUDb", argument->type))
 		store_number_data(ap, argument);
 	else
 		store_char_data(ap, argument);
-	if (argument->sharp && argument->type)
-	{
-		if (argument->width >= argument->precision && argument->type != 'o')
-			argument->width--;
-		if (!ft_strchr("xX", argument->type))
-			(argument->width >= argument->precision) ? argument->width-- : 0;
-		if (argument->type == 'o' && argument->sharp
-				&& argument->precision > argument->arg_len)
-			argument->precision--;
-	}
 }
 
-t_printf	initialize_elem(void)
+static t_printf	initialize_elem(void)
 {
 	t_printf argument;
 
 	argument.type = 0;
 	ft_memset(argument.modifier, 0, 3);
 	ft_memset(argument.sign, 0, 3);
-//	argument.before_len = 0;
-//	argument.before_arg_len = 0;
 	argument.arg_len = 0;
 	argument.width = 0;
 	argument.sharp = 0;
-	argument.precision = 0;
+	argument.precision = 1;
 	argument.show_sign = 0;
 	argument.percentage_presence = 0;
 	argument.left_align_output = -1;
@@ -95,24 +83,25 @@ static void		parsing_handler(const char *format, va_list ap)
 {
 	t_printf	argument_specs;
 	t_str		argument_str;
-//	t_str		argument_specs_str_struct;
-//	char		string[BUFF_SIZE];
-//	int			mem_pos;
-
-//	I need the future argument_specs length in order to do my padding 
+	va_list		copy;
 
 	while (format && *format)
 	{
-		// mem_pos = 0;
 		argument_specs = initialize_elem();
-		// la aussi tu stores pour l'argument_specs des char - or il faut centraliser la gestion de la memoire
 		format = parse(format, &argument_specs, &argument_str, ap);
-		if (argument_specs.type)
-			treat_and_store_argument(ap, &argument_specs);
 		if (argument_specs.width ||
 				argument_specs.precision > -1 || argument_specs.sharp)
+		{
+			va_copy(copy, ap);
+			if (ft_strchr("ouxXdiOUDb", argument_specs.type))
+				argument_specs.arg_len = get_number_len(ap, &argument_specs);
+			else
+				argument_specs.arg_len = get_char_len(ap, &argument_specs);
 			apply_precision_width(&argument_specs);
-		write(1, argument_str.str, argument_str.position);
+		}
+		if (argument_specs.type)
+			treat_and_store_argument(ap, &argument_specs);
+		write(1, &argument_str.str, argument_str.position);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/12 18:43:27 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/16 15:57:28 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void						get_hex_ptr_adr(va_list ap, t_printf *argument)
 				sizeof(uintptr_t), argument);
 }
 
-static intmax_t				convert_overflow(int sizeof_var, intmax_t number)
+intmax_t				convert_overflow(int sizeof_var, intmax_t number)
 {
 	if ((int)sizeof(number) > sizeof_var)
 	{
@@ -63,7 +63,7 @@ static intmax_t				convert_overflow(int sizeof_var, intmax_t number)
 	return (number);
 }
 
-static unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var)
+unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var)
 {
 	static unsigned long long	all_bits_long_long = ~0;
 	static unsigned long		all_bits_long = ~0;
