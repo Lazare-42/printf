@@ -14,17 +14,17 @@
 #include "../includes/libft.h"
 
 /*
-** the fonction parse stores the string argument
-** in a string in a structure of a linked list.
-** If it meets an argument it
-** sends the structure and the va_list element
-** to the function treat_and_store elements which stores all required elements
-** (width, precision, argument itself) in the structure and eventually sends
-** the structure and its element to the precision and width handler,
-** apply_precision_width
-** If any error is encoutered set_get_return is set to -1. Else the function
-** ft_printf returns from the write function in print_list()
-*/
+ ** the fonction parse stores the string argument
+ ** in a string in a structure of a linked list.
+ ** If it meets an argument it
+ ** sends the structure and the va_list element
+ ** to the function treat_and_store elements which stores all required elements
+ ** (width, precision, argument itself) in the structure and eventually sends
+ ** the structure and its element to the precision and width handler,
+ ** apply_precision_width
+ ** If any error is encoutered set_get_return is set to -1. Else the function
+ ** ft_printf returns from the write function in print_list()
+ */
 
 static void		apply_precision_width(t_printf *argument)
 {
@@ -84,23 +84,34 @@ static t_printf	initialize_elem(void)
 	argument.show_sign = 0;
 	argument.percentage_presence = 0;
 	argument.left_align_output = -1;
+
 	return (argument);
 }
 
-static void		parsing_handler(char *format, va_list ap)
+// j'ai aussi la localelisation de 
+
+static void		parsing_handler(const char *format, va_list ap)
 {
 	t_printf	argument;
+	/*
+	char		string[BUFF_SIZE];
+	int			mem_pos;
+	*/
 
-	argument = initialize_elem();
-	format = parse(format, &argument, ap);
-	if (argument.type)
-		treat_and_store_argument(ap, &argument);
-	if (argument.width ||
-			argument.precision > -1 || argument.sharp)
-		apply_precision_width(&argument);
-	store_print_handler(&argument, 4, 0, 0);
-	if (format && *format)
-		parsing_handler(format, ap);
+	while (format && *format)
+	{
+		// mem_pos = 0;
+		argument = initialize_elem();
+		// la aussi tu stores pour l'argument des char - or il faut centraliser la gestion de la memoire
+		format = parse(format, &argument, ap);
+		if (argument.type)
+			treat_and_store_argument(ap, &argument);
+		if (argument.width ||
+				argument.precision > -1 || argument.sharp)
+			apply_precision_width(&argument);
+		store_print_handler(&argument, 4, 0, 0);
+		// write(1, &string, mem_pos);
+	}
 }
 
 int				ft_printf(const char *restrict format, ...)
@@ -113,7 +124,7 @@ int				ft_printf(const char *restrict format, ...)
 		return (-1);
 	}
 	va_start(ap, format);
-	parsing_handler((char*)format, ap);
+	parsing_handler(format, ap);
 	va_end(ap);
 	store_print_handler(NULL, 0, 0, 0);
 	return (set_get_return(0));

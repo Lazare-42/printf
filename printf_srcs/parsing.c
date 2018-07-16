@@ -13,7 +13,7 @@
 #include "../includes/printf.h"
 #include "../includes/libft.h"
 
-static char		*store_string(char *format, t_printf *argument)
+static const char	*store_string(const char *format, t_printf *argument)
 {
 	while (format && *format && *format != '%')
 	{
@@ -34,7 +34,7 @@ static char		*store_string(char *format, t_printf *argument)
 	return (format);
 }
 
-static char		*type_0_modifications(char *format, t_printf *argument)
+static const char		*type_0_modifications(const char *format, t_printf *argument)
 {
 	if (argument->percentage_presence && *format != '%')
 	{
@@ -51,11 +51,8 @@ static char		*type_0_modifications(char *format, t_printf *argument)
 	return (format);
 }
 
-int				get_type(t_printf *argument, char *format)
+void						get_type(t_printf *argument, const char *format)
 {
-	char *tmp;
-
-	tmp = format;
 	if (*format == 'i')
 		argument->type = 'd';
 	else
@@ -70,10 +67,9 @@ int				get_type(t_printf *argument, char *format)
 			&& argument->width > 1)
 		argument->width--;
 	format++;
-	return (format - tmp);
 }
 
-char			*parse(char *format, t_printf *argument, va_list ap)
+const char			*parse(const char *format, t_printf *argument, va_list ap)
 {
 	int tmp;
 
