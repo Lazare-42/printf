@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/19 19:50:49 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 20:46:00 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/19 22:10:21 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ typedef struct		s_printf
 	int				before_arg_len;
 	int				arg_len;
 	int				location;
-	void			*to_store;
 	char			percentage_presence;
 	char			type;
 	char			modifier[3];
@@ -66,18 +65,18 @@ void				update_str(t_str *argument, void *to_cpy, int mem_op_size);
 
 int					get_precision(va_list ap, t_printf *argument, const char	*format);
 int					get_width(va_list ap, t_printf *argument, const char	*format);
-int					et_flags(t_printf *argument, const char	*format);
+int					get_flags(t_printf *argument, const char	*format);
 int					get_modifier(t_printf *argument, const char	*format);
 int					ft_printf(const char *restrict format, ...);
-void				store_char_data(va_list ap, t_printf *argument);
+void		store_char_data(va_list ap, t_printf *argument, t_str *argument_str);
 void				store_number_data(va_list ap, t_printf *argument);
 const char			*parse(const char *format, t_printf *argument, t_str *argument_str, va_list ap);
 void				get_hex_ptr_adr(va_list ap, t_printf *argument);
-void				apply_width(t_printf *argument);
-void				apply_flag_padding(t_printf *argument);
-void				apply_plus_minus_flags(t_printf *argument);
-void				apply_precision(t_printf *argument);
-void				apply_sharp(t_printf *argument);
+void				apply_width(t_printf *argument, t_str *argument_str);
+void				apply_flag_padding(t_printf *argument, t_str *argument_str);
+void				apply_plus_minus_flags(t_printf *argument, t_str *argument_str);
+void				apply_precision(t_printf *argument, t_str *argument_str);
+void				apply_sharp(t_printf *argument_specs, t_str *argument_str);
 void				printf_u_base_converter(int base_size, uintmax_t number,
 		int sizeof_var, t_printf *argument);
 int							u_base_converter_len(int base_size,
@@ -88,8 +87,6 @@ unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var);
 intmax_t				convert_overflow(int sizeof_var, intmax_t number);
 void				printf_s_base_converter(int base_size, intmax_t number,
 		int sizeof_var, t_printf *argument);
-void				store_print_handler(t_printf *argument, int location,
-		int sizeof_var, int memset);
 int					set_get_return(int action);
 void				store_unicode(wint_t data, t_printf *argument,
 		int precision);

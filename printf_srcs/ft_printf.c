@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 20:52:15 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/19 22:24:09 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 /*
@@ -26,36 +26,36 @@
 #include "../includes/libft.h"
 #include <unistd.h>
 
-static void		apply_precision_width(t_printf *argument)
+static void		apply_precision_width(t_printf *argument_specs, t_str *argument_str)
 {
-	if (argument->sharp && ft_strchr("xoXp", argument->type)
-			&& !argument->left_align_output)
-		apply_sharp(argument);
-	if (argument->show_sign && (argument->left_align_output == 1 || (argument->left_align_output == 0 && !argument->precision)))
-		apply_plus_minus_flags(argument);
-	if (argument->precision != -1 && argument->left_align_output == 1
-			&& argument->type)
-		apply_precision(argument);
-	if (argument->width)
-		apply_width(argument);
-	if (argument->sharp && ft_strchr("xoXpO", argument->type)
-			&& argument->left_align_output)
-		apply_sharp(argument);
-	if (argument->left_align_output == 1)
-		apply_flag_padding(argument);
-	if (argument->show_sign && (argument->left_align_output == -1  || (!argument->left_align_output && argument->precision)))
-		apply_plus_minus_flags(argument);
-	if (argument->precision > 0 && argument->left_align_output <= 0
-			&& argument->type)
-		apply_precision(argument);
+	if (argument_specs->sharp && ft_strchr("xoXp", argument_specs->type)
+			&& !argument_specs->left_align_output)
+		apply_sharp(argument_specs, argument_str);
+	if (argument_specs->show_sign && (argument_specs->left_align_output == 1 || (argument_specs->left_align_output == 0 && !argument_specs->precision)))
+		apply_plus_minus_flags(argument_specs, argument_str);
+	if (argument_specs->precision != -1 && argument_specs->left_align_output == 1
+			&& argument_specs->type)
+		apply_precision(argument_specs, argument_str);
+	if (argument_specs->width)
+		apply_width(argument_specs, argument_str);
+	if (argument_specs->sharp && ft_strchr("xoXpO", argument_specs->type)
+			&& argument_specs->left_align_output)
+		apply_sharp(argument_specs, argument_str);
+	if (argument_specs->left_align_output == 1)
+		apply_flag_padding(argument_specs, argument_str);
+	if (argument_specs->show_sign && (argument_specs->left_align_output == -1  || (!argument_specs->left_align_output && argument_specs->precision)))
+		apply_plus_minus_flags(argument_specs, argument_str);
+	if (argument_specs->precision > 0 && argument_specs->left_align_output <= 0
+			&& argument_specs->type)
+		apply_precision(argument_specs, argument_str);
 }
 
-static void		treat_and_store_argument(va_list ap, t_printf *argument)
+static void		treat_and_store_argument(va_list ap, t_printf *argument, t_str *argument_specs)
 {
 	if (ft_strchr("ouxXdiOUDb", argument->type))
 		store_number_data(ap, argument);
 	else
-		store_char_data(ap, argument);
+		store_char_data(ap, argument,  argument_specs);
 }
 
 static t_printf	initialize_elem(void)
@@ -91,13 +91,13 @@ static int		parsing_handler(const char *format, va_list ap)
 		{
 			va_copy(copy, ap);
 			if (ft_strchr("ouxXdiOUDb", argument_specs.type))
-				argument_specs.arg_len = get_number_len(ap, &argument_specs);
+				argument_specs.arg_len = get_number_len(copy, &argument_specs);
 			else
-				argument_specs.arg_len = get_char_len(ap, &argument_specs);
-			apply_precision_width(&argument_specs);
+				argument_specs.arg_len = get_char_len(copy, &argument_specs);
+			apply_precision_width(&argument_specs, &argument_str);
 		}
 		if (argument_specs.type)
-			treat_and_store_argument(ap, &argument_specs);
+			treat_and_store_argument(ap, &argument_specs, &argument_str);
 	}
 	return (write(1, &argument_str.str, argument_str.position));
 }
@@ -116,6 +116,5 @@ int				ft_printf(const char *restrict format, ...)
 	va_start(ap, format);
 	return_val = parsing_handler(format, ap);
 	va_end(ap);
-	store_print_handler(NULL, 0, 0, 0);
 	return (return_val);
 }

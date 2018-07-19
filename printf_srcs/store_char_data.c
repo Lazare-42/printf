@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:30:45 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/16 15:32:53 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/19 21:50:51 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,33 @@
 #include "../includes/printf.h"
 #include <stdarg.h>
 
-void		store_str_data(va_list ap, t_printf *argument)
+void		store_str_data(va_list ap, t_str *argument_str)
 {
 	char	*va_arg_str;
+	int		strlen;
 
 	va_arg_str = NULL;
-	if (argument->precision < 0)
-		return ;
+	strlen = 0;
 	va_arg_str = va_arg(ap, char *);
 	if (!va_arg_str)
-	{
-		argument->to_store = (void*)"(null)";
-		if (argument->precision && argument->precision < 6)
-			store_print_handler(argument, 3, 1, argument->precision);
-		else
-			store_print_handler(argument, 3, 1, 6);
-		return ;
-	}
-	argument->to_store = (void*)va_arg_str;
-	if (argument->precision > 0
-			&& argument->precision < (int)ft_strlen(va_arg_str))
-		store_print_handler(argument, 3, 1, argument->precision);
+		update_str(argument_str, (void*)"(null)", 6);
 	else
-		store_print_handler(argument, 3, 1, ft_strlen(va_arg_str));
+	{
+		strlen = ft_strlen(va_arg_str);
+		update_str(argument_str, (void*)va_arg_str, strlen);
+	}
 }
 
-void		store_char_data(va_list ap, t_printf *argument)
+void		store_char_data(va_list ap, t_printf *argument, t_str *argument_str)
 {
 	char c;
 
 	if (argument->type == 's' && !*argument->modifier)
-		store_str_data(ap, argument);
+		store_str_data(ap, argument_str);
 	else if ((*argument).type == 'c' && !*argument->modifier)
 	{
 		c = va_arg(ap, int);
-		argument->to_store = (void*)&c;
-		store_print_handler(argument, 3, sizeof(char), 1);
+		update_str(argument_str, (void*)&c, 1);
 	}
 	else if (argument->type == 'C'
 			|| (argument->type == 'c' && *argument->modifier == 'l'))

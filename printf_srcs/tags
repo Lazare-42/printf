@@ -1,0 +1,50 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+apply_flag_padding	precision_width.c	/^void		apply_flag_padding(t_printf *argument)$/;"	f
+apply_plus_minus_flags	precision_width.c	/^void		apply_plus_minus_flags(t_printf *argument)$/;"	f
+apply_precision	precision_width.c	/^void		apply_precision(t_printf *argument)$/;"	f
+apply_precision_width	ft_printf.c	/^static void		apply_precision_width(t_printf *argument)$/;"	f	file:
+apply_sharp	precision_width.c	/^void		apply_sharp(t_printf *argument)$/;"	f
+apply_width	precision_width.c	/^void		apply_width(t_printf *argument)$/;"	f
+continue_color_formatting	bonus_colors_formatting.c	/^const char	*continue_color_formatting(const char	*format, t_str *argument)$/;"	f
+continue_font_formatting	bonus_colors_formatting.c	/^const char	*continue_font_formatting(const char	*format, t_str *argument)$/;"	f
+convert_overflow	base_converter.c	/^intmax_t				convert_overflow(int sizeof_var, intmax_t number)$/;"	f
+font_formatting	bonus_colors_formatting.c	/^const char	*font_formatting(const char	*format, t_str *argument)$/;"	f
+ft_printf	ft_printf.c	/^int				ft_printf(const char *restrict format, ...)$/;"	f
+get_char_len	get_nbr_len.c	/^int			get_char_len(va_list ap, t_printf *argument)$/;"	f
+get_flags	get_modifiers.c	/^int		get_flags(t_printf *argument, const char	*format)$/;"	f
+get_hex_ptr_adr	base_converter.c	/^void						get_hex_ptr_adr(va_list ap, t_printf *argument)$/;"	f
+get_modifier	get_modifiers.c	/^int		get_modifier(t_printf *argument, const char	*format)$/;"	f
+get_number_len	get_nbr_len.c	/^int			get_number_len(va_list ap, t_printf *argument)$/;"	f
+get_precision	get_modifiers.c	/^int		get_precision(va_list ap, t_printf *argument, const char	*format)$/;"	f
+get_type	parsing.c	/^void						get_type(t_printf *argument, const char *format)$/;"	f
+get_width	get_modifiers.c	/^int		get_width(va_list ap, t_printf *argument, const char	*format)$/;"	f
+help	bonus_colors_formatting.c	/^void		help(void)$/;"	f
+initialize_elem	ft_printf.c	/^static t_printf	initialize_elem(void)$/;"	f	file:
+parse	parsing.c	/^const char			*parse(const char *format, t_printf *argument, t_str *argument_str, va_list ap)$/;"	f
+parsing_handler	ft_printf.c	/^static int		parsing_handler(const char *format, va_list ap)$/;"	f	file:
+printf_s_base_converter	base_converter.c	/^void						printf_s_base_converter(int base_size,$/;"	f
+printf_u_base_converter	base_converter.c	/^void						printf_u_base_converter(int base_size,$/;"	f
+s_base_converter_len	base_converter_len_output.c	/^int							s_base_converter_len(int base_size,$/;"	f
+send_unicode	wide_char.c	/^void		send_unicode(void *c, t_printf *argument, int byte_size)$/;"	f
+store_char_data	store_char_data.c	/^void		store_char_data(va_list ap, t_printf *argument)$/;"	f
+store_data_len	get_nbr_len.c	/^static int store_data_len(va_list ap, t_printf *argument)$/;"	f	file:
+store_data_len_modifier	get_nbr_len.c	/^static int store_data_len_modifier(va_list ap, t_printf *argument)$/;"	f	file:
+store_number_data	store_nbr_data.c	/^void		store_number_data(va_list ap, t_printf *argument)$/;"	f
+store_str_data	store_char_data.c	/^void		store_str_data(va_list ap, t_printf *argument)$/;"	f
+store_string	parsing.c	/^static const char	*store_string(const char *format, t_printf *argument_specs, t_str *argument_str)$/;"	f	file:
+store_unicode	wide_char.c	/^void		store_unicode(wint_t data, t_printf *argument, int precision)$/;"	f
+store_unicode_str	wide_char.c	/^void		store_unicode_str(wchar_t *data, t_printf *argument)$/;"	f
+take_out_bits	base_converter.c	/^unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var)$/;"	f
+terminal_formatting	bonus_colors_formatting.c	/^const char	*terminal_formatting(const char	*format, t_str *argument)$/;"	f
+treat_and_store_argument	ft_printf.c	/^static void		treat_and_store_argument(va_list ap, t_printf *argument)$/;"	f	file:
+treat_store_modifier_s_data	store_nbr_data.c	/^static void	treat_store_modifier_s_data(va_list ap, t_printf *argument)$/;"	f	file:
+treat_store_modifier_u_data	store_nbr_data.c	/^static void	treat_store_modifier_u_data(va_list ap, t_printf *argument)$/;"	f	file:
+type_to_int_base	get_nbr_len.c	/^static int	type_to_int_base(char type)$/;"	f	file:
+type_to_int_base	store_nbr_data.c	/^static int	type_to_int_base(char type)$/;"	f	file:
+u_base_converter_len	base_converter_len_output.c	/^int							u_base_converter_len(int base_size,$/;"	f
+update_str	fill_str_update_index.c	/^void	update_str(t_str	*argument, void *to_cpy, int mem_op_size)$/;"	f
