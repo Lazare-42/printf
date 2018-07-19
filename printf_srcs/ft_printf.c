@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 20:42:31 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/19 20:52:15 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 /*
@@ -76,7 +76,7 @@ static t_printf	initialize_elem(void)
 	return (argument);
 }
 
-static void		parsing_handler(const char *format, va_list ap)
+static int		parsing_handler(const char *format, va_list ap)
 {
 	t_printf	argument_specs;
 	t_str		argument_str;
@@ -98,22 +98,24 @@ static void		parsing_handler(const char *format, va_list ap)
 		}
 		if (argument_specs.type)
 			treat_and_store_argument(ap, &argument_specs);
-		write(1, &argument_str.str, argument_str.position);
 	}
+	return (write(1, &argument_str.str, argument_str.position));
 }
 
 int				ft_printf(const char *restrict format, ...)
 {
 	va_list		ap;
+	int			return_val;
 
+	return_val = -1;
 	if (!(format))
 	{
 		ft_putstr_fd("Please stop fooling around with my ft_printf.", 2);
 		return (-1);
 	}
 	va_start(ap, format);
-	parsing_handler(format, ap);
+	return_val = parsing_handler(format, ap);
 	va_end(ap);
 	store_print_handler(NULL, 0, 0, 0);
-	return (set_get_return(0));
+	return (return_val);
 }

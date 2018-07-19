@@ -42,17 +42,16 @@ int main()
 	int ret;
 
 
-	ret = ft_printf("%0+5d", 42);
-	ret = ft_printf("%+010.4d", 0);
+	ret = ft_printf("Combien de fois lui ai je dit je t'aime ? %s\n", "jamais assez");
 	printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("%0+5d", 42);
-	ret = printf("%+010.4d", 0);
+	ret = printf("Combien de fois lui ai je dit je t'aime ? %s\n", "jamais assez");
 	printf("\nret = %d\n", ret); fflush(stdout);
+
+  /*
 	ret = ft_printf("toto%.0d et %+.d", 0, 1);
 	printf("\nret = %d\n", ret); fflush(stdout);
 	ret = printf("toto%.0d et %+.d", 0, 1);
 	printf("\nret = %d\n", ret); fflush(stdout);
-  /*
    * 
 	ret = ft_printf("toto%.0d et %+.i et  %   .0D !!!", 0, 0, 0);
 	ret = ft_printf("coco et %-#-#--24O titi%#012o", 12, -874);
