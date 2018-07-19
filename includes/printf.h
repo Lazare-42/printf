@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/19 19:50:49 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 22:10:21 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/19 22:49:51 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct		s_printf
 	char			sharp;
 	int				width;
 	int				precision;
+	t_str			*argument_str;
 }					t_printf;
 
 int					get_char_len(va_list ap, t_printf *argument);
@@ -88,9 +89,8 @@ intmax_t				convert_overflow(int sizeof_var, intmax_t number);
 void				printf_s_base_converter(int base_size, intmax_t number,
 		int sizeof_var, t_printf *argument);
 int					set_get_return(int action);
-void				store_unicode(wint_t data, t_printf *argument,
-		int precision);
-void				store_unicode_str(wchar_t *data, t_printf *argument);
+void		store_unicode_str(wchar_t *data, t_str *argument_str);
+void		store_unicode(wint_t data, int precision, t_str *argument_str);
 const char			*terminal_formatting(const char	*format, t_str *argument);
 void				print(t_printf *arg, int location);
 

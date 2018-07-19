@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 22:24:09 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/19 22:40:34 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 /*
@@ -50,12 +50,13 @@ static void		apply_precision_width(t_printf *argument_specs, t_str *argument_str
 		apply_precision(argument_specs, argument_str);
 }
 
-static void		treat_and_store_argument(va_list ap, t_printf *argument, t_str *argument_specs)
+static void		treat_and_store_argument(va_list ap, t_printf *argument_specs, t_str *argument_str)
 {
-	if (ft_strchr("ouxXdiOUDb", argument->type))
-		store_number_data(ap, argument);
+	argument_specs->argument_str = argument_str;
+	if (ft_strchr("ouxXdiOUDb", argument_specs->type))
+		store_number_data(ap, argument_specs);
 	else
-		store_char_data(ap, argument,  argument_specs);
+		store_char_data(ap, argument_specs,  argument_str);
 }
 
 static t_printf	initialize_elem(void)
