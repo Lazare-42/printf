@@ -127,6 +127,9 @@ PRINTF_SRCS =   ft_printf.c \
 				store_nbr_data.c \
 				store_char_data.c \
 				bonus_colors_formatting.c \
+				get_nbr_len.c \
+				base_converter_len_output.c \
+				fill_str_update_index.c \
 
 # CC = gcc -Wall -Wextra -Werror -c -g
 
