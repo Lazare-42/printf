@@ -46,7 +46,7 @@ static void		adjust_width_precision_for_sign(t_printf *argument_specs)
 
 static void		apply_precision_width(t_printf *argument_specs, t_str *argument_str)
 {
-	if (ft_strchr("sSCc", argument_specs->type) && argument_specs->precision < argument_specs->arg_len)
+	if (ft_strchr("sSCc", argument_specs->type) && argument_specs->precision < argument_specs->arg_len && argument_specs->activate_precision)
 		argument_specs->arg_len = argument_specs->precision;
 	if (argument_specs->show_sign)
 		adjust_width_precision_for_sign(argument_specs);
@@ -74,6 +74,7 @@ static t_printf	initialize_elem(void)
 	argument.sharp = 0;
 	argument.zeros_width = 0;
 	argument.precision = 1;
+	argument.activate_precision = 0;
 	argument.show_sign = 0;
 	argument.percentage_presence = 0;
 	argument.left_align_output = 0;
@@ -103,7 +104,7 @@ static void	parsing_handler(const char *format, va_list ap, t_str *argument_str)
 		if (argument_specs.type)
 			find_arg_len(ap, &argument_specs);
 		if (argument_specs.width
-			|| argument_specs.precision != 1 || argument_specs.sharp ||
+			|| argument_specs.activate_precision || argument_specs.sharp ||
 			argument_specs.show_sign)
 			apply_precision_width(&argument_specs, argument_str);
 		if (argument_specs.type)

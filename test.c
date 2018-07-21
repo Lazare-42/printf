@@ -45,10 +45,9 @@ int test = 420;
 
 (void)test;
 
-
-	ret = ft_printf("%D", LONG_MIN);
+  ret = ft_printf("%.1s", "abc");
 printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("%D", LONG_MIN);
+  ret = printf("%.1s", "abc");
 printf("\nret = %d\n", ret); fflush(stdout);
 /*
 ret =   ft_printf("%-15x", 542);

@@ -25,6 +25,7 @@ int		get_precision(va_list ap, t_printf *argument, const char *format)
 
 	tmp = format;
 	format++;
+	argument->activate_precision = 1;
 	if (*format == '*' && format++)
 	{
 		argument->precision = va_arg(ap, int);

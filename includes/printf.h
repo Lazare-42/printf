@@ -44,10 +44,8 @@ typedef struct		s_str
 
 typedef struct		s_printf
 {
-	int				before_len;
-	int				before_arg_len;
 	int				arg_len;
-	int				location;
+	int				activate_precision;
 	char			percentage_presence;
 	char			type;
 	char			zeros_width;
