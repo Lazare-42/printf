@@ -30,9 +30,7 @@ static void		treat_and_store_argument(va_list ap, t_printf *argument_specs, t_st
 {
 	argument_specs->argument_str = argument_str;
 	if (ft_strchr("ouxXdiOUDb", argument_specs->type))
-	{
 		store_number_data(ap, argument_specs);
-	}
 	else
 		store_char_data(ap, argument_specs,  argument_str);
 }
