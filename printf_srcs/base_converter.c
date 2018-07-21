@@ -116,7 +116,8 @@ void						printf_s_base_converter(int base_size,
 	(number == 0) ? result[64] = '0' : 0;
 	while (number)
 	{
-		result[64 - i] = base_output[number % base_size];
+		result[64 - i] = base_output[(number % base_size < 0) ?
+			-(number % base_size) : number % base_size];
 		number /= base_size;
 		i++;
 	}
