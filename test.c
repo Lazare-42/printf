@@ -41,13 +41,23 @@ int main()
 
 	int ret;
 
+int test = 420;
 
-	ret = ft_printf("Combien de fois lui ai je dit je t'aime ? %d\n", 1000002);
-	printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("Combien de fois lui ai je dit je t'aime ? %d\n", 1000000); fflush(stdout);
-	printf("\nret = %d\n", ret); fflush(stdout);
+(void)test;
 
-  /*
+  ret = ft_printf("%15.4o", 42);
+printf("\nret = %d\n", ret); fflush(stdout);
+  ret = printf("%15.4o", 42);
+printf("\nret = %d\n", ret); fflush(stdout);
+
+  ret = ft_printf("%10d", -42);
+printf("\nret = %d\n", ret); fflush(stdout);
+  ret = printf("%10d", -42);
+printf("\nret = %d\n", ret); fflush(stdout);
+/*
+ret =   ft_printf("%-15x", 542);
+ret =   ft_printf("%2x", 542);
+ret =   ft_printf("%.2x", 5427);
 	ret = ft_printf("toto%.0d et %+.d", 0, 1);
 	printf("\nret = %d\n", ret); fflush(stdout);
 	ret = printf("toto%.0d et %+.d", 0, 1);

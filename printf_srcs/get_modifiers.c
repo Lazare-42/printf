@@ -19,7 +19,7 @@
 ** coexist. Default left_align_output is -1
 */
 
-int		get_precision(va_list ap, t_printf *argument, const char	*format)
+int		get_precision(va_list ap, t_printf *argument, const char *format)
 {
 	const char	*tmp;
 
@@ -29,10 +29,7 @@ int		get_precision(va_list ap, t_printf *argument, const char	*format)
 	{
 		argument->precision = va_arg(ap, int);
 		if (argument->precision < 0)
-		{
-			argument->precision = 0;
 			argument->left_align_output = 0;
-		}
 		else if (argument->precision == 0)
 			argument->precision = -1;
 	}
@@ -46,7 +43,7 @@ int		get_precision(va_list ap, t_printf *argument, const char	*format)
 	return (format - tmp);
 }
 
-int		get_width(va_list ap, t_printf *argument, const char	*format)
+int		get_width(va_list ap, t_printf *argument, const char *format)
 {
 	const char	*tmp;
 
@@ -77,8 +74,8 @@ int		get_flags(t_printf *argument, const char	*format)
 	{
 		if (*format == '-')
 			argument->left_align_output = 1;
-		if (*format == '0' && argument->left_align_output != 1)
-			argument->left_align_output = 0;
+		if (*format == '0')
+			argument->zeros_width = 1;
 		if (*format == ' ' && (*argument).show_sign != '+'
 				&& !argument->sharp)
 			argument->show_sign = ' ';
@@ -87,7 +84,6 @@ int		get_flags(t_printf *argument, const char	*format)
 		if (*format == '#')
 		{
 			argument->sharp = 1;
-			argument->show_sign = 0;
 			argument->show_sign = 0;
 		}
 		format++;

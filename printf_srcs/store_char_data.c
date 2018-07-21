@@ -14,6 +14,8 @@
 #include "../includes/printf.h"
 #include <stdarg.h>
 
+#include <unistd.h>
+
 void		store_str_data(va_list ap, t_str *argument_str)
 {
 	char	*va_arg_str;

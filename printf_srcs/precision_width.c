@@ -15,27 +15,34 @@
 
 void		apply_width(t_printf *argument_specs, t_str *argument_str)
 {
-	char	fill;
 	int		fill_val;
+	int		i;
+	char	tmp;
 
-	if (argument_specs->precision == -1)
-		argument_specs->precision++;
-	if (argument_specs->precision > argument_specs->width && argument_specs->type != 's')
+	if (argument_specs->arg_len >= argument_specs->width)
 		return ;
-	fill = (argument_specs->left_align_output
-			== 0 && !argument_specs->precision) ? '0' : ' ';
-	fill_val = argument_specs->width;
-	if (ft_strchr("sS", argument_specs->type) && argument_specs->precision)
-		fill_val -= (argument_specs->precision < argument_specs->arg_len) ?
-			argument_specs->precision : argument_specs->arg_len;
+	fill_val = (argument_specs->zeros_width) ? '0' : ' ';
+	i = 0;
+	if (argument_specs->type)
+	{
+		if (argument_specs->precision > 1)
+		{
+			while (i++ < argument_specs->width - argument_specs->precision)
+				update_str(argument_str, (void*)&fill_val, 1);
+		}
+		else while (i++ < argument_specs->width - argument_specs->arg_len)
+			update_str(argument_str, (void*)&fill_val, 1);
+	}
 	else
-		fill_val -= (argument_specs->precision < argument_specs->arg_len) ?
-			argument_specs->arg_len : argument_specs->precision;
-	if (fill_val <= 0)
-		return ;
-	if (argument_specs->show_sign)
-		fill_val--;
-	update_str(argument_str, (void*)&fill, 1);
+	{
+		tmp = argument_str->str[argument_str->position - 1];
+		if (!(argument_specs->left_align_output))
+			argument_str->position--;
+		while (argument_specs->width-- - argument_specs->precision > 1)
+			update_str(argument_str, (void*)&fill_val, 1);
+		if (!(argument_specs->left_align_output))
+			update_str(argument_str, (void*)&tmp, 1);
+	}
 }
 
 void		apply_flag_padding(t_printf *argument_specs, t_str *argument_str)
@@ -60,6 +67,8 @@ void		apply_flag_padding(t_printf *argument_specs, t_str *argument_str)
 	}
 }
 
+#include <unistd.h>
+
 void		apply_plus_minus_flags(t_printf *argument_specs, t_str *argument_str)
 {
 	if (ft_strchr("uS", argument_specs->type))
@@ -72,12 +81,16 @@ void		apply_plus_minus_flags(t_printf *argument_specs, t_str *argument_str)
 void		apply_precision(t_printf *argument_specs, t_str *argument_str)
 {
 	char		fill;
+	int			i;
 
 	fill = '0';
-	if (argument_specs->precision <= argument_specs->arg_len
-			|| ft_strchr("sSCc", argument_specs->type))
+	i = 0;
+	if (argument_specs->precision <= argument_specs->arg_len)
 		return ;
-	update_str(argument_str, (void*)&fill, 1);
+	if (ft_strchr("sSCc", argument_specs->type))
+		return ;
+	while (i++ < argument_specs->precision - argument_specs->arg_len)
+		update_str(argument_str, (void*)&fill, 1);
 }
 
 void		apply_sharp(t_printf *argument_specs, t_str *argument_str)
@@ -85,6 +98,12 @@ void		apply_sharp(t_printf *argument_specs, t_str *argument_str)
 	char fill;
 
 	fill = '0';
+	if (argument_specs->width > 1)
+	{
+		argument_specs->width--;
+		if (argument_str->position && !argument_specs->left_align_output)
+			argument_str->position--;
+	}
 	update_str(argument_str, (void*)&fill, 1);
 	if (ft_strchr("xXp", argument_specs->type))
 	{

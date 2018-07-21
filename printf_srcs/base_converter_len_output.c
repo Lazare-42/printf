@@ -32,7 +32,7 @@ int							u_base_converter_len(int base_size,
 }
 
 int							s_base_converter_len(int base_size,
-		intmax_t number, int sizeof_var)
+		intmax_t number, int sizeof_var, char *show_sign)
 {
 	int				i;
 
@@ -40,7 +40,7 @@ int							s_base_converter_len(int base_size,
 	number = convert_overflow(sizeof_var, number);
 	if (number < 0)
 	{
-		i++;
+		*show_sign = '-';
 		number *= -1;
 	}
 	(number == 0) ? i++ : 0;

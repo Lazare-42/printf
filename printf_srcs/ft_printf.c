@@ -26,37 +26,49 @@
 #include "../includes/libft.h"
 #include <unistd.h>
 
-static void		apply_precision_width(t_printf *argument_specs, t_str *argument_str)
-{
-	if (argument_specs->sharp && ft_strchr("xoXp", argument_specs->type)
-			&& !argument_specs->left_align_output)
-		apply_sharp(argument_specs, argument_str);
-	if (argument_specs->show_sign && (argument_specs->left_align_output == 1 || (argument_specs->left_align_output == 0 && !argument_specs->precision)))
-		apply_plus_minus_flags(argument_specs, argument_str);
-	if (argument_specs->precision != -1 && argument_specs->left_align_output == 1
-			&& argument_specs->type)
-		apply_precision(argument_specs, argument_str);
-	if (argument_specs->width)
-		apply_width(argument_specs, argument_str);
-	if (argument_specs->sharp && ft_strchr("xoXpO", argument_specs->type)
-			&& argument_specs->left_align_output)
-		apply_sharp(argument_specs, argument_str);
-	if (argument_specs->left_align_output == 1)
-		apply_flag_padding(argument_specs, argument_str);
-	if (argument_specs->show_sign && (argument_specs->left_align_output == -1  || (!argument_specs->left_align_output && argument_specs->precision)))
-		apply_plus_minus_flags(argument_specs, argument_str);
-	if (argument_specs->precision > 0 && argument_specs->left_align_output <= 0
-			&& argument_specs->type)
-		apply_precision(argument_specs, argument_str);
-}
-
 static void		treat_and_store_argument(va_list ap, t_printf *argument_specs, t_str *argument_str)
 {
 	argument_specs->argument_str = argument_str;
 	if (ft_strchr("ouxXdiOUDb", argument_specs->type))
+	{
 		store_number_data(ap, argument_specs);
+	}
 	else
 		store_char_data(ap, argument_specs,  argument_str);
+}
+
+static void		adjust_width_precision_for_sign(t_printf *argument_specs)
+{
+	if (argument_specs->arg_len >= argument_specs->width
+		&& argument_specs->arg_len >= argument_specs->precision)
+		return ;
+	if (argument_specs->precision > argument_specs->width
+			&& argument_specs->precision
+			> 1)
+		argument_specs->precision--;
+	else if (argument_specs->width > argument_specs->precision)
+		argument_specs->width--;
+}
+
+static void		apply_precision_width(t_printf *argument_specs, t_str *argument_str)
+{
+	if (argument_specs->show_sign)
+		adjust_width_precision_for_sign(argument_specs);
+	if (argument_specs->show_sign && argument_specs->zeros_width)
+		apply_plus_minus_flags(argument_specs, argument_str);
+	if (argument_specs->width && !(argument_specs->left_align_output))
+		apply_width(argument_specs, argument_str);
+	if (argument_specs->show_sign && !argument_specs->zeros_width)
+		apply_plus_minus_flags(argument_specs, argument_str);
+	if (argument_specs->sharp)
+		apply_sharp(argument_specs, argument_str);
+	if (argument_specs->precision > 1)
+		apply_precision(argument_specs, argument_str);
+	/*
+	else if (argument_specs->precision == 1
+			&& argument_specs->width > argument_specs->arg_len)
+		argument_str->position -= argument_specs->arg_len;
+		*/
 }
 
 static t_printf	initialize_elem(void)
@@ -69,36 +81,46 @@ static t_printf	initialize_elem(void)
 	argument.arg_len = 0;
 	argument.width = 0;
 	argument.sharp = 0;
+	argument.zeros_width = 0;
 	argument.precision = 1;
 	argument.show_sign = 0;
 	argument.percentage_presence = 0;
-	argument.left_align_output = -1;
+	argument.left_align_output = 0;
 
 	return (argument);
+}
+
+static void		find_arg_len(va_list ap, t_printf *argument_specs)
+{
+	va_list copy;
+
+	va_copy(copy, ap);
+	if (ft_strchr("ouxXdiOUDb", argument_specs->type))
+		argument_specs->arg_len = get_number_len(copy, argument_specs);
+	else if (ft_strchr("cCsS", argument_specs->type))
+		argument_specs->arg_len = get_char_len(copy, argument_specs);
 }
 
 static int		parsing_handler(const char *format, va_list ap)
 {
 	t_printf	argument_specs;
 	t_str		argument_str;
-	va_list		copy;
 
+	argument_str.position = 0;
 	while (format && *format)
 	{
 		argument_specs = initialize_elem();
 		format = parse(format, &argument_specs, &argument_str, ap);
-		if (argument_specs.width ||
-				argument_specs.precision > -1 || argument_specs.sharp)
-		{
-			va_copy(copy, ap);
-			if (ft_strchr("ouxXdiOUDb", argument_specs.type))
-				argument_specs.arg_len = get_number_len(copy, &argument_specs);
-			else
-				argument_specs.arg_len = get_char_len(copy, &argument_specs);
-			apply_precision_width(&argument_specs, &argument_str);
-		}
 		if (argument_specs.type)
+			find_arg_len(ap, &argument_specs);
+		if (argument_specs.width
+			|| argument_specs.precision > 1 || argument_specs.sharp ||
+			argument_specs.show_sign)
+			apply_precision_width(&argument_specs, &argument_str);
+		if (argument_specs.type && argument_specs.precision >= 1)
 			treat_and_store_argument(ap, &argument_specs, &argument_str);
+		if (argument_specs.width && argument_specs.left_align_output)
+			apply_width(&argument_specs, &argument_str);
 	}
 	return (write(1, &argument_str.str, argument_str.position));
 }

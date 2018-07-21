@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 22:37:23 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/12 18:43:27 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,23 @@
 ** procuces 0x0 whereas printf("%.p, (void*)0) produces 0x
 */
 
-intmax_t				convert_overflow(int sizeof_var, intmax_t number)
+void						get_hex_ptr_adr(va_list ap, t_printf *argument)
+{
+	void	*test_data;
+
+	test_data = NULL;
+	test_data = va_arg(ap, void*);
+	if (test_data == 0 && argument->precision >= 0)
+	{
+		argument->to_store = (void*)"0";
+		store_print_handler(argument, 3, 0, 1);
+	}
+	else
+		printf_u_base_converter(16, (uintptr_t)test_data,
+				sizeof(uintptr_t), argument);
+}
+
+static intmax_t				convert_overflow(int sizeof_var, intmax_t number)
 {
 	if ((int)sizeof(number) > sizeof_var)
 	{
@@ -47,7 +63,7 @@ intmax_t				convert_overflow(int sizeof_var, intmax_t number)
 	return (number);
 }
 
-unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var)
+static unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var)
 {
 	static unsigned long long	all_bits_long_long = ~0;
 	static unsigned long		all_bits_long = ~0;
@@ -71,30 +87,6 @@ unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var)
 void						printf_u_base_converter(int base_size,
 		uintmax_t number, int sizeof_var, t_printf *argument)
 {
-	static char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
-	char		result[65];
-	int			i;
-
-	i = 0;
-	number = take_out_bits(number, sizeof_var);
-	(number == 0) ? result[64] = '0' : 0;
-	if ((!argument->precision && argument->type == 'o')
-			|| ft_strchr("xX", argument->type))
-		(number == 0 && argument->sharp && !ft_strchr("pOo", argument->type)) ?
-			argument->sharp = 0 : 0;
-	(number == 0) ? i++ : 0;
-	if (number == 0 && ((argument->sharp && argument->type == 'o')
-				|| argument->precision == -1))
-		return ;
-	while (number)
-	{
-		result[64 - i] = base_output[number % base_size];
-		number /= base_size;
-		i++;
-	}
-	if (argument->type == 'X')
-		ft_str_mins_to_caps(&result[65] - i);
-	update_str(argument->argument_str, (void*)&result[65 - i], i);
 }
 
 void						printf_s_base_converter(int base_size,
@@ -102,23 +94,25 @@ void						printf_s_base_converter(int base_size,
 {
 	static	char	base_output[36] = "0123456789abcdefghijklmnopqrstuvwxyz";
 	char			result[65];
-	int			i;
+	int				i;
 
 	i = 0;
-	if (number == 0 && argument->precision == 0)
+	if (number == 0 && argument->precision == -1)
 		return ;
 	number = convert_overflow(sizeof_var, number);
 	if (number < 0)
+		argument->show_sign = '-';
+	if (number < 0)
 		number *= -1;
-	(number == 0) ? i++ : 0;
 	(number == 0) ? result[64] = '0' : 0;
-	while (number)
+	(number == 0) ? i++ : 0;
+	while (number != 0)
 	{
-		result[64 - i] = base_output[number % base_size];
+		result[64 - i] = base_output[(number % base_size < 0) ?
+			-(number % base_size) : number % base_size];
 		number /= base_size;
 		i++;
 	}
-	if (argument->type == 'X')
-		ft_str_mins_to_caps(&result[65] - i);
-	update_str(argument->argument_str, (void*)&result[65 - i], i);
+	argument->to_store = &result[65 - i];
+	store_print_handler(argument, 3, sizeof(char), i);
 }

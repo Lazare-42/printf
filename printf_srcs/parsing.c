@@ -13,7 +13,7 @@
 #include "../includes/printf.h"
 #include "../includes/libft.h"
 
-static const char	*store_string(const char *format, t_printf *argument_specs, t_str *argument_str)
+static const char	*store_string(const char *format, t_str *argument_str)
 {
 	while (format && *format && *format != '%')
 	{
@@ -21,15 +21,12 @@ static const char	*store_string(const char *format, t_printf *argument_specs, t_
 			format = terminal_formatting(format, argument_str);
 		if (format && *format && *format != '%')
 		{
-			argument_str->str[argument_str->position++] = *format;
+			update_str(argument_str, (void*)format, 1); 
 			format++;
 		}
 	}
 	if (format && *format == '%')
-	{
-		argument_specs->percentage_presence = 1;
 		format++;
-	}
 	return (format);
 }
 
@@ -53,7 +50,7 @@ const char			*parse(const char *format, t_printf *argument, t_str *argument_str,
 	int tmp;
 
 	tmp = 1;
-	format = store_string(format, argument, argument_str);
+	format = store_string(format, argument_str);
 	while (format && *format && tmp)
 	{
 		tmp = 0;
@@ -66,7 +63,7 @@ const char			*parse(const char *format, t_printf *argument, t_str *argument_str,
 				&& (tmp = get_flags(argument, format)))
 			format += tmp;
 		else if ((ft_isdigit(*format) || *format == '*')
-				&& !argument->precision
+				&& argument->precision == 1
 				&& (tmp = get_width(ap, argument, format)))
 			format += tmp;
 		else if (*format == '.' && (tmp = get_precision(ap, argument, format)))
@@ -76,6 +73,9 @@ const char			*parse(const char *format, t_printf *argument, t_str *argument_str,
 				format += tmp;
 	}
 	if (!argument->type && format && *format)
-		argument_str->str[argument_str->position++] = *format++;
+	{
+		update_str(argument_str, (void*)format, 1); 
+		format++;
+	}
 	return (format);
 }

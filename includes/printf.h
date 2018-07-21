@@ -50,6 +50,7 @@ typedef struct		s_printf
 	int				location;
 	char			percentage_presence;
 	char			type;
+	char			zeros_width;
 	char			modifier[3];
 	char			sign[3];
 	char			left_align_output;
@@ -83,7 +84,7 @@ void				printf_u_base_converter(int base_size, uintmax_t number,
 int							u_base_converter_len(int base_size,
 		uintmax_t number, int sizeof_var);
 int							s_base_converter_len(int base_size,
-		intmax_t number, int sizeof_var);
+		intmax_t number, int sizeof_var, char *show_sign);
 unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var);
 intmax_t				convert_overflow(int sizeof_var, intmax_t number);
 void				printf_s_base_converter(int base_size, intmax_t number,
