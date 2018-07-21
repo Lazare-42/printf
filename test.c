@@ -45,14 +45,10 @@ int test = 420;
 
 (void)test;
 
-  ret = ft_printf("%15.4o", 42);
-printf("\nret = %d\n", ret); fflush(stdout);
-  ret = printf("%15.4o", 42);
-printf("\nret = %d\n", ret); fflush(stdout);
 
-  ret = ft_printf("%10d", -42);
+  ret = ft_printf("%9.2p", &test);
 printf("\nret = %d\n", ret); fflush(stdout);
-  ret = printf("%10d", -42);
+  ret = printf("%9.2p", &test);
 printf("\nret = %d\n", ret); fflush(stdout);
 /*
 ret =   ft_printf("%-15x", 542);
