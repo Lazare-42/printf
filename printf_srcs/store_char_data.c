@@ -16,7 +16,7 @@
 
 #include <unistd.h>
 
-void		store_str_data(va_list ap, t_str *argument_str)
+void		store_str_data(va_list ap, t_str *argument_str, t_printf *argument)
 {
 	char	*va_arg_str;
 	int		strlen;
@@ -27,10 +27,7 @@ void		store_str_data(va_list ap, t_str *argument_str)
 	if (!va_arg_str)
 		update_str(argument_str, (void*)"(null)", 6);
 	else
-	{
-		strlen = ft_strlen(va_arg_str);
-		update_str(argument_str, (void*)va_arg_str, strlen);
-	}
+		update_str(argument_str, (void*)va_arg_str, argument->arg_len);
 }
 
 void		store_char_data(va_list ap, t_printf *argument, t_str *argument_str)
@@ -38,7 +35,7 @@ void		store_char_data(va_list ap, t_printf *argument, t_str *argument_str)
 	char c;
 
 	if (argument->type == 's' && !*argument->modifier)
-		store_str_data(ap, argument_str);
+		store_str_data(ap, argument_str, argument);
 	else if ((*argument).type == 'c' && !*argument->modifier)
 	{
 		c = va_arg(ap, int);

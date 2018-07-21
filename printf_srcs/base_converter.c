@@ -77,6 +77,8 @@ void						printf_u_base_converter(int base_size,
 
 	i = 0;
 	number = take_out_bits(number, sizeof_var);
+	if (number == 0 && argument->precision == 0)
+		return ;
 	(number == 0) ? result[64] = '0' : 0;
 	if ((!argument->precision && argument->type == 'o')
 			|| ft_strchr("xX", argument->type))
@@ -84,7 +86,7 @@ void						printf_u_base_converter(int base_size,
 			argument->sharp = 0 : 0;
 	(number == 0) ? i++ : 0;
 	if (number == 0 && ((argument->sharp && argument->type == 'o')
-				|| argument->precision == -1))
+				|| !argument->precision))
 		return ;
 	while (number)
 	{

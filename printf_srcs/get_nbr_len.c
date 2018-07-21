@@ -97,6 +97,9 @@ int			get_number_len(va_list ap, t_printf *argument)
 	else if (argument->type == 'b')
 		return (s_base_converter_len(va_arg(ap, int),
 				va_arg(ap, intmax_t), sizeof(intmax_t), &argument->show_sign));
+	else if (argument->type == 'p')
+		return (u_base_converter_len(16,
+				va_arg(ap, size_t), sizeof(size_t)));
 	return (0);
 }
 

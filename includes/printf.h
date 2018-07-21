@@ -94,5 +94,6 @@ void		store_unicode_str(wchar_t *data, t_str *argument_str);
 void		store_unicode(wint_t data, int precision, t_str *argument_str);
 const char			*terminal_formatting(const char	*format, t_str *argument);
 void				print(t_printf *arg, int location);
+int		launch_string_print(const char *format, va_list ap, t_str *argument_str, int flush);
 
 #endif

@@ -37,7 +37,11 @@ void						get_type(t_printf *argument, const char *format)
 	else
 		argument->type = *format;
 	if (*format == 'p')
+	{
 		argument->sharp = 1;
+		if (argument->width)
+			argument->width--;
+	}
 	if (argument->show_sign && ft_strchr("xXpc", *format))
 		argument->show_sign = 0;
 	else if (ft_strchr("xX", argument->type) && argument->sharp
