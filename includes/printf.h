@@ -80,15 +80,15 @@ void				apply_sharp(t_printf *argument_specs, t_str *argument_str);
 void				printf_u_base_converter(int base_size, uintmax_t number,
 		int sizeof_var, t_printf *argument);
 int							u_base_converter_len(int base_size,
-		uintmax_t number, int sizeof_var);
+		uintmax_t number, int sizeof_var, t_printf *argument);
 int							s_base_converter_len(int base_size,
-		intmax_t number, int sizeof_var, char *show_sign);
+		intmax_t number, int sizeof_var, t_printf *argument);
 unsigned long long	take_out_bits(uintmax_t to_change, int sizeof_var);
 intmax_t				convert_overflow(int sizeof_var, intmax_t number);
 void				printf_s_base_converter(int base_size, intmax_t number,
 		int sizeof_var, t_printf *argument);
 int					set_get_return(int action);
-void		store_unicode_str(wchar_t *data, t_str *argument_str);
+void		store_unicode_str(wchar_t *data, t_str *argument_str, t_printf *argument);
 void		store_unicode(wint_t data, int precision, t_str *argument_str);
 const char			*terminal_formatting(const char	*format, t_str *argument);
 void				print(t_printf *arg, int location);

@@ -30,7 +30,10 @@ int		get_precision(va_list ap, t_printf *argument, const char *format)
 	{
 		argument->precision = va_arg(ap, int);
 		if (argument->precision < 0)
+		{
+			argument->activate_precision = 0;
 			argument->left_align_output = 0;
+		}
 	}
 	else if (*format && *format != '*' && (!(ft_isdigit(*format))
 				|| *format == '0'))

@@ -46,7 +46,7 @@ void		store_char_data(va_list ap, t_printf *argument, t_str *argument_str)
 		store_unicode(va_arg(ap, wint_t), 4, argument_str);
 	else if (argument->type == 'S'
 			|| (argument->type == 's' && *argument->modifier == 'l'))
-		store_unicode_str(va_arg(ap, wchar_t*), argument_str);
+		store_unicode_str(va_arg(ap, wchar_t*), argument_str, argument);
 //	if ((*argument).type == 'p')
 //j		get_hex_ptr_adr(ap, argument);
 }

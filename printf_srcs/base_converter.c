@@ -80,14 +80,7 @@ void						printf_u_base_converter(int base_size,
 	if (number == 0 && argument->precision == 0)
 		return ;
 	(number == 0) ? result[64] = '0' : 0;
-	if ((!argument->precision && argument->type == 'o')
-			|| ft_strchr("xX", argument->type))
-		(number == 0 && argument->sharp && !ft_strchr("pOo", argument->type)) ?
-			argument->sharp = 0 : 0;
 	(number == 0) ? i++ : 0;
-	if (number == 0 && ((argument->sharp && argument->type == 'o')
-				|| !argument->precision))
-		return ;
 	while (number)
 	{
 		result[64 - i] = base_output[number % base_size];

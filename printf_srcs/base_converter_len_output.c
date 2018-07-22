@@ -16,13 +16,21 @@
 #include <stdio.h>
 
 int							u_base_converter_len(int base_size,
-		uintmax_t number, int sizeof_var)
+		uintmax_t number, int sizeof_var, t_printf *argument)
 {
 	int			i;
 
 	i = 0;
 	number = take_out_bits(number, sizeof_var);
 	(number == 0) ? i++ : 0;
+	if (number == 0 && ft_strchr("xX", argument->type))
+		argument->sharp = 0;
+	if (number == 0 && ft_strchr("xXo", argument->type))
+		return (0);
+	if (number != 0 && ft_strchr("xXop", argument->type) && argument->width >= 1 && argument->sharp)
+		argument->width--;
+	if (ft_strchr("xX", argument->type) && argument->width >= 1 && argument->sharp)
+		argument->width--;
 	while (number)
 	{
 		number /= base_size;
@@ -32,15 +40,17 @@ int							u_base_converter_len(int base_size,
 }
 
 int							s_base_converter_len(int base_size,
-		intmax_t number, int sizeof_var, char *show_sign)
+		intmax_t number, int sizeof_var, t_printf *argument)
 {
 	int				i;
 
 	i = 0;
+	if (number == 0 && argument->precision == 0)
+		return (0);
 	number = convert_overflow(sizeof_var, number);
 	if (number < 0)
 	{
-		*show_sign = '-';
+		argument->show_sign = '-';
 		number *= -1;
 	}
 	(number == 0) ? i++ : 0;

@@ -44,9 +44,6 @@ void						get_type(t_printf *argument, const char *format)
 	}
 	if (argument->show_sign && ft_strchr("xXpc", *format))
 		argument->show_sign = 0;
-	else if (ft_strchr("xX", argument->type) && argument->sharp
-			&& argument->width > 1)
-		argument->width--;
 }
 
 const char			*parse(const char *format, t_printf *argument, t_str *argument_str, va_list ap)

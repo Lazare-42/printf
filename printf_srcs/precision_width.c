@@ -34,7 +34,7 @@ void		apply_width(t_printf *argument_specs, t_str *argument_str)
 
 	if (argument_specs->arg_len >= argument_specs->width)
 		return ;
-	fill_val = (argument_specs->zeros_width && !argument_specs->left_align_output) ? '0' : ' ';
+	fill_val = (argument_specs->zeros_width && !argument_specs->left_align_output && !argument_specs->activate_precision) ? '0' : ' ';
 	i = 0;
 	if (argument_specs->type)
 	{
@@ -105,13 +105,6 @@ void		apply_sharp(t_printf *argument_specs, t_str *argument_str)
 	char fill;
 
 	fill = '0';
-	if (argument_specs->width > 1)
-	{
-		if (argument_str->position && !argument_specs->left_align_output)
-			argument_str->position--;
-		if (argument_specs->left_align_output)
-			argument_specs->arg_len++;
-	}
 	update_str(argument_str, (void*)&fill, 1);
 	if (ft_strchr("xXp", argument_specs->type))
 	{

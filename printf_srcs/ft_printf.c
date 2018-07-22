@@ -52,12 +52,14 @@ static void		apply_precision_width(t_printf *argument_specs, t_str *argument_str
 		adjust_width_precision_for_sign(argument_specs);
 	if (argument_specs->show_sign && argument_specs->zeros_width)
 		apply_plus_minus_flags(argument_specs, argument_str);
+	if (argument_specs->sharp && argument_specs->zeros_width)
+		apply_sharp(argument_specs, argument_str);
 	if (argument_specs->width && !(argument_specs->left_align_output))
 		apply_width(argument_specs, argument_str);
+	if (argument_specs->sharp && !argument_specs->zeros_width)
+		apply_sharp(argument_specs, argument_str);
 	if (argument_specs->show_sign && !argument_specs->zeros_width)
 		apply_plus_minus_flags(argument_specs, argument_str);
-	if (argument_specs->sharp)
-		apply_sharp(argument_specs, argument_str);
 	if (argument_specs->precision > 1 && !ft_strchr("sSCc", argument_specs->type))
 		apply_precision(argument_specs, argument_str);
 }
