@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 18:00:36 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 20:42:32 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/23 18:59:47 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ int							u_base_converter_len(int base_size,
 	i = 0;
 	number = take_out_bits(number, sizeof_var);
 	(number == 0) ? i++ : 0;
+	if (number == 0 && ft_strchr("oO", argument->type) && argument->precision)
+		argument->sharp = 0;
 	if (number == 0 && ft_strchr("xX", argument->type))
 		argument->sharp = 0;
-	if (number == 0 && ft_strchr("xXo", argument->type))
-		return (0);
-	if (number != 0 && ft_strchr("xXo", argument->type) && argument->width >= 1 && argument->sharp)
+	if (number == 0 && ft_strchr("xXoO", argument->type) && !argument->precision && argument->width > 0)
+		argument->width++;
+	if (number != 0 && ft_strchr("xXoO", argument->type) && argument->width >= 1 && argument->sharp)
 		argument->width--;
 	if (ft_strchr("xX", argument->type) && argument->width >= 1 && argument->sharp)
 		argument->width--;

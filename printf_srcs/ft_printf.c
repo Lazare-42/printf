@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 22:40:34 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/23 19:22:41 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 /*
@@ -60,7 +60,7 @@ static void		apply_precision_width(t_printf *argument_specs, t_str *argument_str
 		apply_sharp(argument_specs, argument_str);
 	if (argument_specs->show_sign && !argument_specs->zeros_width)
 		apply_plus_minus_flags(argument_specs, argument_str);
-	if (argument_specs->precision > 1 && !ft_strchr("sSCc", argument_specs->type))
+	if (argument_specs->activate_precision && !ft_strchr("sSCc", argument_specs->type))
 		apply_precision(argument_specs, argument_str);
 	(void)argument_str;
 }
@@ -110,7 +110,8 @@ static void	parsing_handler(const char *format, va_list ap, t_str *argument_str)
 			|| argument_specs.activate_precision || argument_specs.sharp ||
 			argument_specs.show_sign)
 			apply_precision_width(&argument_specs, argument_str);
-		if (argument_specs.type)
+		if (argument_specs.type && (argument_specs.arg_len
+				|| ft_strchr("sScC", argument_specs.type)))
 			treat_and_store_argument(ap, &argument_specs, argument_str);
 		if (argument_specs.width && argument_specs.left_align_output)
 			apply_width(&argument_specs, argument_str);
@@ -121,15 +122,13 @@ static void	parsing_handler(const char *format, va_list ap, t_str *argument_str)
 int		launch_string_print(const char *format, va_list ap, t_str *argument_str, int flush)
 {
 	static int	return_val = 0;
-	int			fd;
 
-	fd = set_get_fd(0);
 	if (flush)
 		return_val += write(1, argument_str->str, argument_str->position);
 	argument_str->position = 0;
 	if (!flush)
 		parsing_handler(format, ap, argument_str);
-	return (write(fd, argument_str->str, argument_str->position) + return_val);
+	return (write(set_get_fd(0), argument_str->str, argument_str->position) + return_val);
 }
 int				ft_printf(const char *restrict format, ...)
 {

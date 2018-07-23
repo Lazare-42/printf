@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 22:22:15 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/23 18:40:42 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ void		apply_precision(t_printf *argument_specs, t_str *argument_str)
 	i = 0;
 	if (!(argument_specs->type))
 		return ;
+	if (argument_specs->precision && argument_specs->type == 'o' && argument_specs->sharp && argument_specs->arg_len)
+		argument_specs->precision--;
 	if (argument_specs->precision <= argument_specs->arg_len)
 		return ;
 	while (i++ < argument_specs->precision - argument_specs->arg_len)

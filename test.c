@@ -46,11 +46,11 @@ int test = 420;
 (void)test;
 
 
+	ret = ft_printf("%s\n", "coco", NULL, "yooo");
+	printf("\nret = %d\n", ret); fflush(stdout);
+	ret = printf("%s\n", "coco", NULL, "yooo");
+	printf("\nret = %d\n", ret); fflush(stdout);
 
- ret = ft_printf("%o", 0); 
-printf("\nret = %d\n", ret); fflush(stdout);
- ret = printf("%o", 0); 
-printf("\nret = %d\n", ret); fflush(stdout);
 /*
 ret =   ft_printf("%-15x", 542);
 ret =   ft_printf("%2x", 542);

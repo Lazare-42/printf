@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 00:14:26 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 21:23:45 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/23 18:47:33 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void						get_type(t_printf *argument, const char *format)
 		argument->activate_precision = 0;
 	if (argument->show_sign && ft_strchr("xXpc", *format))
 		argument->show_sign = 0;
+	if (argument->activate_precision && argument->zeros_width)
+		argument->zeros_width = 0;
 }
 
 const char			*parse(const char *format, t_printf *argument, t_str *argument_str, va_list ap)

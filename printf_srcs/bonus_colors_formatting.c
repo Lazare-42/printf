@@ -120,9 +120,9 @@ const char	*terminal_formatting(const char	*format, t_str *argument)
 		launch_string_print(NULL, 0, argument, 1);
 		argument->position = 0;
 	}
-	if (!(ft_strncmp(format, "[[./", 4)) || !ft_strncmp(format, "[[fd=", 5)
+	if (!(ft_strncmp(format, "[[~/", 4)) || !ft_strncmp(format, "[[fd=", 5)
 			|| !ft_strncmp(format, "[[no_append", 11))
-		choose_set_file_descriptor(format, argument);
+		format = choose_set_file_descriptor(format, argument);
 	if (!(ft_strncmp(format, "[[red]]", 7)))
 	{
 		update_str(argument, RED, 5);
