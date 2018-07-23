@@ -34,7 +34,7 @@ void		apply_width(t_printf *argument_specs, t_str *argument_str)
 
 	if (argument_specs->arg_len >= argument_specs->width)
 		return ;
-	fill_val = (argument_specs->zeros_width && !argument_specs->left_align_output && !argument_specs->activate_precision) ? '0' : ' ';
+	fill_val = (argument_specs->zeros_width && !argument_specs->left_align_output && (!argument_specs->activate_precision || argument_specs->type == 's' || !argument_specs->type) ) ? '0' : ' ';
 	i = 0;
 	if (argument_specs->type)
 	{

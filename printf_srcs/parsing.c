@@ -41,7 +41,11 @@ void						get_type(t_printf *argument, const char *format)
 		argument->sharp = 1;
 		if (argument->width)
 			argument->width--;
+		if (argument->width)
+			argument->width--;
 	}
+	if (argument->type == 'c')
+		argument->activate_precision = 0;
 	if (argument->show_sign && ft_strchr("xXpc", *format))
 		argument->show_sign = 0;
 }

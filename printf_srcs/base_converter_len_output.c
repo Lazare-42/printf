@@ -27,7 +27,7 @@ int							u_base_converter_len(int base_size,
 		argument->sharp = 0;
 	if (number == 0 && ft_strchr("xXo", argument->type))
 		return (0);
-	if (number != 0 && ft_strchr("xXop", argument->type) && argument->width >= 1 && argument->sharp)
+	if (number != 0 && ft_strchr("xXo", argument->type) && argument->width >= 1 && argument->sharp)
 		argument->width--;
 	if (ft_strchr("xX", argument->type) && argument->width >= 1 && argument->sharp)
 		argument->width--;

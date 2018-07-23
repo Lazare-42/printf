@@ -35,7 +35,7 @@ static void		treat_and_store_argument(va_list ap, t_printf *argument_specs, t_st
 		store_char_data(ap, argument_specs,  argument_str);
 }
 
-static void		adjust_width_precision_for_sign(t_printf *argument_specs)
+void		adjust_width_precision_for_sign(t_printf *argument_specs)
 {
 	if (argument_specs->arg_len >= argument_specs->width
 		&& argument_specs->arg_len >= argument_specs->precision)
@@ -46,7 +46,7 @@ static void		adjust_width_precision_for_sign(t_printf *argument_specs)
 
 static void		apply_precision_width(t_printf *argument_specs, t_str *argument_str)
 {
-	if (ft_strchr("sSCc", argument_specs->type) && argument_specs->precision < argument_specs->arg_len && argument_specs->activate_precision)
+	if (ft_strchr("sS", argument_specs->type) && argument_specs->precision < argument_specs->arg_len && argument_specs->activate_precision)
 		argument_specs->arg_len = argument_specs->precision;
 	if (argument_specs->show_sign)
 		adjust_width_precision_for_sign(argument_specs);
@@ -62,6 +62,7 @@ static void		apply_precision_width(t_printf *argument_specs, t_str *argument_str
 		apply_plus_minus_flags(argument_specs, argument_str);
 	if (argument_specs->precision > 1 && !ft_strchr("sSCc", argument_specs->type))
 		apply_precision(argument_specs, argument_str);
+	(void)argument_str;
 }
 
 static t_printf	initialize_elem(void)
@@ -116,16 +117,19 @@ static void	parsing_handler(const char *format, va_list ap, t_str *argument_str)
 	}
 }
 
+
 int		launch_string_print(const char *format, va_list ap, t_str *argument_str, int flush)
 {
 	static int	return_val = 0;
+	int			fd;
 
+	fd = set_get_fd(0);
 	if (flush)
 		return_val += write(1, argument_str->str, argument_str->position);
 	argument_str->position = 0;
 	if (!flush)
 		parsing_handler(format, ap, argument_str);
-	return (write(1, argument_str->str, argument_str->position) + return_val);
+	return (write(fd, argument_str->str, argument_str->position) + return_val);
 }
 int				ft_printf(const char *restrict format, ...)
 {
@@ -142,5 +146,7 @@ int				ft_printf(const char *restrict format, ...)
 	va_start(ap, format);
 	return_val = launch_string_print(format, ap, &argument_str, 0);
 	va_end(ap);
+	if (set_get_fd(0) != 1)
+		close(set_get_fd(0));
 	return (return_val);
 }

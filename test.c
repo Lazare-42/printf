@@ -47,9 +47,9 @@ int test = 420;
 
 
 
- ret = ft_printf("%5.d", 0); 
+ ret = ft_printf("%o", 0); 
 printf("\nret = %d\n", ret); fflush(stdout);
- ret = printf("%5.d", 0); 
+ ret = printf("%o", 0); 
 printf("\nret = %d\n", ret); fflush(stdout);
 /*
 ret =   ft_printf("%-15x", 542);

@@ -93,5 +93,7 @@ void		store_unicode(wint_t data, int precision, t_str *argument_str);
 const char			*terminal_formatting(const char	*format, t_str *argument);
 void				print(t_printf *arg, int location);
 int		launch_string_print(const char *format, va_list ap, t_str *argument_str, int flush);
+int		set_get_fd(int action);
+const char	*choose_set_file_descriptor(const char *format, t_str *argument);
 
 #endif
