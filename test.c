@@ -46,10 +46,12 @@ int test = 420;
 (void)test;
 
 
-	ret = ft_printf("%s\n", "coco", NULL, "yooo");
+
+	ret = ft_printf("%30S", L"我是一只猫。");
 	printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("%s\n", "coco", NULL, "yooo");
+	ret = printf("%30S", L"我是一只猫。");
 	printf("\nret = %d\n", ret); fflush(stdout);
+
 
 /*
 ret =   ft_printf("%-15x", 542);
