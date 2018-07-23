@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:13:25 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/23 20:57:04 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/23 22:55:15 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void		apply_width(t_printf *argument_specs, t_str *argument_str)
 
 	if (argument_specs->arg_len >= argument_specs->width)
 		return ;
-	ft_putnbr(argument_specs->width - argument_specs->arg_len);
-	ft_putchar('\n');
 	fill_val = (argument_specs->zeros_width && !argument_specs->left_align_output && (!argument_specs->activate_precision || argument_specs->type == 's' || !argument_specs->type) ) ? '0' : ' ';
 	i = 0;
 	if (argument_specs->type)
@@ -49,11 +47,11 @@ void		apply_width(t_printf *argument_specs, t_str *argument_str)
 		}
 		else while (i++ < argument_specs->width - argument_specs->arg_len)
 			update_str(argument_str, (void*)&fill_val, 1);
-		ft_putnbr(i);
-	ft_putchar('\n');
 	}
 	else
 		apply_width_to_string(argument_specs, argument_str, fill_val);
+
+	launch_string_print(NULL, 0, argument_str, 1);
 }
 
 void		apply_flag_padding(t_printf *argument_specs, t_str *argument_str)
