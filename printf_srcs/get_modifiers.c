@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 19:44:15 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/24 16:41:13 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		get_width(va_list ap, t_printf *argument, const char *format)
 	return (format - tmp);
 }
 
-int		get_flags(t_printf *argument, const char	*format)
+int		get_flags(t_printf *argument, const char *format)
 {
 	const char	*tmp;
 
@@ -93,7 +93,7 @@ int		get_flags(t_printf *argument, const char	*format)
 	return (format - tmp);
 }
 
-int		get_modifier(t_printf *argument, const char	*format)
+int		get_modifier(t_printf *argument, const char *format)
 {
 	const char	*tmp;
 

@@ -6,14 +6,14 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/03 00:14:26 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/23 20:10:42 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/24 17:07:24 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/printf.h"
 #include "../includes/libft.h"
 
-static const char	*store_string(const char *format, t_str *argument_str)
+const char	*store_string(const char *format, t_str *argument_str)
 {
 	while (format && *format && *format != '%')
 	{
@@ -21,7 +21,7 @@ static const char	*store_string(const char *format, t_str *argument_str)
 			format = terminal_formatting(format, argument_str);
 		if (format && *format && *format != '%')
 		{
-			update_str(argument_str, (void*)format, 1); 
+			update_str(argument_str, (void*)format, 1);
 			format++;
 		}
 	}
@@ -30,7 +30,7 @@ static const char	*store_string(const char *format, t_str *argument_str)
 	return (format);
 }
 
-void						get_type(t_printf *argument, const char *format)
+void		get_type(t_printf *argument, const char *format)
 {
 	if (*format == 'i')
 		argument->type = 'd';
@@ -48,16 +48,16 @@ void						get_type(t_printf *argument, const char *format)
 		argument->activate_precision = 0;
 	if (argument->show_sign && ft_strchr("xXpc", *format))
 		argument->show_sign = 0;
-	if (argument->activate_precision && argument->zeros_width && !ft_strchr("sScC", argument->type))
+	if (argument->activate_precision && argument->zeros_width
+			&& !ft_strchr("sScC", argument->type))
 		argument->zeros_width = 0;
 }
 
-const char			*parse(const char *format, t_printf *argument, t_str *argument_str, va_list ap)
+const char	*parse(const char *format, t_printf *argument, va_list ap)
 {
 	int tmp;
 
 	tmp = 1;
-	format = store_string(format, argument_str);
 	while (format && *format && tmp)
 	{
 		tmp = 0;
@@ -78,11 +78,6 @@ const char			*parse(const char *format, t_printf *argument, t_str *argument_str,
 		else if (format && ft_strchr("hhljz", *format))
 			if ((tmp = get_modifier(argument, format)))
 				format += tmp;
-	}
-	if (!argument->type && format && *format)
-	{
-		update_str(argument_str, (void*)format, 1); 
-		format++;
 	}
 	return (format);
 }

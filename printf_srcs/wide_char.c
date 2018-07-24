@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/04 17:52:50 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/19 22:52:36 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/24 17:16:01 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void		store_unicode(wint_t data, int precision, t_str *argument_str)
 	}
 }
 
-void		store_unicode_str(wchar_t *data,  t_str *argument_str, t_printf *argument_specs)
+void		store_unicode_str(wchar_t *data, t_str *argument_str,
+		t_printf *argument_specs)
 {
 	int tmp;
 
@@ -53,7 +54,8 @@ void		store_unicode_str(wchar_t *data,  t_str *argument_str, t_printf *argument_
 		while (*data)
 		{
 			if (argument_specs->activate_precision)
-				store_unicode(*data, tmp - argument_str->position, argument_str);
+				store_unicode(*data, tmp - argument_str->position,
+						argument_str);
 			else
 				store_unicode(*data, 4, argument_str);
 			data++;

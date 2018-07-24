@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 13:58:39 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/23 20:54:53 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/24 16:50:22 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	type_to_int_base(char type)
 		return (16);
 }
 
-static int store_data_len(va_list ap, t_printf *argument)
+static int	store_data_len(va_list ap, t_printf *argument)
 {
 	if (!(ft_strcmp("hh", argument->modifier)))
 		return (u_base_converter_len(type_to_int_base(argument->type),
@@ -39,18 +39,20 @@ static int store_data_len(va_list ap, t_printf *argument)
 	else if (!(ft_strcmp("ll", argument->modifier)))
 	{
 		return (u_base_converter_len(type_to_int_base(argument->type),
-				va_arg(ap, unsigned long long), sizeof(unsigned long long), argument));
+		va_arg(ap, unsigned long long), sizeof(unsigned long long), argument));
 	}
 	else if (*argument->modifier == 'j')
 		return (u_base_converter_len(type_to_int_base(argument->type),
 				va_arg(ap, uintmax_t), sizeof(uintmax_t), argument));
 	else if (*argument->modifier == 'z')
+	{
 		return (u_base_converter_len(type_to_int_base(argument->type),
 				va_arg(ap, size_t), sizeof(size_t), argument));
+	}
 	return (0);
 }
 
-static int store_data_len_modifier(va_list ap, t_printf *argument)
+static int	store_data_len_modifier(va_list ap, t_printf *argument)
 {
 	if (!(ft_strcmp("hh", argument->modifier)))
 		return (s_base_converter_len(type_to_int_base(argument->type),
@@ -68,8 +70,20 @@ static int store_data_len_modifier(va_list ap, t_printf *argument)
 		return (s_base_converter_len(type_to_int_base(argument->type),
 				va_arg(ap, intmax_t), sizeof(intmax_t), argument));
 	else if (*argument->modifier == 'z')
+	{
 		return (s_base_converter_len(type_to_int_base(argument->type),
 				va_arg(ap, size_t), sizeof(size_t), argument));
+	}
+	return (0);
+}
+
+int			get_number_len_continued(va_list ap, t_printf *argument)
+{
+	if (argument->type == 'p')
+	{
+		return (u_base_converter_len(16,
+				va_arg(ap, size_t), sizeof(size_t), argument));
+	}
 	return (0);
 }
 
@@ -84,10 +98,8 @@ int			get_number_len(va_list ap, t_printf *argument)
 	else if ((ft_strchr("ouxX", (*argument).type)) && ((*argument->modifier)))
 		return (store_data_len(ap, argument));
 	else if (ft_strchr("ouxX", (*argument).type))
-	{
 		return (u_base_converter_len(type_to_int_base((*argument).type),
 				va_arg(ap, int), sizeof(int), argument));
-	}
 	else if (ft_strchr("OU", (*argument).type))
 		return (u_base_converter_len(type_to_int_base((*argument).type),
 				va_arg(ap, long int), sizeof(long int), argument));
@@ -95,52 +107,9 @@ int			get_number_len(va_list ap, t_printf *argument)
 		return (s_base_converter_len(type_to_int_base((*argument).type),
 				va_arg(ap, long int), sizeof(long int), argument));
 	else if (argument->type == 'b')
+	{
 		return (s_base_converter_len(va_arg(ap, int),
 				va_arg(ap, intmax_t), sizeof(intmax_t), argument));
-	else if (argument->type == 'p')
-		return (u_base_converter_len(16,
-				va_arg(ap, size_t), sizeof(size_t), argument));
-	return (0);
-}
-
-int			get_char_len(va_list ap, t_printf *argument)
-{
-	char	*c;
-	int		i;
-	wchar_t	*str;
-
-	c = NULL;
-	str = NULL;
-	if (argument->type == 's' && !*argument->modifier)
-	{
-		c = va_arg(ap, char *);
-		if (c)
-			return (ft_strlen(c));
-		else
-			return (ft_strlen("(null)"));
 	}
-	else if (ft_strchr("Cc", argument->type))
-		return (1);
-	else if (argument->type == 'S'
-			|| (argument->type == 's' && *argument->modifier == 'l'))
-	{
-		i = 0;
-		str = va_arg(ap, wchar_t*);
-		if (!str)
-			return (ft_strlen("(null)"));
-		int j = 0;
-		while (str[j++])
-		{
-			if (str[j] < 128)
-				i += 1;
-			else if (str[j] < 2048)
-				i += 2;
-			else if (str[j] < 131071)
-				i += 3;
-			else
-				i += 4;
-		}
-		return (i);
-	}
-	return (0);
+	return (get_number_len_continued(ap, argument));
 }

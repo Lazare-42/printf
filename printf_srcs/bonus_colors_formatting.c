@@ -1,14 +1,14 @@
-/****************************************************************************/
-/**/
-/*:::      ::::::::   */
-/*bonus_colors_formatting.c                          :+:      :+:    :+:   */
-/*+:+ +:+         +:+     */
-/*By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
-/*+#+#+#+#+#+   +#+           */
-/*Created: 2018/07/12 12:27:53 by lazrossi          #+#    #+#             */
-/*Updated: 2018/07/12 12:30:26 by lazrossi         ###   ########.fr       */
-/**/
-/****************************************************************************/
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bonus_colors_formatting.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/24 16:25:13 by lazrossi          #+#    #+#             */
+/*   Updated: 2018/07/24 16:28:50 by lazrossi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/libft.h"
 #include "../includes/printf.h"
@@ -32,7 +32,7 @@ void		help(void)
 	ft_printf(" not be supported by your terminal.");
 }
 
-const char	*continue_font_formatting(const char	*format, t_str *argument)
+const char	*continue_font_formatting(const char *format, t_str *argument)
 {
 	if (!(ft_strncmp(format, "[[background]]", 14)))
 	{
@@ -59,7 +59,7 @@ const char	*continue_font_formatting(const char	*format, t_str *argument)
 	return (terminal_formatting(format, argument));
 }
 
-const char	*font_formatting(const char	*format, t_str *argument)
+const char	*font_formatting(const char *format, t_str *argument)
 {
 	if (!(ft_strncmp(format, "[[bold]]", 8)))
 	{
@@ -86,7 +86,7 @@ const char	*font_formatting(const char	*format, t_str *argument)
 	return (terminal_formatting(format, argument));
 }
 
-const char	*continue_color_formatting(const char	*format, t_str *argument)
+const char	*continue_color_formatting(const char *format, t_str *argument)
 {
 	if (!(ft_strncmp(format, "[[blue]]", 8)))
 	{
@@ -113,17 +113,14 @@ const char	*continue_color_formatting(const char	*format, t_str *argument)
 	return (terminal_formatting(format, argument));
 }
 
-const char	*terminal_formatting(const char	*format, t_str *argument)
+const char	*terminal_formatting(const char *format, t_str *argument)
 {
 	if (argument->position + 5 >= BUFF_SIZE - 1)
-	{
 		launch_string_print(NULL, 0, argument, 1);
-		argument->position = 0;
-	}
 	if (!(ft_strncmp(format, "[[~/", 4)) || !ft_strncmp(format, "[[fd=", 5)
 			|| !ft_strncmp(format, "[[no_append", 11))
 		format = choose_set_file_descriptor(format, argument);
-	if (!(ft_strncmp(format, "[[red]]", 7)))
+	else if (!(ft_strncmp(format, "[[red]]", 7)))
 	{
 		update_str(argument, RED, 5);
 		format += 7;
