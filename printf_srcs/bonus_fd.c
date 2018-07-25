@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/23 15:23:14 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/23 16:19:38 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/25 13:45:36 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void		try_opening(void *path, int o_flag)
 	path_read = (char*)path;
 	fd = 0;
 	if (wordexp(path_read, &path_exp, 0))
-		ft_printf("path expansion error\n", path, strerror(errno));
+		ft_printf("path expansion error\n");
 	else if ((fd = open(*path_exp.we_wordv, o_flag)) < 0)
 	{
 		ft_printf("FD option : Error in opening creating the file : ");

@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/24 16:41:43 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/24 16:54:51 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/25 15:43:09 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int			strlen_argument_wide_char(va_list ap)
 	int		j;
 	wchar_t	*str;
 
-	j = 0;
+	j = -1;
 	str = NULL;
 	i = 0;
 	str = va_arg(ap, wchar_t*);
 	if (!str)
 		return (ft_strlen("(null)"));
-	while (str[j++])
+	while (str[++j])
 	{
 		if (str[j] < 128)
 			i += 1;

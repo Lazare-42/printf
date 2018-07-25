@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:08:31 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/24 17:05:52 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/25 15:45:11 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ int			launch_string_print(const char *format, va_list ap,
 
 	if (flush)
 	{
-		return_val += write(1, argument_str->str, argument_str->position);
+		return_val += write(set_get_fd(0), argument_str->str,
+				argument_str->position);
 		argument_str->position = 0;
 	}
 	argument_str->position = 0;

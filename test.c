@@ -47,15 +47,11 @@ int test = 420;
 
 
 
-	ret = ft_printf("%30S", L"我是一只猫。");
+	ret = ft_printf("% h");
 	printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("%30S", L"我是一只猫。");
+	ret = printf("% h");
 	printf("\nret = %d\n", ret); fflush(stdout);
 
-	ret = ft_printf("%30d", 13);
-	printf("\nret = %d\n", ret); fflush(stdout);
-	ret = printf("%30d", 13);
-	printf("\nret = %d\n", ret); fflush(stdout);
 
 
 /*

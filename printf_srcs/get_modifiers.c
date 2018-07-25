@@ -6,7 +6,7 @@
 /*   By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 09:12:07 by lazrossi          #+#    #+#             */
-/*   Updated: 2018/07/24 16:41:13 by lazrossi         ###   ########.fr       */
+/*   Updated: 2018/07/25 16:02:33 by lazrossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int		get_precision(va_list ap, t_printf *argument, const char *format)
 		if (argument->precision < 0)
 		{
 			argument->activate_precision = 0;
+			argument->precision *= -1;
 			argument->left_align_output = 0;
 		}
 	}
