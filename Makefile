@@ -6,7 +6,7 @@
 #    By: lazrossi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/19 20:53:31 by lazrossi          #+#    #+#              #
-#    Updated: 2018/07/24 17:09:39 by lazrossi         ###   ########.fr        #
+#    Updated: 2018/07/25 16:17:15 by lazrossi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -137,7 +137,7 @@ PRINTF_SRCS =   ft_printf.c \
 
 # CC = gcc -Wall -Wextra -Werror -c -g
 
-CC = gcc -Wall -Werror -Wextra -Ofast -c
+CC = gcc -Ofast -c
 
 #DEBUG = ""
 #if ${DEBUG}
